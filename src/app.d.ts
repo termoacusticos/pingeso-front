@@ -8,9 +8,13 @@ declare global {
 		// interface PageState {}
 
 		interface Platform {
-			env: Env;
-			cf: CfProperties;
-			ctx: ExecutionContext;
+			env: {
+				DB: D1Database;
+			};
+			context: {
+				waitUntil(promise: Promise<any>): void;
+			};
+			caches: CacheStorage & { default: Cache };
 		}
 	}
 }
