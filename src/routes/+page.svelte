@@ -11,7 +11,6 @@
 <button
 	class="bg-green-300 p-4 m-[38px] active:scale-125 transition-transform"
 	on:click={() => {
-		console.log('==== JS EN EL BROWSER ====');
 		valor++;
 		console.log(valor);
 	}}
