@@ -3,7 +3,7 @@
 	import Sidebar from '../../components/Sidebar.svelte';
 </script>
 
-<div class="relative flex flex-col w-full bg-white">
+<div class="relative flex flex-col w-full bg-gray-100">
 	<Navbar />
 	<Sidebar />
 	<slot />
