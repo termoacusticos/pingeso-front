@@ -4,6 +4,7 @@ import { init } from '$lib';
 import { PUBLIC_IS_DEV } from '$env/static/public';
 
 export const POST: RequestHandler = async ({ fetch, request, platform }) => {
+	// instanciar db
 	const db = platform?.env.DB;
 
 	if (PUBLIC_IS_DEV) {
@@ -12,11 +13,11 @@ export const POST: RequestHandler = async ({ fetch, request, platform }) => {
 			db?.prepare(query).run();
 		});
 	}
+	// stmt = statement
+	let usuarios = db
+		?.prepare('SELECT * FROM usuarios;')
+		.run()
+		.then((stmt) => stmt.results);
 
-	console.log('==== SERVER ====');
-	let sql1 = await db?.prepare('SELECT * FROM usuarios;').run();
-	console.log(sql1?.results);
-	return json({ adios: sql1?.results ?? ['NADA'] }, { status: 299, statusText: 'yalo envie' });
-	// equivale a: (el response se agrega implicitamente, y se puede usar lo de abajo también)
-	// return new Response(JSON.stringify({ adios: 'ADIOS' }), {status: 299, statusText: 'yalo envie' })
+	return json({ results: await usuarios });
 };
