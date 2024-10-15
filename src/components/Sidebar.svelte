@@ -22,13 +22,13 @@
 			}}
 		></SidebarController>
 		<SidebarElement {isExpanded} href="/home" buttonName="Inicio" icon="mdi--home" />
-		<SidebarElement {isExpanded} href="/home/cotizar" buttonName="Cotizar" icon="mdi--paper-add" />
-		<SidebarElement {isExpanded} href="/home/tabla" buttonName="Modificar" icon="mdi--table" />
+		<SidebarElement {isExpanded} href="/home/cotizar" buttonName="Cotizar" icon="mdi--document" />
+		<SidebarElement {isExpanded} href="/home/tabla" buttonName="Modificar" icon="mdi--edit" />
 		<SidebarElement
 			{isExpanded}
 			href="/home/configurar"
 			buttonName="Configuración"
-			icon="mdi--settings"
+			icon="mdi--cog"
 		/>
 	</ul>
 </div>
