@@ -22,7 +22,7 @@
 	};
 </script>
 
-<div class="min-h-screen ml-14 p-8 bg-gray-100 animate-fade-up">
+<div class="min-h-screen w-full p-8 bg-gray-100 animate-fade-up">
 	<!-- Título del Dashboard -->
 	<h1 class="text-3xl font-bold mb-6 text-center text-gray-800">
 		Dashboard de Cotización de Ventanas

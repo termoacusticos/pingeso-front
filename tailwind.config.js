@@ -4,7 +4,11 @@ const { addIconSelectors } = require('@iconify/tailwind');
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
-		extend: {}
+		extend: {
+			gridTemplateColumns: {
+				sidebar: '256px auto'
+			}
+		}
 	},
 	plugins: [require('tailwindcss-animated'), addIconSelectors(['mdi'])]
 };

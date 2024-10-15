@@ -3,7 +3,7 @@
 	import Footer from '../components/Footer.svelte';
 </script>
 
-<div class="block h-screen bg-teal-700">
+<main>
 	<slot />
-	<Footer />
-</div>
+</main>
+<Footer />

@@ -14,7 +14,7 @@
 	function handleSubmit() {}
 </script>
 
-<div class="flex flex-col w-full h-full gap-4 justify-center bg-teal-700 animate-fade-up">
+<div class="flex flex-col w-full h-full gap-4 my-10 justify-center bg-teal-700 animate-fade-up">
 	<img
 		class=" object-contain h-20"
 		src="/src/public/img/logo_termo.png"
@@ -57,5 +57,3 @@
 		</form>
 	</div>
 </div>
-
-<span class="iconify mdi--account-alert-outline"></span>

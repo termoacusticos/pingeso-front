@@ -2,11 +2,11 @@
 	export let isExpanded = false;
 	export let buttonName;
 	export let icon: string;
-	export let href;
+	export let click: () => void;
 </script>
 
-<a
-	{href}
+<button
+	on:click={click}
 	class="inline-flex space-x-2 items-center my-2 px-1 transition-all hover:bg-teal-500 rounded"
 >
 	<!-- sin este size 8 afuera, el icono salta un poco (?) -->
@@ -18,4 +18,4 @@
 			{buttonName}
 		</p>
 	{/if}
-</a>
+</button>
