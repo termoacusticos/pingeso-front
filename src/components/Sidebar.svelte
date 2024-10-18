@@ -7,7 +7,7 @@
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
-	class="z-10 h-screen transition-all duration-300 ease-in-out bg-teal-600 text-white grow-0 overflow-hidden p-4"
+	class="z-10 min-h-screen transition-all duration-300 ease-in-out bg-teal-600 text-white grow-0 overflow-hidden p-4"
 	class:w-[4.5rem]={!isExpanded}
 	class:w-[15rem]={isExpanded}
 >
