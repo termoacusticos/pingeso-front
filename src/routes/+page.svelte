@@ -1,15 +1,20 @@
 <script lang="ts">
+	import { preventDefault } from 'svelte/legacy';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	let valor = 0;
 
 	console.log('==== data.saludo ====');
 	console.log(data.saludo);
 
-	let usuario = '';
-	let password = '';
+	let usuario = $state('');
+	let password = $state('');
 
 	function handleSubmit() {}
 </script>
@@ -18,25 +23,22 @@
 	<img
 		class=" object-contain h-20"
 		src="/src/public/img/logo_termo.png"
-		alt="Termoacústicos logo"
-	/>
+		alt="Termoacústicos logo" />
 	<p class="w-full text-center text-white font-light text-xl">Bienvenido!</p>
 	<div class="flex flex-col mx-auto gap-7 bg-white justify-center items-center p-7 rounded-lg">
 		<p class=" font-bold text-xl">Sistema de Cotización</p>
 		<form
 			class="flex flex-col gap-2"
-			on:submit|preventDefault={handleSubmit}
+			onsubmit={preventDefault(handleSubmit)}
 			action=""
-			method="post"
-		>
+			method="post">
 			<div>
 				<label class=" text-slate-600 text-sm" for="">Usuario</label>
 				<input
 					class="appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 					bind:value={usuario}
 					type="text"
-					placeholder="Usuario"
-				/>
+					placeholder="Usuario" />
 			</div>
 			<div>
 				<label class=" text-slate-600 text-sm" for="">Contraseña</label>
@@ -44,16 +46,14 @@
 					class="appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 					bind:value={password}
 					type="password"
-					placeholder="Contraseña"
-				/>
+					placeholder="Contraseña" />
 			</div>
 			<a class="flex w-full" href="/home"
 				><button
 					type="submit"
 					class="w-full h-full bg-amber-500 hover:bg-amber-400 rounded-lg py-2 px-3 text-white font-bold mt-2"
 					>Ingresar</button
-				></a
-			>
+				></a>
 		</form>
 	</div>
 </div>
