@@ -2,7 +2,7 @@
 	import { jsPDF } from 'jspdf';
 	import html2canvas from 'html2canvas';
 
-	let pdfContent: HTMLElement;
+	let pdfContent = $state() as HTMLElement;
 	let numbers = [
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -58,4 +58,4 @@
 	<p>Material: Aluminio</p>
 </div>
 
-<button on:click={generatePDF}>Generar PDF</button>
+<button onclick={generatePDF}>Generar PDF</button>

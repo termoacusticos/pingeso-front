@@ -1,12 +1,21 @@
 <script lang="ts">
-	export let isExpanded = false;
-	export let buttonName;
-	export let icon: string;
-	export let click: () => void;
+	interface Props {
+		isExpanded?: boolean;
+		buttonName: any;
+		icon: string;
+		click: () => void;
+	}
+
+	let {
+		isExpanded = $bindable(false),
+		buttonName,
+		icon,
+		click
+	}: Props = $props();
 </script>
 
 <button
-	on:click={click}
+	onclick={click}
 	class="inline-flex space-x-2 items-center my-2 px-1 transition-all hover:bg-teal-500 rounded"
 >
 	<!-- sin este size 8 afuera, el icono salta un poco (?) -->

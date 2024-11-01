@@ -1,8 +1,17 @@
 <script lang="ts">
-	export let isExpanded = false;
-	export let buttonName;
-	export let icon: string;
-	export let href;
+	interface Props {
+		isExpanded?: boolean;
+		buttonName: any;
+		icon: string;
+		href: any;
+	}
+
+	let {
+		isExpanded = false,
+		buttonName,
+		icon,
+		href
+	}: Props = $props();
 </script>
 
 <a
