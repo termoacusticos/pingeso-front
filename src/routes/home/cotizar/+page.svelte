@@ -9,7 +9,6 @@
 			ancho: ''
 		}
 	]);
-
 	let mostrar_eliminar = $derived(cotizaciones.length > 1);
 
 	$inspect(cotizaciones);

@@ -1,11 +1,16 @@
-<script>
+<script lang="ts">
+	import type { Snippet } from 'svelte';
 	import Sidebar from '$lib/components/Sidebar.svelte';
-	/** @type {{children?: import('svelte').Snippet}} */
-	let { children } = $props();
+
+	interface Props {
+		children: Snippet;
+	}
+
+	let { children }: Props = $props();
 </script>
 
 <div class="flex flex-row w-full bg-gray-100">
 	<!-- <Navbar /> -->
 	<Sidebar />
-	{@render children?.()}
+	{@render children()}
 </div>

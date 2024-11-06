@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	// Datos ficticios sobre las ventanas más cotizadas, colores y otros datos
 	const data = {
 		windowsQuoted: [

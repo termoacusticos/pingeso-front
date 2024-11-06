@@ -16,7 +16,9 @@
 	let usuario = $state('');
 	let password = $state('');
 
-	function handleSubmit() {}
+	function handleSubmit(event: Event) {
+		event.preventDefault();
+	}
 </script>
 
 <div class="flex flex-col w-full h-full gap-4 my-10 justify-center bg-teal-700 animate-fade-up">
@@ -27,11 +29,7 @@
 	<p class="w-full text-center text-white font-light text-xl">Bienvenido!</p>
 	<div class="flex flex-col mx-auto gap-7 bg-white justify-center items-center p-7 rounded-lg">
 		<p class=" font-bold text-xl">Sistema de Cotización</p>
-		<form
-			class="flex flex-col gap-2"
-			onsubmit={preventDefault(handleSubmit)}
-			action=""
-			method="post">
+		<form class="flex flex-col gap-2" onsubmit={handleSubmit} action="" method="post">
 			<div>
 				<label class=" text-slate-600 text-sm" for="">Usuario</label>
 				<input
