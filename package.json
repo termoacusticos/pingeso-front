@@ -44,6 +44,7 @@
 		"bcryptjs": "^2.4.3",
 		"html2canvas": "^1.4.1",
 		"jose": "^5.9.6",
-		"jspdf": "^2.5.2"
+		"jspdf": "^2.5.2",
+		"neverthrow": "^8.1.1"
 	}
 }

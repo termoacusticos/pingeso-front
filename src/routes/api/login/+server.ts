@@ -4,22 +4,22 @@ import type { RequestHandler } from './$types';
 import bcrypt from 'bcryptjs';
 import { SignJWT } from 'jose';
 import { JWT_SECRET } from '$env/static/private';
+import { getUsuario } from '$lib/repositories/usuarios';
+import { getDB } from '$lib';
 
 const TOKEN_SECRET = new TextEncoder().encode(JWT_SECRET);
 
 export const POST: RequestHandler = async ({ request, platform }) => {
-	const db = platform?.env.DB;
+	const conn = getDB(platform);
+	if (conn.isErr()) return json({ error: conn.error }, { status: 400 });
+
+	const db = conn.value;
 
 	const { email, password } = await request.json<{ email: string; password: string }>();
 
-	const user = await db
-		?.prepare('SELECT * FROM usuarios WHERE usuarios.email LIKE ?;')
-		.bind(email)
-		.run<Usuario>()
-		.then((stmt) => stmt.results[0]);
-	if (!user) {
-		return json({ error: 'Usuario no encontrado' }, { status: 404 });
-	}
+	const user = await getUsuario(db, email);
+
+	if (!user) return json({ error: 'Usuario no encontrado' }, { status: 404 });
 
 	const isPasswordValid = await bcrypt.compare(password, user.password);
 	if (!isPasswordValid) {
@@ -31,5 +31,5 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 		.setExpirationTime('1h')
 		.sign(TOKEN_SECRET);
 
-	return json({token});
+	return json({ token });
 };
