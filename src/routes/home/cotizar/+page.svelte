@@ -38,6 +38,7 @@
 	let cotizaciones = $state([
 		{
 			tipo: '',
+			item:'',
 			cantidad: '',
 			color: '',
 			alto: '',
@@ -53,7 +54,7 @@
 	function agregarVentana() {
 		cotizaciones = [
 			...cotizaciones,
-			{ tipo: '', cantidad: '', color: '', alto: '', ancho: '', vidrio: '', precio: '' }
+			{ tipo: '', item:'', cantidad: '', color: '', alto: '', ancho: '', vidrio: '', precio: '' }
 		];
 	}
 

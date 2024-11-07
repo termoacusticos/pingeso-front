@@ -9,7 +9,7 @@
 
 	const tiposDeVentanas = ['Corrediza', 'Batiente', 'Fija', 'Oscilobatiente'];
 	const tipoDeVidrios = ['Simple', 'Doble', 'Triple'];
-	const coloresDisponibles = ['Blanco', 'Negro', 'Gris', 'Madera'];
+	
 
 </script>
 
@@ -36,6 +36,16 @@
 			{/each}
 		</select>
 	</div>
+
+	<!-- Ingresar Item-->
+	<div class="flex space-x-4">
+		<div class="w-full">
+			<label for="item" class="block text-sm font-medium text-gray-700">Item</label>
+			<input type="text" id="item" class="mt-1 block w-full p-2 border border-gray-300 rounded"
+				bind:value={ventana.item} />
+		</div>
+	</div>
+
 	<!-- Ingresar Cantidad -->
 	<div class="flex space-x-4">
 		<div class="w-full">
