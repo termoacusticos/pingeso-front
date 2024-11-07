@@ -17,6 +17,7 @@
 		"@iconify/tailwind": "^1.1.3",
 		"@sveltejs/kit": "^2.7.2",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
+		"@types/bcryptjs": "^2.4.6",
 		"@types/eslint": "^9.6.0",
 		"autoprefixer": "^10.4.20",
 		"eslint": "^9.0.0",
@@ -32,13 +33,17 @@
 		"tailwindcss-animated": "^1.1.2",
 		"typescript": "^5.5.0",
 		"typescript-eslint": "^8.0.0",
-		"vite": "^5.4.4"
+		"vite": "^5.4.4",
+		"wrangler": "^3.85.0"
 	},
 	"type": "module",
 	"dependencies": {
 		"@cloudflare/workers-types": "^4.20241022.0",
+		"@sveltejs/adapter-auto": "^3.3.1",
 		"@sveltejs/adapter-cloudflare": "^0.0.1",
+		"bcryptjs": "^2.4.3",
 		"html2canvas": "^1.4.1",
+		"jose": "^5.9.6",
 		"jspdf": "^2.5.2"
 	}
 }

@@ -18,3 +18,8 @@ type Cotizacion = {
 	precio: Number;
 	fecha: string;
 }
+type Usuario = {
+	id: number;
+	email: string;
+	password: string;
+};

@@ -9,10 +9,6 @@
 	let { data }: Props = $props();
 
 	let valor = 0;
-
-	console.log('==== data.saludo ====');
-	console.log(data.saludo);
-
 	let usuario = $state('');
 	let password = $state('');
 
