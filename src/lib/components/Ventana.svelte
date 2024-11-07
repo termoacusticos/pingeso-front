@@ -8,7 +8,8 @@
 	let { ventana = $bindable(), index, mostrar_eliminar, eliminarVentana }: Props = $props();
 
 	const tiposDeVentanas = ['Corrediza', 'Batiente', 'Fija', 'Oscilobatiente'];
-	const coloresDisponibles = ['Blanco', 'Negro', 'Gris', 'Madera'];
+	const tipoDeVidrios = ['Simple', 'Doble', 'Triple'];
+	
 
 </script>
 
@@ -36,16 +37,34 @@
 		</select>
 	</div>
 
+	<!-- Ingresar Item-->
+	<div class="flex space-x-4">
+		<div class="w-full">
+			<label for="item" class="block text-sm font-medium text-gray-700">Item</label>
+			<input type="text" id="item" class="mt-1 block w-full p-2 border border-gray-300 rounded"
+				bind:value={ventana.item} />
+		</div>
+	</div>
+
+	<!-- Ingresar Cantidad -->
+	<div class="flex space-x-4">
+		<div class="w-full">
+			<label for="cantidad" class="block text-sm font-medium text-gray-700">Cantidad</label>
+			<input type="number" id="cantidad" class="mt-1 block w-full p-2 border border-gray-300 rounded"
+				bind:value={ventana.cantidad} />
+		</div>
+	</div>
+
 	<!-- Seleccionar Color -->
 	<div>
-		<label for="color" class="block text-sm font-medium text-gray-700">Color</label>
+		<label for="color" class="block text-sm font-medium text-gray-700">Vidrio</label>
 		<select
 			id="color"
 			class="mt-1 block w-full p-2 border border-gray-300 rounded"
 			bind:value={ventana.color}>
-			<option value="">Seleccionar color</option>
-			{#each coloresDisponibles as color}
-				<option value={color}>{color}</option>
+			<option value="">Seleccionar vidrio</option>
+			{#each tipoDeVidrios as vidrio}
+				<option value={vidrio}>{vidrio}</option>
 			{/each}
 		</select>
 	</div>
@@ -67,6 +86,14 @@
 				id="ancho"
 				class="mt-1 block w-full p-2 border border-gray-300 rounded"
 				bind:value={ventana.ancho} />
+		</div>
+	</div>
+
+	<div class="flex space-x-4">
+		<div class="w-full">
+			<label for="precio" class="block text-sm font-medium text-gray-700">Precio</label>
+			<input type="number" id="precio" class="mt-1 block w-full p-2 border border-gray-300 rounded"
+				bind:value={ventana.precio} />
 		</div>
 	</div>
 </div>
