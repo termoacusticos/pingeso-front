@@ -13,7 +13,7 @@
 	<ul class="flex flex-col space-y-4 w-full">
 		<SidebarController
 			bind:isExpanded
-			buttonName="Expandir"
+			buttonName="Menú"
 			icon="mdi--menu"
 			click={() => {
 				isExpanded = !isExpanded;

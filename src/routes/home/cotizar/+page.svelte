@@ -60,6 +60,18 @@
 	function eliminarVentana(index: any) {
 		cotizaciones = cotizaciones.filter((_, i) => i !== index);
 	}
+
+	function manejarSeleccion(event: Event, color: { nombre: string; seleccionado: boolean }) {
+		const seleccionados = coloresDisponibles.filter(c => c.seleccionado).length;
+		// Si ya hay 2 seleccionados y se intenta seleccionar otro, bloquea la acción
+		if (seleccionados >= 2 && !color.seleccionado) {
+			event.preventDefault();
+			alert("Solo puedes seleccionar hasta 2 colores.");
+			return;
+		}
+		// Cambiar el estado de selección
+		color.seleccionado = !color.seleccionado;
+	}
 </script>
 
 <div class="min-h-screen bg-gray-100 p-6 max-w-screen-lg mx-auto">
@@ -103,7 +115,9 @@
 					<tr class="border-t">
 						<td class="px-4 py-2">
 							<label class="flex items-center space-x-2">
-								<input type="checkbox" bind:checked={color.seleccionado} />
+								<input type="checkbox" 
+									checked={color.seleccionado} 
+									onclick={(event) => manejarSeleccion(event, color)} />
 								<span>{color.nombre}</span>
 							</label>
 						</td>
@@ -112,6 +126,25 @@
 			</tbody>
 		</table>
 	</div>
+
+	<div class="flex justify-center mt-6">
+		<table class="min-w-max bg-white border border-gray-300">
+			<tbody>
+				<tr>
+					<td class="px-6 py-2 bg-gray-200 font-bold">DESPERDICIO</td>
+					<td class="px-4 py-2">
+						<input type="radio" id="desperdicio_si" name="desperdicio" value="SI"> SI
+						<input type="radio" id="desperdicio_no" name="desperdicio" value="NO"> NO
+					</td>
+				</tr>
+				<tr>
+					<td class="px-4 py-2 bg-gray-200 font-bold">GANANCIA TOTAL</td>
+					<td class="px-4 py-2">5%</td> <!-- Valor obtenido -->
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
 
 	<!-- Ventanas -->
 	<div class="space-y-6 mt-8">
