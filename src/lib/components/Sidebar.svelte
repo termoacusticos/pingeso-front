@@ -13,7 +13,7 @@
 	<ul class="flex flex-col space-y-4 w-full">
 		<SidebarController
 			bind:isExpanded
-			buttonName="Expandir"
+			buttonName="Menú"
 			icon="mdi--menu"
 			click={() => {
 				isExpanded = !isExpanded;
@@ -21,6 +21,7 @@
 			}}></SidebarController>
 		<SidebarElement {isExpanded} href="/home" buttonName="Inicio" icon="mdi--home" />
 		<SidebarElement {isExpanded} href="/home/cotizar" buttonName="Cotizar" icon="mdi--document" />
+		<SidebarElement {isExpanded} href="/home/historial" buttonName="Historial" icon="mdi--history" />
 		<SidebarElement {isExpanded} href="/home/tabla" buttonName="Modificar" icon="mdi--edit" />
 		<SidebarElement
 			{isExpanded}
