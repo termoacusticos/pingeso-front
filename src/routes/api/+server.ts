@@ -1,12 +1,23 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
+import { init_db } from '$lib';
+import { PUBLIC_IS_DEV } from '$env/static/public';
 
 export const POST: RequestHandler = async ({ fetch, request, platform }) => {
-	console.log('==== SERVER ====');
-	let sql = await platform?.env.DB.prepare('SELECT * FROM usuarios;').run();
-	console.log(sql?.results);
+	// instanciar db
+	const db = platform?.env.DB;
 
-	return json({ adios: sql?.results }, { status: 299, statusText: 'yalo envie' });
-	// equivale a: (el response se agrega implicitamente, y se puede usar lo de abajo también)
-	// return new Response(JSON.stringify({ adios: 'ADIOS' }), {status: 299, statusText: 'yalo envie' })
+	if (PUBLIC_IS_DEV) {
+		console.log(init_db); // init de la db local, en prod está listo
+		init_db.forEach((query) => {
+			db?.prepare(query).run();
+		});
+	}
+	// stmt = statement
+	let usuarios = db
+		?.prepare('SELECT * FROM usuarios;')
+		.run()
+		.then((stmt) => stmt.results);
+
+	return json({ results: await usuarios });
 };
