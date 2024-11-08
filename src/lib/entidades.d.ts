@@ -1,5 +1,5 @@
 type Usuario = {
-	id: number;
+	rut: number;
 	email: string;
 	password: string;
 };

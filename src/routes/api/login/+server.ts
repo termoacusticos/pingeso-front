@@ -26,7 +26,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 		return json({ error: 'Contraseña incorrecta' }, { status: 401 });
 	}
 
-	const token = await new SignJWT({ userId: user.id, email: user.email })
+	const token = await new SignJWT({ userRut: user.rut, email: user.email })
 		.setProtectedHeader({ alg: 'HS256' })
 		.setExpirationTime('1h')
 		.sign(TOKEN_SECRET);
