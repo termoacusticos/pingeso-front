@@ -10,7 +10,8 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		.then((data: any) => {
 			return data.results;
 		});
-
+		console.log(saludo);
+		
 	return {
 		saludo
 	};
