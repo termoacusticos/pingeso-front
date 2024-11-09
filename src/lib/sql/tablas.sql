@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS cristal (
 
 -- Tabla: usuario
 CREATE TABLE IF NOT EXISTS usuario (
-  rut_usuario INTEGER NOT NULL PRIMARY KEY,
+  id_usuario INTEGER PRIMARY KEY AUTOINCREMENT,
   email TEXT NOT NULL UNIQUE,
   password TEXT,
   rol_id INTEGER
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS presupuesto (
 
 -- Tabla: cliente
 CREATE TABLE IF NOT EXISTS cliente (
-  rut_cliente INTEGER NOT NULL PRIMARY KEY,
+  rut_cliente TEXT NOT NULL PRIMARY KEY,
   nombre_cliente TEXT NOT NULL,
   direccion TEXT NOT NULL,
   email TEXT NOT NULL,

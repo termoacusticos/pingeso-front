@@ -1,7 +1,6 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { getDB, init_db } from '$lib';
-import { PUBLIC_IS_DEV } from '$env/static/public';
+import { getDB } from '$lib';
 import { getAllUsuarios, getUsuario } from '$lib/repositories/usuarios';
 
 export const POST: RequestHandler = async ({ fetch, request, platform }) => {

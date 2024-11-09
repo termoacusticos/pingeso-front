@@ -10,23 +10,25 @@ import { getDB } from '$lib';
 const TOKEN_SECRET = new TextEncoder().encode(JWT_SECRET);
 
 export const POST: RequestHandler = async ({ request, platform }) => {
-	const conn = getDB(platform);
-	if (conn.isErr()) return json({ error: conn.error }, { status: 400 });
+	const connection = getDB(platform);
+	if (connection.isErr()) return json({ error: connection.error }, { status: 400 });
 
-	const db = conn.value;
+	const db = connection.value;
 
 	const { email, password } = await request.json<{ email: string; password: string }>();
 
-	const user = await getUsuario(db, email);
+	const response = await getUsuario(db, email);
 
-	if (!user) return json({ error: 'Usuario no encontrado' }, { status: 404 });
+	if (response.isErr()) return json({ error: response.error }, { status: 404 });
+
+	const user = response.value;
 
 	const isPasswordValid = await bcrypt.compare(password, user.password);
 	if (!isPasswordValid) {
 		return json({ error: 'Contraseña incorrecta' }, { status: 401 });
 	}
 
-	const token = await new SignJWT({ userRut: user.rut, email: user.email })
+	const token = await new SignJWT({ email: user.email })
 		.setProtectedHeader({ alg: 'HS256' })
 		.setExpirationTime('1h')
 		.sign(TOKEN_SECRET);
