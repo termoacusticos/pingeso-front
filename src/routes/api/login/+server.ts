@@ -1,6 +1,6 @@
-import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
+import { json } from '@sveltejs/kit';
 import bcrypt from 'bcryptjs';
 import { SignJWT } from 'jose';
 import { JWT_SECRET } from '$env/static/private';
@@ -10,18 +10,18 @@ import { getDB } from '$lib';
 const TOKEN_SECRET = new TextEncoder().encode(JWT_SECRET);
 
 export const POST: RequestHandler = async ({ request, platform }) => {
-	const connection = getDB(platform);
-	if (connection.isErr()) return json({ error: connection.error }, { status: 400 });
+	const connResult = getDB(platform);
+	if (connResult.isErr()) return json({ error: connResult.error }, { status: 400 });
 
-	const db = connection.value;
+	const db = connResult.value;
 
 	const { email, password } = await request.json<{ email: string; password: string }>();
 
-	const response = await getUsuario(db, email);
+	const getResult = await getUsuario(db, email);
 
-	if (response.isErr()) return json({ error: response.error }, { status: 404 });
+	if (getResult.isErr()) return json({ error: getResult.error }, { status: 404 });
 
-	const user = response.value;
+	const user = getResult.value;
 
 	const isPasswordValid = await bcrypt.compare(password, user.password);
 	if (!isPasswordValid) {
