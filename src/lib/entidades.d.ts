@@ -12,3 +12,10 @@ type Cliente = {
 	email: string;
 	telefono: string;
 };
+
+type Quincalleria = {
+	id: number;
+	descripcion: string;
+	formula: string;
+	precio: number;
+};
