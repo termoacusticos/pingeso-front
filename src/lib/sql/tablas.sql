@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS usuario (
   id_usuario INTEGER PRIMARY KEY AUTOINCREMENT,
   email TEXT NOT NULL UNIQUE,
   password TEXT,
-  rol_id INTEGER
+  is_admin INTEGER
 );
 
 -- Tabla: presupuesto

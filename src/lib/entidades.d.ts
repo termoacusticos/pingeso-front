@@ -1,11 +1,11 @@
-type Usuario = {
-	id: number;
+type UsuarioEntity = {
+	id_usuario: number;
 	email: string;
 	password: string;
-	rol_id: number;
+	is_admin: number;
 };
 
-type Cliente = {
+type ClienteEntity = {
 	rut: string;
 	nombre: string;
 	direccion: string;
@@ -13,14 +13,14 @@ type Cliente = {
 	telefono: string;
 };
 
-type Quincalleria = {
+type QuincalleriaEntity = {
 	id: number;
 	descripcion: string;
 	formula: string;
 	precio: number;
 };
 
-type Perfil = {
+type PerfilEntity = {
 	id: number;
 	codigo: number;
 	formula: string;
@@ -28,32 +28,32 @@ type Perfil = {
 	kg_ml: number;
 };
 
-type Cristal = {
-    formula: string;
-    cantidad: number;
-    valor_m2: number;
+type CristalEntity = {
+	formula: string;
+	cantidad: number;
+	valor_m2: number;
 };
 
-type Presupuesto = {
-    id: number;
-    rut_usuario: number;
-    fecha: Date;
-    data_json: string;
-    nombre_cliente: string;
-    rut_cliente: string;
+type PresupuestoEntity = {
+	id: number;
+	rut_usuario: number;
+	fecha: Date;
+	data_json: string;
+	nombre_cliente: string;
+	rut_cliente: string;
 };
 
-type Opcion = {
-    id: number;
-    id_presupuesto: number;
+type OpcionEntity = {
+	id: number;
+	id_presupuesto: number;
 };
 
-type Ventana = {
-    id: number;
-    descripcion: string;
-    alto: number;
-    ancho: number;
-    minimo: number;
-    maximo: number;
-    id_opcion: number;
+type VentanaEntity = {
+	id: number;
+	descripcion: string;
+	alto: number;
+	ancho: number;
+	minimo: number;
+	maximo: number;
+	id_opcion: number;
 };

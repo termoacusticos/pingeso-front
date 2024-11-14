@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import bcrypt from 'bcryptjs';
-import { getDB } from '$lib';
+import { getDB, validateJWT } from '$lib';
 import { getUsuario, saveUsuario } from '$lib/repositories/usuarios';
 
 import type { RequestHandler } from './$types';
@@ -10,7 +10,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 	if (connection.isErr()) return json({ error: connection.error }, { status: 400 });
 	const db = connection.value;
 
-	const userToRegister = await request.json<Usuario>();
+	const userToRegister = await request.json<UsuarioEntity>();
 
 	// Verifica si ya existe un usuario con el mismo email
 	const userResult = await getUsuario(db, userToRegister.email);
@@ -31,6 +31,10 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 	return json({ message: 'Usuario registrado con éxito' });
 };
 
-export const DELETE: RequestHandler = async ({}) => {
-	return json({})
-}
+export const DELETE: RequestHandler = async ({ request }) => {
+	const token = request.headers.get('Authorization') ?? '';
+	const jwtResult = await validateJWT(token);
+	if (jwtResult.isErr()) return json({ message: jwtResult.error }, { status: 400 });
+
+	return json(jwtResult.value);
+};
