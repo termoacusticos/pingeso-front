@@ -30,3 +30,12 @@ export const saveUsuario = async (db: D1Database, user: Usuario, hashedPassword:
 		.then(() => ok(true))
 		.catch((error: Error) => err(error));
 };
+
+export const deleteUsuario = async (db: D1Database, email: string) => {
+	return await db
+		.prepare('DELETE FROM usuario WHERE email = ?;')
+		.bind(email)
+		.run()
+		.then(() => ok(true))
+		.catch((error: Error) => err(error));
+};
