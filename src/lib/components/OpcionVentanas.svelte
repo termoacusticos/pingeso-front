@@ -2,15 +2,15 @@
 	import Ventana from './Ventana.svelte';
 	import Ventana2 from './Ventana2.svelte';
 
-    interface Props {
-        index: number;
-        mostrar_eliminar_opcion: boolean;
-        eliminarOpcion: (index: number) => void;
-    }
+	interface Props {
+		index: number;
+		mostrar_eliminar_opcion: boolean;
+		eliminarOpcion: (index: number) => void;
+	}
 
-    let { index, mostrar_eliminar_opcion, eliminarOpcion }: Props = $props();
+	let { index, mostrar_eliminar_opcion, eliminarOpcion }: Props = $props();
 
-    let materiales = [
+	let materiales = [
 		{
 			nombre: 'PVC',
 			calidad: 'Alta',
@@ -44,27 +44,8 @@
 		{ nombre: 'Antracita', seleccionado: false }
 	];
 
-    let ventanas = $state([
-        {
-            material: '',
-			tipo: '',
-			item: '',
-			cantidad: 1,
-			color: '',
-			alto: 0,
-			ancho: 0,
-			precio_unitario: 0,
-			precio_total: 0
-        }
-    ]);
-
-	let sumaTotal = $derived(ventanas.reduce((acc, ventana) => acc + ventana.precio_total, 0));
-
-    let mostrar_eliminar = $derived(ventanas.length > 1);
-    $inspect(ventanas);
-
-	function agregarVentana() {
-		ventanas = [...ventanas, {
+	let ventanas = $state([
+		{
 			material: '',
 			tipo: '',
 			item: '',
@@ -73,8 +54,30 @@
 			alto: 0,
 			ancho: 0,
 			precio_unitario: 0,
-			precio_total: 10
-		}];
+			precio_total: 0
+		}
+	]);
+
+	let sumaTotal = $derived(ventanas.reduce((acc, ventana) => acc + ventana.precio_total, 0));
+
+	let mostrar_eliminar = $derived(ventanas.length > 1);
+	$inspect(ventanas);
+
+	function agregarVentana() {
+		ventanas = [
+			...ventanas,
+			{
+				material: '',
+				tipo: '',
+				item: '',
+				cantidad: 1,
+				color: '',
+				alto: 0,
+				ancho: 0,
+				precio_unitario: 0,
+				precio_total: 10
+			}
+		];
 	}
 
 	function eliminarVentana(index: number) {
@@ -84,21 +87,24 @@
 
 <div class="space-y-4">
 	<h1 class="text-xl font-semibold text-gray-800">Opción {index + 1}</h1>
-	
+
 	<!-- Botón para agregar una nueva ventana -->
 	<div class="flex flex-row gap-5 items-center">
-		<button onclick={agregarVentana} class="bg-blue-600 hover:bg-blue-500 transition-all text-white p-2 rounded font-bold">Agregar Ventana</button>
+		<button
+			onclick={agregarVentana}
+			class="bg-blue-600 hover:bg-blue-500 transition-all text-white p-2 rounded font-bold"
+			>Agregar Ventana</button>
 		{#if mostrar_eliminar_opcion}
-			<button class="bg-red-500 hover:bg-red-400 text-white p-2 rounded font-bold" onclick={() => eliminarOpcion(index)}>
+			<button
+				class="bg-red-500 hover:bg-red-400 text-white p-2 rounded font-bold"
+				onclick={() => eliminarOpcion(index)}>
 				Eliminar Opción
 			</button>
 		{:else}
-		<p class="bg-slate-300 text-slate-400 font-bold p-2 rounded h-fit">
-			Eliminar Opción
-		</p>
+			<p class="bg-slate-300 text-slate-400 font-bold p-2 rounded h-fit">Eliminar Opción</p>
 		{/if}
 	</div>
-	
+
 	<!-- Lista de ventanas -->
 	<div class="flex flex-col">
 		<table class="flex flex-col border-gray-100 w-full shadow">
@@ -125,7 +131,5 @@
 				</tr>
 			</tbody>
 		</table>
-		
 	</div>
-	
 </div>

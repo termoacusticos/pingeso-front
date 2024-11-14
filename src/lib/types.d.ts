@@ -18,4 +18,4 @@ type Cotizacion = {
 	colores: string[];
 	precio: Number;
 	fecha: string;
-}
+};

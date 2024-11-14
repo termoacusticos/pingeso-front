@@ -39,7 +39,7 @@
 	let opciones = $state([
 		{
 			tipo: '',
-			item:'',
+			item: '',
 			cantidad: '',
 			color: '',
 			alto: '',
@@ -55,7 +55,7 @@
 	function agregarOpcion() {
 		opciones = [
 			...opciones,
-			{ tipo: '', item:'', cantidad: '', color: '', alto: '', ancho: '', vidrio: '', precio: '' }
+			{ tipo: '', item: '', cantidad: '', color: '', alto: '', ancho: '', vidrio: '', precio: '' }
 		];
 	}
 
@@ -64,18 +64,17 @@
 	}
 
 	function manejarSeleccion(event: Event, color: { nombre: string; seleccionado: boolean }) {
-		const seleccionados = coloresDisponibles.filter(c => c.seleccionado).length;
+		const seleccionados = coloresDisponibles.filter((c) => c.seleccionado).length;
 		// Si ya hay 2 seleccionados y se intenta seleccionar otro, bloquea la acción
 		if (seleccionados >= 2 && !color.seleccionado) {
 			event.preventDefault();
-			alert("Solo puedes seleccionar hasta 2 colores.");
+			alert('Solo puedes seleccionar hasta 2 colores.');
 			return;
 		}
 		// Cambiar el estado de selección
 		color.seleccionado = !color.seleccionado;
 	}
 </script>
-
 
 <div class="flex flex-row bg-gray-100 p-6 gap-10 w-[90%] overflow-hidden mx-auto">
 	<!-- Ventanas -->
@@ -86,7 +85,9 @@
 
 		<!-- Botón para agregar nueva ventana -->
 		<div class="text-center">
-			<button class="mt-4 bg-teal-500 hover:bg-teal-400 font-bold transition-all text-white px-4 py-2 rounded" onclick={agregarOpcion}>
+			<button
+				class="mt-4 bg-teal-500 hover:bg-teal-400 font-bold transition-all text-white px-4 py-2 rounded"
+				onclick={agregarOpcion}>
 				+ Agregar otra opción
 			</button>
 		</div>
@@ -108,7 +109,21 @@
 						<div class="flex border-t">
 							<div class="w-1/4 px-4 py-2">
 								<label class="flex items-center space-x-2">
-									<input type="checkbox" bind:checked={material.seleccionado} />
+									<input
+										type="checkbox"
+										bind:checked={material.seleccionado}
+										oninput={() => {
+											opciones.push({
+												tipo: material.nombre,
+												item: '',
+												cantidad: '',
+												color: '',
+												alto: '',
+												ancho: '',
+												vidrio: '',
+												precio: ''
+											});
+										}} />
 									<span>{material.nombre}</span>
 								</label>
 							</div>
@@ -118,7 +133,7 @@
 						</div>
 					{/each}
 				</div>
-			</div>			
+			</div>
 			<!-- Seleccionar Color -->
 			<div class="w-full max-w-4xl bg-white border border-gray-300 flex flex-col items-center">
 				<p class="w-full py-2 bg-gray-200 font-bold text-center">Color (Hasta 2 opciones)</p>
@@ -126,33 +141,35 @@
 					{#each coloresDisponibles as color}
 						<div class="border-t px-4 py-2 flex justify-center">
 							<label class="flex flex-row w-full space-x-2">
-								<input type="checkbox"
-									checked={color.seleccionado} 
+								<input
+									type="checkbox"
+									checked={color.seleccionado}
 									onclick={(event) => manejarSeleccion(event, color)} />
 								<span>{color.nombre}</span>
 							</label>
 						</div>
 					{/each}
 				</div>
-			</div>			
+			</div>
 		</div>
-	
+
 		<div class="flex justify-center mt-6 rounded-lg bg-white shadow-lg">
 			<table class="min-w-max border-gray-100">
 				<tbody>
 					<tr>
 						<td class="px-6 py-2 bg-gray-200 font-bold">DESPERDICIO</td>
 						<td class="px-4 py-2">
-							<input type="radio" id="desperdicio_si" name="desperdicio" value="SI"> SI
-							<input type="radio" id="desperdicio_no" name="desperdicio" value="NO"> NO
+							<input type="radio" id="desperdicio_si" name="desperdicio" value="SI" /> SI
+							<input type="radio" id="desperdicio_no" name="desperdicio" value="NO" /> NO
 						</td>
 					</tr>
 					<tr>
 						<td class="px-4 py-2 bg-gray-200 font-bold">GANANCIA TOTAL</td>
-						<td class="px-4 py-2">5%</td> <!-- Valor obtenido -->
+						<td class="px-4 py-2">5%</td>
+						<!-- Valor obtenido -->
 					</tr>
 				</tbody>
 			</table>
 		</div>
-	</div>	
+	</div>
 </div>
