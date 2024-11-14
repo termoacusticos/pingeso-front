@@ -12,7 +12,10 @@ export const getDB = (platform: Readonly<App.Platform> | undefined) => {
 
 export const validateJWT = async (token: string) => {
 	try {
-		const { payload } = await jwtVerify(token.substring(7), TOKEN_SECRET);
+		const { payload } = await jwtVerify<{ user_id: number; is_admin: number; email: string }>(
+			token.substring(7),
+			TOKEN_SECRET
+		);
 
 		return ok(payload);
 	} catch (error) {
