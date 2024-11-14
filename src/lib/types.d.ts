@@ -1,12 +1,13 @@
 type Ventana = {
+	material: string;
 	tipo: string;
 	item: string;
-	cantidad: string;
+	cantidad: number;
 	color: string;
-	alto: string;
-	ancho: string;
-	vidrio: string;
-	precio: string;
+	alto: number;
+	ancho: number;
+	precio_unitario: number;
+	precio_total: number;
 };
 
 type Cotizacion = {
