@@ -33,12 +33,12 @@ CREATE TABLE IF NOT EXISTS usuario (
 -- Tabla: presupuesto
 CREATE TABLE IF NOT EXISTS presupuesto (
   id_presupuesto INTEGER PRIMARY KEY AUTOINCREMENT,
-  rut_usuario INTEGER NOT NULL,
+  id_usuario INTEGER NOT NULL,
   fecha DATE NOT NULL,
   data_json TEXT NOT NULL,
   nombre_cliente TEXT NOT NULL,
   rut_cliente INTEGER,
-  FOREIGN KEY (rut_usuario) REFERENCES usuario (rut_usuario),
+  FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario),
   FOREIGN KEY (rut_cliente) REFERENCES cliente (rut_cliente)
 );
 

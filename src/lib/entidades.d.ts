@@ -35,8 +35,8 @@ type CristalEntity = {
 };
 
 type PresupuestoEntity = {
-	id: number;
-	rut_usuario: number;
+	id?: number;
+	id_usuario: number;
 	fecha: Date;
 	data_json: string;
 	nombre_cliente: string;

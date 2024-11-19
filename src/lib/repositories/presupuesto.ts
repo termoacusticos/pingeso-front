@@ -23,10 +23,10 @@ export const getAllPresupuestos = async (db: D1Database) => {
 export const savePresupuesto = async (db: D1Database, presupuesto: PresupuestoEntity) => {
 	return await db
 		.prepare(
-			'INSERT INTO presupuesto (rut_usuario, fecha, data_json, nombre_cliente, rut_cliente) VALUES (?, ?, ?, ?, ?);'
+			'INSERT INTO presupuesto (id_usuario, fecha, data_json, nombre_cliente, rut_cliente) VALUES (?, ?, ?, ?, ?);'
 		)
 		.bind(
-			presupuesto.rut_usuario,
+			presupuesto.id_usuario,
 			presupuesto.fecha,
 			presupuesto.data_json,
 			presupuesto.nombre_cliente,
