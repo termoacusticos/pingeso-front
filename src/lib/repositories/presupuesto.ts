@@ -1,7 +1,9 @@
 import { err, ok } from 'neverthrow';
+import { getOpcionesById } from './opcion';
+import { getVentanasById } from './ventana';
 
 export const getPresupuestoById = async (db: D1Database, id: number) => {
-	const presupuesto = await db
+	const presupuestoResult = await db
 		.prepare('SELECT * FROM presupuesto WHERE id_presupuesto = ?;')
 		.bind(id)
 		.run<PresupuestoEntity>()
@@ -9,14 +11,43 @@ export const getPresupuestoById = async (db: D1Database, id: number) => {
 			if (!stmt.results[0]) return err('Presupuesto no encontrado');
 			return ok(stmt.results[0]);
 		});
-	return presupuesto;
+	if (presupuestoResult.isErr()) return presupuestoResult;
+	const presupuesto = presupuestoResult.value;
+
+	const opcionesResult = await getOpcionesById(db, presupuesto.id);
+	if (opcionesResult.isErr()) return opcionesResult;
+	const opcionesEntity = opcionesResult.value;
+
+	const opciones: Opcion[] = [];
+	opcionesEntity.forEach(async (opcion) => {
+		const ventanasResult = await getVentanasById(db, opcion.id);
+		const ventanas = ventanasResult.isOk() ? ventanasResult.value : [];
+		opciones.push({ id: opcion.id, ventanas });
+	});
+
+	return { ...presupuesto, opciones } as Presupuesto;
 };
 
 export const getAllPresupuestos = async (db: D1Database) => {
-	const presupuestos = await db
+	const presupuestos: Presupuesto[] = [];
+	const presupuestosEntity = await db
 		.prepare('SELECT * FROM presupuesto;')
 		.run<PresupuestoEntity>()
 		.then((stmt) => stmt.results);
+
+	presupuestosEntity.forEach(async (presupuesto) => {
+		const opcionesResult = await getOpcionesById(db, presupuesto.id);
+		if (opcionesResult.isErr()) return opcionesResult;
+		const opcionesEntity = opcionesResult.value;
+
+		const opciones: Opcion[] = [];
+		opcionesEntity.forEach(async (opcion) => {
+			const ventanasResult = await getVentanasById(db, opcion.id);
+			const ventanas = ventanasResult.isOk() ? ventanasResult.value : [];
+			opciones.push({ id: opcion.id, ventanas });
+		});
+		presupuestos.push({ ...presupuesto, id: presupuesto.id ?? 0, opciones });
+	});
 	return presupuestos;
 };
 

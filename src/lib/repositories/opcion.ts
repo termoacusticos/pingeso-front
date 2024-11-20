@@ -1,13 +1,14 @@
 import { err, ok } from 'neverthrow';
 
-export const getOpcionById = async (db: D1Database, id: number) => {
+export const getOpcionesById = async (db: D1Database, id: number | undefined) => {
+	if (!id) return err('Id no entregada');
 	const opcion = await db
-		.prepare('SELECT * FROM opcion WHERE id_opcion = ?;')
+		.prepare('SELECT * FROM opcion WHERE id_presupuesto = ?;')
 		.bind(id)
 		.run<OpcionEntity>()
 		.then((stmt) => {
-			if (!stmt.results[0]) return err('Opción no encontrada');
-			return ok(stmt.results[0]);
+			if (stmt.results.length == 0) return err('Opción no encontrada');
+			return ok(stmt.results);
 		});
 	return opcion;
 };

@@ -13,7 +13,7 @@ export const GET: RequestHandler = async ({ platform }) => {
 	const db = connResult.value;
 
 	const presupuestos = await getAllPresupuestos(db);
-
+	
 	if (presupuestos.length === 0){
 		return json({error: 'No se encontraron presupuestos'}, {status: 500});
 	}
@@ -40,7 +40,7 @@ export const POST: RequestHandler = async ({request, platform}) => {
 
 	const saveResult = await savePresupuesto(db, {
 		id_usuario,
-		fecha: new Date(fecha),
+		fecha: new Date(fecha).toISOString(),
 		data_json,
 		nombre_cliente,
 		rut_cliente

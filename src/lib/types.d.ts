@@ -19,3 +19,17 @@ type Cotizacion = {
 	precio: Number;
 	fecha: string;
 };
+
+type Presupuesto = {
+	id: number;
+	id_usuario: number;
+	fecha: string;
+	nombre_cliente: string;
+	rut_cliente: string;
+	opciones: Opcion[];
+};
+
+type Opcion = {
+	id: number;
+	ventanas: VentanaEntity[];
+};

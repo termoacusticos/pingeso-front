@@ -62,6 +62,9 @@ CREATE TABLE IF NOT EXISTS opcion (
 CREATE TABLE IF NOT EXISTS ventana (
   id_ventana INTEGER PRIMARY KEY AUTOINCREMENT,
   descripcion TEXT,
+  cantidad INTEGER,
+  material TEXT,
+  color TEXT,
   alto DECIMAL,
   ancho DECIMAL,
   minimo INTEGER,

@@ -1,13 +1,13 @@
 import { err, ok } from 'neverthrow';
 
-export const getVentanaById = async (db: D1Database, id: number) => {
+export const getVentanasById = async (db: D1Database, id: number) => {
 	const ventana = await db
 		.prepare('SELECT * FROM ventana WHERE id_ventana = ?;')
 		.bind(id)
 		.run<VentanaEntity>()
 		.then((stmt) => {
-			if (!stmt.results[0]) return err('Ventana no encontrada');
-			return ok(stmt.results[0]);
+			if (stmt.results.length == 0) return err('Ventana no encontrada');
+			return ok(stmt.results);
 		});
 	return ventana;
 };
