@@ -10,6 +10,12 @@ type Ventana = {
 	precio_total: number;
 };
 
+type Opcion = {
+	material: string;
+	color: string;
+	ventanas: Ventana[];
+};
+
 type Cotizacion = {
 	id: Number;
 	materiales: string[];
