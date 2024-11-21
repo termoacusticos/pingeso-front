@@ -23,7 +23,7 @@ export const getAllClientes = async (db: D1Database) => {
 export const saveCliente = async (db: D1Database, cliente: ClienteEntity) => {
 	return await db
 		.prepare(
-			'INSERT INTO cliente (rut_cliente, nombre_cliente, direccion, email, telefono) VALUES (?, ?, ?, ?, ?;'
+			'INSERT INTO cliente (rut_cliente, nombre, direccion, email, telefono) VALUES (?, ?, ?, ?, ?);'
 		)
 		.bind(cliente.rut, cliente.nombre, cliente.direccion, cliente.email, cliente.telefono)
 		.run()

@@ -1,6 +1,7 @@
 import { err, ok } from 'neverthrow';
-import { getOpcionesById } from './opcion';
-import { getVentanasById } from './ventana';
+import { getOpcionesById, saveOpcion } from './opcion';
+import { getVentanasById, saveVentana } from './ventana';
+import { saveCliente } from './cliente';
 
 export const getPresupuestoById = async (db: D1Database, id: number) => {
 	const presupuestoResult = await db
@@ -14,18 +15,18 @@ export const getPresupuestoById = async (db: D1Database, id: number) => {
 	if (presupuestoResult.isErr()) return presupuestoResult;
 	const presupuesto = presupuestoResult.value;
 
-	const opcionesResult = await getOpcionesById(db, presupuesto.id);
+	const opcionesResult = await getOpcionesById(db, presupuesto.id_presupuesto);
 	if (opcionesResult.isErr()) return opcionesResult;
 	const opcionesEntity = opcionesResult.value;
 
 	const opciones: Opcion[] = [];
-	opcionesEntity.forEach(async (opcion) => {
-		const ventanasResult = await getVentanasById(db, opcion.id);
+	for await (const opcion of opcionesEntity) {
+		const ventanasResult = await getVentanasById(db, opcion.id_opcion);
 		const ventanas = ventanasResult.isOk() ? ventanasResult.value : [];
-		opciones.push({ id: opcion.id, ventanas });
-	});
+		opciones.push({ id_opcion: opcion.id_opcion, ventanas });
+	}
 
-	return { ...presupuesto, opciones } as Presupuesto;
+	return { ...presupuesto, id: presupuesto.id_presupuesto, opciones } as Presupuesto;
 };
 
 export const getAllPresupuestos = async (db: D1Database) => {
@@ -35,37 +36,57 @@ export const getAllPresupuestos = async (db: D1Database) => {
 		.run<PresupuestoEntity>()
 		.then((stmt) => stmt.results);
 
-	presupuestosEntity.forEach(async (presupuesto) => {
-		const opcionesResult = await getOpcionesById(db, presupuesto.id);
+	if (presupuestosEntity.length == 0) return err('No hay presupuestos');
+
+	for await (const presupuesto of presupuestosEntity) {
+		const opcionesResult = await getOpcionesById(db, presupuesto.id_presupuesto);
 		if (opcionesResult.isErr()) return opcionesResult;
 		const opcionesEntity = opcionesResult.value;
 
 		const opciones: Opcion[] = [];
-		opcionesEntity.forEach(async (opcion) => {
-			const ventanasResult = await getVentanasById(db, opcion.id);
+		for await (const opcion of opcionesEntity) {
+			const ventanasResult = await getVentanasById(db, opcion.id_opcion);
+
 			const ventanas = ventanasResult.isOk() ? ventanasResult.value : [];
-			opciones.push({ id: opcion.id, ventanas });
-		});
-		presupuestos.push({ ...presupuesto, id: presupuesto.id ?? 0, opciones });
-	});
-	return presupuestos;
+			opciones.push({ id_opcion: opcion.id_opcion, ventanas });
+		}
+		presupuestos.push({ ...presupuesto, opciones });
+	}
+	return ok(presupuestos);
 };
 
-export const savePresupuesto = async (db: D1Database, presupuesto: PresupuestoEntity) => {
-	return await db
+export const savePresupuesto = async (db: D1Database, presupuesto: Presupuesto) => {
+	console.log(presupuesto);
+
+	const presupuestoResult = await db
 		.prepare(
-			'INSERT INTO presupuesto (id_usuario, fecha, data_json, nombre_cliente, rut_cliente) VALUES (?, ?, ?, ?, ?);'
+			'INSERT INTO presupuesto (id_usuario, fecha, data_json, rut_cliente) VALUES (?, ?, ?, ?);'
 		)
-		.bind(
-			presupuesto.id_usuario,
-			presupuesto.fecha,
-			presupuesto.data_json,
-			presupuesto.nombre_cliente,
-			presupuesto.rut_cliente
-		)
+		.bind(presupuesto.id_usuario, presupuesto.fecha, 'json', presupuesto.rut_cliente)
 		.run()
-		.then(() => ok(true))
+		.then((stmt) => ok(stmt))
 		.catch((error: Error) => err(error));
+
+	if (presupuestoResult.isErr()) return presupuestoResult;
+
+	presupuesto.id_presupuesto = presupuestoResult.value.meta.last_row_id;
+
+	const insertBatch: D1PreparedStatement[] = [];
+	for await (const opcion of presupuesto.opciones) {
+		const opcionResult = await saveOpcion(db, presupuesto.id_presupuesto);
+		if (opcionResult.isErr()) return opcionResult;
+
+		opcion.id_opcion = opcionResult.value.meta.last_row_id;
+
+		opcion.ventanas.map((ventana) => {
+			insertBatch.push(saveVentana(db, ventana, opcion.id_opcion));
+		});
+	}
+
+	return await db
+		.batch(insertBatch)
+		.then((result) => ok(result))
+		.catch((error) => err(error));
 };
 
 export const deletePresupuesto = async (db: D1Database, id: number) => {

@@ -21,7 +21,7 @@ type Cotizacion = {
 };
 
 type Presupuesto = {
-	id: number;
+	id_presupuesto: number;
 	id_usuario: number;
 	fecha: string;
 	nombre_cliente: string;
@@ -30,6 +30,13 @@ type Presupuesto = {
 };
 
 type Opcion = {
-	id: number;
+	id_opcion: number;
 	ventanas: VentanaEntity[];
+};
+
+type JWTBody = {
+	user_id: number;
+	is_admin: number;
+	email: string;
+	exp: number;
 };

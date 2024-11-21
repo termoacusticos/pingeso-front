@@ -18,10 +18,7 @@
 </script>
 
 <div class="flex flex-col w-full h-full gap-4 my-10 justify-center bg-teal-700 animate-fade-up">
-	<img
-		class=" object-contain h-20"
-		src="/src/public/img/logo_termo.png"
-		alt="Termoacústicos logo" />
+	<img class=" object-contain h-20" src="/logo_termo.png" alt="Termoacústicos logo" />
 	<p class="w-full text-center text-white font-light text-xl">Bienvenido!</p>
 	<div class="flex flex-col mx-auto gap-7 bg-white justify-center items-center p-7 rounded-lg">
 		<p class=" font-bold text-xl">Sistema de Cotización</p>

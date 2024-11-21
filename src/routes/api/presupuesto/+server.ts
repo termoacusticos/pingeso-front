@@ -1,53 +1,45 @@
 import type { RequestHandler } from './$types';
-import { getDB } from '$lib';
+import { getDB, validateJWT } from '$lib';
 import { json } from '@sveltejs/kit';
 import { savePresupuesto } from '$lib/repositories/presupuesto';
 import { getAllPresupuestos } from '$lib/repositories/presupuesto';
+import { saveCliente } from '$lib/repositories/cliente';
 
 export const GET: RequestHandler = async ({ platform }) => {
 	const connResult = getDB(platform);
-	if (connResult.isErr()){
-		return json({error: connResult.error}, {status: 400});
+	if (connResult.isErr()) {
+		return json({ error: connResult.error }, { status: 400 });
 	}
 
 	const db = connResult.value;
 
-	const presupuestos = await getAllPresupuestos(db);
-	
-	if (presupuestos.length === 0){
-		return json({error: 'No se encontraron presupuestos'}, {status: 500});
+	const presupuestosResult = await getAllPresupuestos(db);
+
+	if (presupuestosResult.isErr()) {
+		return json(presupuestosResult.error, { status: 500 });
 	}
 
-	return json({presupuestos: presupuestos.values});
+	return json(presupuestosResult.value);
 };
 
-
-export const POST: RequestHandler = async ({request, platform}) => {
+export const POST: RequestHandler = async ({ request, platform }) => {
 	const connResult = getDB(platform);
-	if (connResult.isErr()){
-		return json({error: connResult.error}, {status: 400});
+	if (connResult.isErr()) {
+		return json({ error: connResult.error }, { status: 400 });
 	}
 
 	const db = connResult.value;
 
-	const {id_usuario, fecha, data_json, nombre_cliente, rut_cliente} = await request.json<{
-		id_usuario: number, 
-		fecha: Date, 
-		data_json: string, 
-		nombre_cliente: string, 
-		rut_cliente: string
-	}>();
+	const token = request.headers.get('Authorization') ?? '';
+	const jwtResult = await validateJWT(token);
+	if (jwtResult.isErr()) return json({ message: jwtResult.error }, { status: 400 });
 
-	const saveResult = await savePresupuesto(db, {
-		id_usuario,
-		fecha: new Date(fecha).toISOString(),
-		data_json,
-		nombre_cliente,
-		rut_cliente
-	});
+	const presupuesto = await request.json<Presupuesto>();
 
-	if (saveResult.isErr()){
-		return json({error: saveResult.error}, {status: 500});
+	const saveResult = await savePresupuesto(db, presupuesto);
+
+	if (saveResult.isErr()) {
+		return json(saveResult.error.message, { status: 500 });
 	}
 
 	return json({ message: 'Presupuesto guardado correctamente', presupuesto: saveResult.value });

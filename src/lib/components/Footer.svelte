@@ -2,7 +2,7 @@
 	<div
 		class="flex flex-col w-fit md:flex-row gap-10 justify-evenly md:w-full bg-inherit py-5 self-center text-white">
 		<div class="flex flex-col">
-			<img class="h-20" src="/src/public/img/logo_termo.png" alt="Termoacústicos logo" />
+			<img class="h-20" src="/logo_termo.png" alt="Termoacústicos logo" />
 		</div>
 		<nav class="flex flex-col">
 			<h3 class="font-bold text-xl uppercase">Contacto soporte</h3>

@@ -36,7 +36,6 @@ CREATE TABLE IF NOT EXISTS presupuesto (
   id_usuario INTEGER NOT NULL,
   fecha DATE NOT NULL,
   data_json TEXT NOT NULL,
-  nombre_cliente TEXT NOT NULL,
   rut_cliente INTEGER,
   FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario),
   FOREIGN KEY (rut_cliente) REFERENCES cliente (rut_cliente)
@@ -45,7 +44,7 @@ CREATE TABLE IF NOT EXISTS presupuesto (
 -- Tabla: cliente
 CREATE TABLE IF NOT EXISTS cliente (
   rut_cliente TEXT NOT NULL PRIMARY KEY,
-  nombre_cliente TEXT NOT NULL,
+  nombre TEXT NOT NULL,
   direccion TEXT NOT NULL,
   email TEXT NOT NULL,
   telefono TEXT

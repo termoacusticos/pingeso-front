@@ -35,7 +35,7 @@ type CristalEntity = {
 };
 
 type PresupuestoEntity = {
-	id?: number;
+	id_presupuesto: number;
 	id_usuario: number;
 	fecha: string;
 	data_json: string;
@@ -44,7 +44,7 @@ type PresupuestoEntity = {
 };
 
 type OpcionEntity = {
-	id: number;
+	id_opcion: number;
 	id_presupuesto: number;
 };
 

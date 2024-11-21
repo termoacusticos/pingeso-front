@@ -2,13 +2,14 @@ import { err, ok } from 'neverthrow';
 
 export const getVentanasById = async (db: D1Database, id: number) => {
 	const ventana = await db
-		.prepare('SELECT * FROM ventana WHERE id_ventana = ?;')
+		.prepare('SELECT * FROM ventana WHERE id_opcion = ?;')
 		.bind(id)
 		.run<VentanaEntity>()
 		.then((stmt) => {
 			if (stmt.results.length == 0) return err('Ventana no encontrada');
 			return ok(stmt.results);
 		});
+
 	return ventana;
 };
 
@@ -20,10 +21,10 @@ export const getAllVentanas = async (db: D1Database) => {
 	return ventanas;
 };
 
-export const saveVentana = async (db: D1Database, ventana: VentanaEntity) => {
-	return await db
+export const saveVentana = (db: D1Database, ventana: VentanaEntity, id_opcion: number) => {
+	return db
 		.prepare(
-			'INSERT INTO ventana (descripcion, alto, ancho, minimo, maximo, id_opcion) VALUES (?, ?, ?, ?, ?, ?);'
+			'INSERT INTO ventana (descripcion, alto, ancho, minimo, maximo, id_opcion, color, material, cantidad) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);'
 		)
 		.bind(
 			ventana.descripcion,
@@ -31,11 +32,11 @@ export const saveVentana = async (db: D1Database, ventana: VentanaEntity) => {
 			ventana.ancho,
 			ventana.minimo,
 			ventana.maximo,
-			ventana.id_opcion
-		)
-		.run()
-		.then(() => ok(true))
-		.catch((error: Error) => err(error));
+			id_opcion,
+			ventana.color,
+			ventana.material,
+			ventana.cantidad
+		);
 };
 
 export const deleteVentana = async (db: D1Database, id: number) => {
