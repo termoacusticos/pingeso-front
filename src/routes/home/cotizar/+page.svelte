@@ -1,10 +1,10 @@
 <script lang="ts">
 	import OpcionVentanas from '$lib/components/OpcionVentanas.svelte';
 
-	const materialOptions = ["Madera", "Aluminio", "PVC"];
-	const tipoOptions = ["Corredera", "Abatible", "Oscilobatiente"];
-	const itemOptions = ["Ventana Simple", "Ventana Doble", "Ventana Termopanel"];
-	const coloresOptions = ["Blanco", "Rojo", "Violeta"]
+	const materialOptions = ['Madera', 'Aluminio', 'PVC'];
+	const tipoOptions = ['Corredera', 'Abatible', 'Oscilobatiente'];
+	const itemOptions = ['Ventana Simple', 'Ventana Doble', 'Ventana Termopanel'];
+	const coloresOptions = ['Blanco', 'Rojo', 'Violeta'];
 
 	let mostrarAgregarOpcion = $state(false);
 	let materialModal = $state('');
@@ -18,7 +18,7 @@
 		{
 			material: '',
 			color: '',
-			ventanas: [],
+			ventanas: []
 		}
 	]);
 
@@ -34,6 +34,7 @@
 			material: materialModal,
 			color: colorModal
 		}));
+		console.log(nuevas_ventanas);
 
 		// Crear una nueva opción
 		const nuevaOpcion = {
@@ -42,9 +43,7 @@
 			ventanas: nuevas_ventanas
 		};
 
-		opciones = [
-			...opciones, nuevaOpcion
-		];
+		opciones.push(nuevaOpcion);
 
 		// Reiniciar los valores del modal
 		materialModal = '';
@@ -57,17 +56,40 @@
 	}
 </script>
 
-
 <div class="flex flex-row bg-gray-100 p-6 gap-10 w-[80%] overflow-hidden mx-auto">
 	<!-- Ventanas -->
 	<div class="space-y-6 mt-8 w-full h-screen overflow-scroll">
 		{#each opciones as opcion, index}
-			<OpcionVentanas bind:opcion={opciones[index]} {index} {eliminarOpcion} {mostrar_eliminar_opcion} />
+			<OpcionVentanas
+				agregarVentana={() => {
+					for (const opcion of opciones) {
+						opcion.ventanas = [
+							...opcion.ventanas,
+							{
+								material: opcion.material,
+								tipo: '',
+								item: '',
+								cantidad: 1,
+								color: opcion.color,
+								alto: 0,
+								ancho: 0,
+								precio_unitario: 20,
+								precio_total: 0
+							}
+						];
+					}
+				}}
+				bind:opcion={opciones[index]}
+				{index}
+				{eliminarOpcion}
+				{mostrar_eliminar_opcion} />
 		{/each}
 
 		<!-- Botón para agregar nueva ventana -->
 		<div class="text-center">
-			<button class="mt-4 bg-teal-500 hover:bg-teal-400 font-bold transition-all text-white px-4 py-2 rounded" onclick={cambiarAgregarOpcion}>
+			<button
+				class="mt-4 bg-teal-500 hover:bg-teal-400 font-bold transition-all text-white px-4 py-2 rounded"
+				onclick={cambiarAgregarOpcion}>
 				+ Agregar otra opción
 			</button>
 		</div>
@@ -84,11 +106,11 @@
 						X
 					</button>
 				</div>
-		
+
 				<!-- Contenido del modal -->
 				<div class="space-y-4">
 					<h2 class="text-xl font-semibold text-gray-800">Nueva Opción</h2>
-		
+
 					<!-- Select para material -->
 					<div>
 						<label for="material" class="block text-gray-600 font-medium mb-1">Material</label>
@@ -102,7 +124,7 @@
 							{/each}
 						</select>
 					</div>
-		
+
 					<!-- Select para color -->
 					<div>
 						<label for="color" class="block text-gray-600 font-medium mb-1">Color</label>
@@ -116,13 +138,13 @@
 							{/each}
 						</select>
 					</div>
-		
+
 					<!-- Botón de Crear Opción -->
 					<div class="flex justify-center">
 						<button
 							onclick={agregarOpcion}
 							class="bg-teal-600 hover:bg-teal-500 transition-all text-white px-4 py-2 rounded font-bold"
-							disabled={materialModal=='' || colorModal==''}>
+							disabled={materialModal == '' || colorModal == ''}>
 							Crear Opción
 						</button>
 					</div>
