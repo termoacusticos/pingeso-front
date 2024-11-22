@@ -16,7 +16,7 @@ export const GET: RequestHandler = async ({ platform }) => {
 	const presupuestosResult = await getAllPresupuestos(db);
 
 	if (presupuestosResult.isErr()) {
-		return json(presupuestosResult.error, { status: 500 });
+		return json({ error: presupuestosResult.error }, { status: 500 });
 	}
 
 	return json(presupuestosResult.value);
@@ -32,14 +32,14 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 
 	const token = request.headers.get('Authorization') ?? '';
 	const jwtResult = await validateJWT(token);
-	if (jwtResult.isErr()) return json({ message: jwtResult.error }, { status: 400 });
+	if (jwtResult.isErr()) return json({ error: jwtResult.error }, { status: 400 });
 
-	const presupuesto = await request.json<Presupuesto>();
+	const presupuesto = await request.json<PresupuestoModel>();
 
 	const saveResult = await savePresupuesto(db, presupuesto);
 
 	if (saveResult.isErr()) {
-		return json(saveResult.error.message, { status: 500 });
+		return json({ error: saveResult.error.message }, { status: 500 });
 	}
 
 	return json({ message: 'Presupuesto guardado correctamente', presupuesto: saveResult.value });

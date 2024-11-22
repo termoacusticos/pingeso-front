@@ -10,7 +10,7 @@
 	} from '$lib/store';
 
 	interface Props {
-		ventana: Ventana;
+		ventana: VentanaEntity;
 		id: number;
 		option_index: number;
 		mostrar_eliminar: boolean;

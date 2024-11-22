@@ -1,19 +1,7 @@
-type Ventana = {
-	material: string;
-	tipo: string;
-	item: string;
-	cantidad: number;
-	color: string;
-	alto: number;
-	ancho: number;
-	precio_unitario: number;
-	precio_total: number;
-};
-
 type Opcion = {
 	material: string;
 	color: string;
-	ventanas: Ventana[];
+	ventanas: VentanaEntity[];
 };
 
 type Cotizacion = {
@@ -26,16 +14,16 @@ type Cotizacion = {
 	fecha: string;
 };
 
-type Presupuesto = {
+type PresupuestoModel = {
 	id_presupuesto: number;
 	id_usuario: number;
 	fecha: string;
 	nombre_cliente: string;
 	rut_cliente: string;
-	opciones: Opcion[];
+	opciones: OpcionModel[];
 };
 
-type Opcion = {
+type OpcionModel = {
 	id_opcion: number;
 	ventanas: VentanaEntity[];
 };

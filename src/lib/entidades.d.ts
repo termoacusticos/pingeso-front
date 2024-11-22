@@ -49,14 +49,15 @@ type OpcionEntity = {
 };
 
 type VentanaEntity = {
-	id: number;
-	descripcion: string;
+	id?: number;
+	id_opcion?: number;
+	item: string;
 	cantidad: number;
 	material: string;
+	tipo: string;
 	color: string;
 	alto: number;
 	ancho: number;
-	minimo: number;
-	maximo: number;
-	id_opcion: number;
+	precio_unitario: number;
+	precio_total: number;
 };

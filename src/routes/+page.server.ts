@@ -35,7 +35,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	});
 	console.log(jwt);
 
-	const nuevoPresupuesto: Presupuesto = {
+	const nuevoPresupuesto: PresupuestoModel = {
 		fecha: '',
 		id_presupuesto: 0,
 		id_usuario: jwt.user_id,
@@ -49,24 +49,26 @@ export const load: PageServerLoad = async ({ fetch }) => {
 						ancho: 100,
 						cantidad: 1,
 						color: 'Alcánts',
-						descripcion: '',
+						tipo: 'corredera',
+						item: '',
 						id: 0,
 						id_opcion: 1,
 						material: 'PVC',
-						maximo: 10,
-						minimo: 20
+						precio_unitario: 0,
+						precio_total: 0
 					},
 					{
 						alto: 100,
 						ancho: 100,
 						cantidad: 3,
 						color: 'Alcntar',
-						descripcion: '',
+						tipo: 'corredera',
+						item: '',
 						id: 0,
 						id_opcion: 1,
 						material: 'PVC',
-						maximo: 10,
-						minimo: 20
+						precio_unitario: 0,
+						precio_total: 0
 					}
 				]
 			}
@@ -84,7 +86,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	// });
 	// console.log(presupuesto);
 
-	const getPresupuesto: Presupuesto[] = await fetch('/api/presupuesto', {
+	const getPresupuesto: PresupuestoModel[] = await fetch('/api/presupuesto', {
 		method: 'GET',
 		headers: {
 			Authorization: `Bearer ${login.token}`

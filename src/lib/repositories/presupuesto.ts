@@ -1,7 +1,6 @@
 import { err, ok } from 'neverthrow';
 import { getOpcionesById, saveOpcion } from './opcion';
 import { getVentanasById, saveVentana } from './ventana';
-import { saveCliente } from './cliente';
 
 export const getPresupuestoById = async (db: D1Database, id: number) => {
 	const presupuestoResult = await db
@@ -19,18 +18,18 @@ export const getPresupuestoById = async (db: D1Database, id: number) => {
 	if (opcionesResult.isErr()) return opcionesResult;
 	const opcionesEntity = opcionesResult.value;
 
-	const opciones: Opcion[] = [];
+	const opciones: OpcionModel[] = [];
 	for await (const opcion of opcionesEntity) {
 		const ventanasResult = await getVentanasById(db, opcion.id_opcion);
-		const ventanas = ventanasResult.isOk() ? ventanasResult.value : [];
+		const ventanas: VentanaEntity[] = ventanasResult.isOk() ? ventanasResult.value : [];
 		opciones.push({ id_opcion: opcion.id_opcion, ventanas });
 	}
 
-	return { ...presupuesto, id: presupuesto.id_presupuesto, opciones } as Presupuesto;
+	return { ...presupuesto, id: presupuesto.id_presupuesto, opciones } as PresupuestoModel;
 };
 
 export const getAllPresupuestos = async (db: D1Database) => {
-	const presupuestos: Presupuesto[] = [];
+	const presupuestos: PresupuestoModel[] = [];
 	const presupuestosEntity = await db
 		.prepare('SELECT * FROM presupuesto;')
 		.run<PresupuestoEntity>()
@@ -43,7 +42,7 @@ export const getAllPresupuestos = async (db: D1Database) => {
 		if (opcionesResult.isErr()) return opcionesResult;
 		const opcionesEntity = opcionesResult.value;
 
-		const opciones: Opcion[] = [];
+		const opciones: OpcionModel[] = [];
 		for await (const opcion of opcionesEntity) {
 			const ventanasResult = await getVentanasById(db, opcion.id_opcion);
 
@@ -55,9 +54,7 @@ export const getAllPresupuestos = async (db: D1Database) => {
 	return ok(presupuestos);
 };
 
-export const savePresupuesto = async (db: D1Database, presupuesto: Presupuesto) => {
-	console.log(presupuesto);
-
+export const savePresupuesto = async (db: D1Database, presupuesto: PresupuestoModel) => {
 	const presupuestoResult = await db
 		.prepare(
 			'INSERT INTO presupuesto (id_usuario, fecha, data_json, rut_cliente) VALUES (?, ?, ?, ?);'

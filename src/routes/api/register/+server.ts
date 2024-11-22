@@ -12,20 +12,13 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 
 	const userToRegister = await request.json<UsuarioEntity>();
 
-	// Verifica si ya existe un usuario con el mismo email
-	const userResult = await getUsuario(db, userToRegister.email);
-
-	if (userResult.isOk()) {
-		return json({ error: 'El usuario ya existe' }, { status: 400 });
-	}
-
 	// Hashea la contraseña antes de guardarla
 	const hashedPassword = await bcrypt.hash(userToRegister.password, 10);
 
 	// Crea el nuevo usuario en la base de datos
 	const saveResult = await saveUsuario(db, userToRegister, hashedPassword);
 
-	if (saveResult.isErr()) return json(saveResult.error, { status: 400 });
+	if (saveResult.isErr()) return json({ error: saveResult.error.message }, { status: 400 });
 
 	// Devuelve una respuesta de éxito
 	return json({ message: 'Usuario registrado con éxito' });

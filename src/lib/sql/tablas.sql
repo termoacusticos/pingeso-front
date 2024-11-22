@@ -60,14 +60,17 @@ CREATE TABLE IF NOT EXISTS opcion (
 -- Tabla: ventana
 CREATE TABLE IF NOT EXISTS ventana (
   id_ventana INTEGER PRIMARY KEY AUTOINCREMENT,
-  descripcion TEXT,
+  item TEXT,
   cantidad INTEGER,
   material TEXT,
   color TEXT,
+  tipo TEXT,
   alto DECIMAL,
   ancho DECIMAL,
   minimo INTEGER,
   maximo INTEGER,
   id_opcion INTEGER,
+	precio_unitario DECIMAL,
+	precio_total DECIMAL,
   FOREIGN KEY (id_opcion) REFERENCES opcion (id_opcion)
 );

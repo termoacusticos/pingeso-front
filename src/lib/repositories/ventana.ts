@@ -24,18 +24,18 @@ export const getAllVentanas = async (db: D1Database) => {
 export const saveVentana = (db: D1Database, ventana: VentanaEntity, id_opcion: number) => {
 	return db
 		.prepare(
-			'INSERT INTO ventana (descripcion, alto, ancho, minimo, maximo, id_opcion, color, material, cantidad) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);'
+			'INSERT INTO ventana (descripcion, alto, ancho, minimo, maximo, id_opcion, color, material, cantidad, precio_unitario, precio_total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);'
 		)
 		.bind(
-			ventana.descripcion,
+			ventana.item,
 			ventana.alto,
 			ventana.ancho,
-			ventana.minimo,
-			ventana.maximo,
 			id_opcion,
 			ventana.color,
 			ventana.material,
-			ventana.cantidad
+			ventana.cantidad,
+			ventana.precio_unitario,
+			ventana.precio_total
 		);
 };
 
