@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS cliente (
 CREATE TABLE IF NOT EXISTS opcion (
   id_opcion INTEGER PRIMARY KEY AUTOINCREMENT,
   id_presupuesto INTEGER,
-  FOREIGN KEY (id_presupuesto) REFERENCES presupuesto (id_presupuesto)
+  FOREIGN KEY (id_presupuesto) REFERENCES presupuesto (id_presupuesto) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Tabla: ventana
@@ -72,5 +72,5 @@ CREATE TABLE IF NOT EXISTS ventana (
   id_opcion INTEGER,
 	precio_unitario DECIMAL,
 	precio_total DECIMAL,
-  FOREIGN KEY (id_opcion) REFERENCES opcion (id_opcion)
+  FOREIGN KEY (id_opcion) REFERENCES opcion (id_opcion) ON DELETE CASCADE ON UPDATE CASCADE
 );
