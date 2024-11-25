@@ -94,7 +94,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	}).then((response) => {
 		return response.json();
 	});
-	console.log(util.inspect(getPresupuesto, false, null, true));
+	// console.log(util.inspect(getPresupuesto, false, null, true));
 
 	return {};
 };
