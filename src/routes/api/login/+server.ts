@@ -6,6 +6,7 @@ import { SignJWT } from 'jose';
 import { JWT_SECRET } from '$env/static/private';
 import { getUsuario } from '$lib/repositories/usuarios';
 import { getDB } from '$lib';
+import { validateJWT } from '$lib';
 
 const TOKEN_SECRET = new TextEncoder().encode(JWT_SECRET);
 
@@ -38,4 +39,15 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 		.sign(TOKEN_SECRET);
 
 	return json({ token });
+};
+
+export const GET: RequestHandler = async ({ request }) => {
+	const token = request.headers.get('Authorization')?.split(' ')[1];
+
+	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });
+
+	const validationResult = await validateJWT(token);
+	if (validationResult.isErr()) return json({ error: 'Token inválido.' }, { status: 401 });
+
+	return json({ user: validationResult.value });
 };

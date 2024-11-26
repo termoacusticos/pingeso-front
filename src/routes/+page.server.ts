@@ -4,8 +4,8 @@ import util from 'util';
 export const load: PageServerLoad = async ({ fetch }) => {
 	const user: UsuarioEntity = {
 		id_usuario: 0,
-		email: 'asdasd@gmgm',
-		password: 'HOLA',
+		email: 'ejemplo@gmail.com',
+		password: 'HOLA1234',
 		is_admin: 0
 	};
 

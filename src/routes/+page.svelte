@@ -1,19 +1,38 @@
 <script lang="ts">
-	import { preventDefault } from 'svelte/legacy';
+	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
+	let usuario = '';
+	let password = '';
+	let error = '';
 
-	interface Props {
-		data: PageData;
-	}
-
-	let { data }: Props = $props();
-
-	let valor = 0;
-	let usuario = $state('');
-	let password = $state('');
-
-	function handleSubmit(event: Event) {
+	async function handleSubmit(event: Event) {
 		event.preventDefault();
+		error = '';
+
+		if (!usuario || !password) {
+			error = 'Por favor, complete todos los campos.';
+			return;
+		}
+
+		try {
+			const response = await fetch('/api/login', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ email: usuario, password })
+			});
+
+			if (!response.ok) {
+				const { error: serverError } = (await response.json()) as { error: string };
+				error = serverError || 'Error en el inicio de sesión.';
+				return;
+			}
+
+			const { token } = (await response.json()) as { token: string };
+			localStorage.setItem('authToken', token);
+			goto('/home'); // Redirige al usuario a la página principal
+		} catch (err) {
+			error = 'Hubo un problema con la solicitud.';
+		}
 	}
 </script>
 
@@ -22,29 +41,32 @@
 	<p class="w-full text-center text-white font-light text-xl">Bienvenido!</p>
 	<div class="flex flex-col mx-auto gap-7 bg-white justify-center items-center p-7 rounded-lg">
 		<p class=" font-bold text-xl">Sistema de Cotización</p>
-		<form class="flex flex-col gap-2" onsubmit={handleSubmit} action="" method="post">
+		<form class="flex flex-col gap-2" on:submit|preventDefault={handleSubmit}>
 			<div>
-				<label class=" text-slate-600 text-sm" for="">Usuario</label>
+				<label class=" text-slate-600 text-sm" for="usuario">Usuario</label>
 				<input
 					class="appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 					bind:value={usuario}
+					id="usuario"
 					type="text"
 					placeholder="Usuario" />
 			</div>
 			<div>
-				<label class=" text-slate-600 text-sm" for="">Contraseña</label>
+				<label class=" text-slate-600 text-sm" for="password">Contraseña</label>
 				<input
 					class="appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 					bind:value={password}
+					id="password"
 					type="password"
 					placeholder="Contraseña" />
 			</div>
-			<a class="flex w-full" href="/home"
-				><button
+			<button
 					type="submit"
 					class="w-full h-full bg-amber-500 hover:bg-amber-400 rounded-lg py-2 px-3 text-white font-bold mt-2"
-					>Ingresar</button
-				></a>
+					>Ingresar</button>
 		</form>
+		{#if error}
+		<p class="error">{error}</p>
+	{/if}
 	</div>
 </div>
