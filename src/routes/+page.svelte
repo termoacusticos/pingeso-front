@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import type { PageData } from './$types';
 	let usuario = '';
 	let password = '';
 	let error = '';
@@ -27,8 +26,8 @@
 				return;
 			}
 
-			const { token } = (await response.json()) as { token: string };
-			localStorage.setItem('authToken', token);
+			// const { token } = (await response.json()) as { token: string };
+			// localStorage.setItem('authToken', token);
 			goto('/home'); // Redirige al usuario a la página principal
 		} catch (err) {
 			error = 'Hubo un problema con la solicitud.';

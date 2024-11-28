@@ -10,7 +10,7 @@ import { validateJWT } from '$lib';
 
 const TOKEN_SECRET = new TextEncoder().encode(JWT_SECRET);
 
-export const POST: RequestHandler = async ({ request, platform }) => {
+export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	const connResult = getDB(platform);
 	if (connResult.isErr()) return json({ error: connResult.error }, { status: 400 });
 
@@ -37,12 +37,13 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 		.setProtectedHeader({ alg: 'HS256' })
 		.setExpirationTime('1h')
 		.sign(TOKEN_SECRET);
-
+	cookies.set('authToken', token, { path: '/' });
+	
 	return json({ token });
 };
 
-export const GET: RequestHandler = async ({ request }) => {
-	const token = request.headers.get('Authorization');
+export const GET: RequestHandler = async ({ cookies }) => {
+	const token = cookies.get('authToken');
 
 	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });
 
