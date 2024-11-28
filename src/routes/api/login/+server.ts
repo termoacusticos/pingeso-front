@@ -42,7 +42,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 };
 
 export const GET: RequestHandler = async ({ request }) => {
-	const token = request.headers.get('Authorization')?.split(' ')[1];
+	const token = request.headers.get('Authorization');
 
 	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });
 
