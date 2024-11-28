@@ -13,7 +13,7 @@ export const getDB = (platform: Readonly<App.Platform> | undefined) => {
 export const validateJWT = async (token: string) => {
 	try {
 		const { payload } = await jwtVerify<{ user_id: number; is_admin: number; email: string }>(
-			token.substring(7),
+			token,
 			TOKEN_SECRET
 		);
 
