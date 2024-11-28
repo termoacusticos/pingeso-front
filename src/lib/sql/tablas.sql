@@ -64,13 +64,27 @@ CREATE TABLE IF NOT EXISTS ventana (
   cantidad INTEGER,
   material TEXT,
   color TEXT,
-  tipo TEXT,
+  id_tipo INTEGER,
   alto DECIMAL,
   ancho DECIMAL,
-  minimo INTEGER,
-  maximo INTEGER,
   id_opcion INTEGER,
 	precio_unitario DECIMAL,
 	precio_total DECIMAL,
   FOREIGN KEY (id_opcion) REFERENCES opcion (id_opcion) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (id_tipo) REFERENCES tipo (id_tipo) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE  IF NOT EXISTS tipo (
+  id_tipo INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  descripcion_tipo TEXT NOT NULL,
+  minimo INTEGER,
+  maximo INTEGER
+);
+
+
+CREATE TABLE IF NOT EXISTS tipo_perfil (
+  id_tipo INTEGER NOT NULL,
+  id_perfil INTEGER NOT NULL,
+  FOREIGN KEY (id_tipo) REFERENCES tipo (id_tipo) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (id_perfil) REFERENCES perfil (id_perfil) ON DELETE CASCADE ON UPDATE CASCADE
 );

@@ -54,7 +54,7 @@ type VentanaEntity = {
 	item: string;
 	cantidad: number;
 	material: string;
-	tipo: string;
+	id_tipo: number;
 	color: string;
 	alto: number;
 	ancho: number;
