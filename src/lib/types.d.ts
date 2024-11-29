@@ -16,16 +16,25 @@ type Cotizacion = {
 
 type PresupuestoModel = {
 	id_presupuesto: number;
-	id_usuario: number;
 	fecha: string;
-	nombre_cliente: string;
-	rut_cliente: string;
+	cliente: ClienteEntity;
 	opciones: OpcionModel[];
 };
 
 type OpcionModel = {
-	id_opcion: number;
-	ventanas: VentanaEntity[];
+	ventanas: VentanaModel[];
+};
+
+type VentanaModel = {
+	item: string;
+	cantidad: number;
+	material: string;
+	tipe: string;
+	color: string;
+	alto: number;
+	ancho: number;
+	precio_unitario: number;
+	precio_total: number;
 };
 
 type JWTBody = {
