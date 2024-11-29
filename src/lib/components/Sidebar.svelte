@@ -2,12 +2,12 @@
 	import SidebarController from '$lib/components/SidebarController.svelte';
 	import SidebarElement from '$lib/components/SidebarElement.svelte';
 
-	let isExpanded = $state(false);
+	let isExpanded = $state(true);
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
-	class="z-10 min-h-screen transition-all duration-300 ease-in-out bg-teal-600 text-white grow-0 overflow-hidden p-4"
+	class="aboslute z-10 min-h-screen transition-all duration-300 ease-in-out bg-teal-600 text-white grow-0 overflow-hidden p-4"
 	class:w-[4.5rem]={!isExpanded}
 	class:w-[15rem]={isExpanded}>
 	<ul class="flex flex-col space-y-4 w-full">

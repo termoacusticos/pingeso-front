@@ -1,3 +1,11 @@
+type Cliente = {
+	rut: string;
+	nombre: string;
+	direccion: string;
+	email: string;
+	telefono: string;
+};
+
 type Opcion = {
 	material: string;
 	color: string;

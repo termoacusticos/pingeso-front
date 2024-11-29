@@ -1,18 +1,23 @@
 <script lang="ts">
+	import DatosCotizacion from '$lib/components/DatosCotizacion.svelte';
 	import OpcionVentanas from '$lib/components/OpcionVentanas.svelte';
+	import { itemOptions, tipoOptions, anchoOptions, altoOptions, cantidadOptions } from '$lib/store';
 
-	const materialOptions = ['Madera', 'Aluminio', 'PVC'];
-	const tipoOptions = ['Corredera', 'Abatible', 'Oscilobatiente'];
-	const itemOptions = ['Ventana Simple', 'Ventana Doble', 'Ventana Termopanel'];
-	const coloresOptions = ['Blanco', 'Rojo', 'Violeta'];
+	const materials = ['Madera', 'Aluminio', 'PVC'];
+	
+	const items = ['Ventana Simple', 'Ventana Doble', 'Ventana Termopanel'];
+	const colores = ['Blanco', 'Rojo', 'Violeta'];
 
 	let mostrarAgregarOpcion = $state(false);
 	let materialModal = $state('');
 	let colorModal = $state('');
-
-	function cambiarAgregarOpcion() {
-		mostrarAgregarOpcion = !mostrarAgregarOpcion;
-	}
+	let cliente: Cliente = $state({
+		nombre: '',
+		rut: '',
+		direccion: '',
+		email: '',
+		telefono: ''
+	});
 
 	let opciones: Opcion[] = $state([
 		{
@@ -27,6 +32,10 @@
 	$inspect('opciones:', opciones);
 	$inspect('materialModal:', materialModal);
 	$inspect('colorModal:', colorModal);
+
+	function cambiarAgregarOpcion() {
+		mostrarAgregarOpcion = !mostrarAgregarOpcion;
+	}
 
 	function agregarOpcion() {
 		let nuevas_ventanas = opciones[0].ventanas.map((ventana) => ({
@@ -56,12 +65,18 @@
 	}
 </script>
 
-<div class="flex flex-row bg-gray-100 p-6 gap-10 w-[80%] overflow-hidden mx-auto">
+<div class="flex flex-col bg-gray-100 py-6 px-4 gap-5 xl:w-full 2xl:w-[70%] mx-auto">
+	<DatosCotizacion {cliente}/>
 	<!-- Ventanas -->
-	<div class="space-y-6 mt-8 w-full h-screen overflow-scroll">
+	<div class="space-y-6 w-full">
 		{#each opciones as opcion, index}
 			<OpcionVentanas
 				agregarVentana={() => {
+					$tipoOptions.push('');
+					$itemOptions.push('');
+					$altoOptions.push(0);
+					$anchoOptions.push(0);
+					$cantidadOptions.push(1);
 					for (const opcion of opciones) {
 						opcion.ventanas = [
 							...opcion.ventanas,
@@ -79,6 +94,20 @@
 						];
 					}
 				}}
+				eliminarVentana = {() => {
+					// Recorrer cada opción en 'opciones'
+					opciones.forEach((opcion) => {
+						// Filtrar las ventanas de la opción actual para eliminar la del índice correspondiente
+						opcion.ventanas = opcion.ventanas.filter((_, i) => i !== index);
+					});
+
+					itemOptions.update((current) => current.filter((_, i) => i !== index));
+					tipoOptions.update((current) => current.filter((_, i) => i !== index));
+					cantidadOptions.update((current) => current.filter((_, i) => i !== index));
+					altoOptions.update((current) => current.filter((_, i) => i !== index));
+					anchoOptions.update((current) => current.filter((_, i) => i !== index));
+				
+				}}
 				bind:opcion={opciones[index]}
 				{index}
 				{eliminarOpcion}
@@ -88,7 +117,7 @@
 		<!-- Botón para agregar nueva ventana -->
 		<div class="text-center">
 			<button
-				class="mt-4 bg-teal-500 hover:bg-teal-400 font-bold transition-all text-white px-4 py-2 rounded"
+				class="mt-4 bg-teal-600 hover:bg-teal-500 font-bold transition-all text-white px-4 py-2 rounded"
 				onclick={cambiarAgregarOpcion}>
 				+ Agregar otra opción
 			</button>
@@ -119,7 +148,7 @@
 							bind:value={materialModal}
 							class="w-full border rounded-md px-3 py-2 text-gray-700 focus:ring-2 focus:ring-teal-500">
 							<option value="" disabled>Selecciona un material</option>
-							{#each materialOptions as option}
+							{#each materials as option}
 								<option value={option}>{option}</option>
 							{/each}
 						</select>
@@ -133,7 +162,7 @@
 							bind:value={colorModal}
 							class="w-full border rounded-md px-3 py-2 text-gray-700 focus:ring-2 focus:ring-teal-500">
 							<option value="" disabled>Selecciona un color</option>
-							{#each coloresOptions as option}
+							{#each colores as option}
 								<option value={option}>{option}</option>
 							{/each}
 						</select>
