@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Ventana2 from './Ventana2.svelte';
 	import DropdownColumn from './DropdownColumn.svelte';
-	import { materialOptions, colorOptions, itemOptions } from '$lib/store';
+	import { itemOptions, tipoOptions, anchoOptions, altoOptions, cantidadOptions } from '$lib/store';
 
 	interface Props {
 		opcion: Opcion;
@@ -9,6 +9,7 @@
 		mostrar_eliminar_opcion: boolean;
 		eliminarOpcion: (index: number) => void;
 		agregarVentana: any;
+		eliminarVentana: any;
 	}
 
 	let {
@@ -16,7 +17,8 @@
 		index,
 		mostrar_eliminar_opcion,
 		eliminarOpcion,
-		agregarVentana
+		agregarVentana,
+		eliminarVentana
 	}: Props = $props();
 
 	// opcion.material = '';
@@ -59,14 +61,24 @@
 
 	let mostrar_eliminar = $derived(opcion.ventanas.length > 1);
 
+	/*
 	function eliminarVentana(index: number) {
+		// Eliminar la ventana de la lista principal
 		opcion.ventanas = opcion.ventanas.filter((_, i) => i !== index);
+
+		itemOptions.update((current) => current.filter((_, i) => i !== index));
+		tipoOptions.update((current) => current.filter((_, i) => i !== index));
+		cantidadOptions.update((current) => current.filter((_, i) => i !== index));
+		altoOptions.update((current) => current.filter((_, i) => i !== index));
+		anchoOptions.update((current) => current.filter((_, i) => i !== index));
 	}
+	*/
+
 </script>
 
-<div class="space-y-4">
+<div class="space-y-4 bg-white pt-5 px-5 shadow rounded-lg">
 	<!-- Botón para agregar una nueva ventana -->
-	<div class="flex flex-row gap-5 items-center">
+	<div class="flex flex-row gap-5 items-center justify-between w-full">
 		<h1 class="text-xl font-semibold text-gray-800">Opción {index + 1}</h1>
 		{#if index < 1}
 			<button
@@ -84,12 +96,12 @@
 	</div>
 
 	<!-- Lista de ventanas -->
-	<div class="flex flex-col">
-		<table class="table-auto border-collapse border-gray-100 w-full shadow rounded-lg bg-white">
-			<thead>
-				<tr class="bg-slate-300 py-2 items-center rounded-t-lg">
-					<th class="px-2 px- py-2 border border-gray-300">N°</th>
-					<th class="px-2 py-2 border border-gray-300 justify-center">
+	<div class="flex flex-col rounded-lg">
+		<table class="table-auto w-full rounded-lg bg-white">
+			<thead class="rounded-lg">
+				<tr class="py-2 items-center rounded-lg">
+					<th class="px-1 pl-2 py-2 ">N°</th>
+					<th class="px-1 py-2 justify-center">
 						<DropdownColumn
 							onSelectItem={() => {
 								opcion.ventanas.forEach((ventana) => {
@@ -101,9 +113,9 @@
 							bind:itemSelected={opcion.material}
 							bind:showDropdown={showMaterialDropdown} />
 					</th>
-					<th class="px-2 py-2 border border-gray-300"> Tipo </th>
-					<th class="px-2 py-2 border border-gray-300">Item</th>
-					<th class="px-2 py-2 border border-gray-300">
+					<th class="px-1 py-2"> Tipo </th>
+					<th class="px-1 py-2">Item</th>
+					<th class="px-1 py-2">
 						<DropdownColumn
 							onSelectItem={() => {
 								opcion.ventanas.forEach((ventana) => {
@@ -115,12 +127,12 @@
 							bind:itemSelected={opcion.color}
 							bind:showDropdown={showColorDropdown} />
 					</th>
-					<th class="px-2 py-2 border border-gray-300">Cantidad</th>
-					<th class="px-2 py-2 border border-gray-300">Alto</th>
-					<th class="px-2 py-2 border border-gray-300">Ancho</th>
-					<th class="px-2 py-2 border border-gray-300 w-32 min-w-32">Valor Unitario</th>
-					<th class="px-2 py-2 border border-gray-300 w-32 min-w-32">Valor Total</th>
-					<th class="px-2 py-2 border border-gray-300"></th>
+					<th class="px-1 py-2 min-w-20">Cantidad</th>
+					<th class="px-1 py-2 min-w-20">Alto</th>
+					<th class="px-1 py-2 min-w-20">Ancho</th>
+					<th class="px-1 py-2 w-32 min-w-32">Valor Unitario</th>
+					<th class="px-1 py-2 w-32 min-w-32">Valor Total</th>
+					<th class="px-1 pr-2 py-2"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -130,14 +142,7 @@
 						{id}
 						option_index={index}
 						{mostrar_eliminar}
-						{eliminarVentana}
-						changeType={() => {
-							materialOptions.update((current) => {
-								const updated = [...current]; // Crear una copia del arreglo actual
-								updated[id] = ventana.tipo;
-								return updated;
-							});
-						}} />
+						{eliminarVentana} />
 				{/each}
 				<tr>
 					<td colspan="10" class="px-4 py-2 text-right font-bold">Total: ${sumaTotal}</td>
