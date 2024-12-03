@@ -23,8 +23,8 @@ type QuincalleriaEntity = {
 type PerfilEntity = {
 	id: number;
 	codigo: number;
-	formula: string;
-	cantidad: number;
+	formula_dim: string;
+	formula_cant: string;
 	kg_ml: number;
 };
 
@@ -60,4 +60,11 @@ type VentanaEntity = {
 	ancho: number;
 	precio_unitario: number;
 	precio_total: number;
+};
+
+type TipoEntity = {
+	id_tipo: number;
+	descripcion_tipo: string;
+	minimo: number;
+	maximo: number;
 };

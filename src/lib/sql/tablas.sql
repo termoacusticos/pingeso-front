@@ -10,8 +10,8 @@ CREATE TABLE IF NOT EXISTS quincalleria (
 CREATE TABLE IF NOT EXISTS perfil (
   id_perfil INTEGER PRIMARY KEY AUTOINCREMENT,
   codigo_per INTEGER,
-  formula_per TEXT,
-  cantidad INTEGER,
+  formula_dim TEXT,
+  formula_cant TEXT,
   kg_ml_per DECIMAL
 );
 
