@@ -2,7 +2,7 @@ import { getFormulaCantByCod, getFormulaDimByCod } from "$lib/repositories/perfi
 import { getPerfilesTipo } from "$lib/repositories/tipo";
 import { Err } from "neverthrow";
 
-export async function calcularCostoTotal(db: D1Database, ventana: VentanaEntity){
+export async function calcularCostoTotal(db: D1Database, ventana: VentanaEntity, input: number){
     const perfiles = await getPerfilesTipo(db, ventana.id_tipo)
 
     let costoTotal = 0;
@@ -52,6 +52,11 @@ export async function calcularCostoTotal(db: D1Database, ventana: VentanaEntity)
         }catch (error){
             throw new Error("Error al calcular la cantidad para el perfil con código ${perfil.codigo}: ${error.message}");
         }
+
+        const kilos = (dimension_perfil/1000)*cantidad_perfil*perfil.kg_ml;
+        const costoPerfil = kilos*input;
+
+        costoTotal += costoPerfil;
     }
 }
 
