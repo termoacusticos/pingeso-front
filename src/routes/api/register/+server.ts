@@ -24,10 +24,13 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 	return json({ message: 'Usuario registrado con éxito' });
 };
 
-export const DELETE: RequestHandler = async ({ request }) => {
-	const token = request.headers.get('Authorization') ?? '';
-	const jwtResult = await validateJWT(token);
-	if (jwtResult.isErr()) return json({ message: jwtResult.error }, { status: 400 });
+export const DELETE: RequestHandler = async ({ cookies }) => {
+	const token = cookies.get('authToken');
 
-	return json(jwtResult.value);
+	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });
+
+	const validationResult = await validateJWT(token);
+	if (validationResult.isErr()) return json({ error: 'Token inválido.' }, { status: 401 });
+
+	return json(validationResult.value);
 };
