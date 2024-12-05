@@ -1,11 +1,11 @@
 <script>
+	import { goto } from '$app/navigation';
 	import SidebarController from '$lib/components/SidebarController.svelte';
 	import SidebarElement from '$lib/components/SidebarElement.svelte';
 
 	let isExpanded = $state(true);
 </script>
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	class="aboslute z-10 min-h-screen transition-all duration-300 ease-in-out bg-teal-600 text-white grow-0 overflow-hidden p-4"
 	class:w-[4.5rem]={!isExpanded}
@@ -26,11 +26,21 @@
 			href="/home/historial"
 			buttonName="Historial"
 			icon="mdi--history" />
-		<SidebarElement {isExpanded} href="/home/tabla" buttonName="Modificar" icon="mdi--edit" />
+		<SidebarElement {isExpanded} href="/home/prototipo" buttonName="Modificar" icon="mdi--edit" />
 		<SidebarElement
 			{isExpanded}
 			href="/home/configurar"
 			buttonName="Configuración"
 			icon="mdi--cog" />
+		<SidebarElement
+			{isExpanded}
+			onclick={async () => {
+				await fetch('/api/login', {
+					method: 'DELETE'
+				});
+				goto('/');
+			}}
+			buttonName="Cerrar Sesión"
+			icon="mdi--door-open" />
 	</ul>
 </div>

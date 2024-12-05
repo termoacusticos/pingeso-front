@@ -1,7 +1,15 @@
+import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import util from 'util';
 
 export const load: PageServerLoad = async ({ fetch }) => {
+	const login = await fetch('/api/login', {
+		method: 'GET'
+	}).then((response) => {
+		if (response.ok) {
+			redirect(301, '/home');
+		}
+	});
+
 	const user: UsuarioEntity = {
 		id_usuario: 0,
 		email: 'ejemplo@gmail.com',

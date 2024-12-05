@@ -21,8 +21,24 @@ export const getPresupuestoById = async (db: D1Database, id: number) => {
 	const opciones: OpcionModel[] = [];
 	for await (const opcion of opcionesEntity) {
 		const ventanasResult = await getVentanasById(db, opcion.id_opcion);
-		const ventanas: VentanaEntity[] = ventanasResult.isOk() ? ventanasResult.value : [];
-		opciones.push({ id_opcion: opcion.id_opcion, ventanas });
+		// ventanaEntity -> ventanaModel
+		const ventanas: VentanaModel[] = ventanasResult.isOk()
+			? ventanasResult.value.map((ventana) => {
+					return {
+						alto: ventana.alto,
+						ancho: ventana.ancho,
+						cantidad: ventana.cantidad,
+						color: ventana.color,
+						item: ventana.item,
+						material: ventana.material,
+						precio_total: ventana.precio_total,
+						precio_unitario: ventana.precio_unitario,
+						tipo_id: ventana.id_tipo
+					};
+				})
+			: [];
+
+		opciones.push({ ventanas });
 	}
 
 	return { ...presupuesto, id: presupuesto.id_presupuesto, opciones } as PresupuestoModel;
@@ -46,20 +62,39 @@ export const getAllPresupuestos = async (db: D1Database) => {
 		for await (const opcion of opcionesEntity) {
 			const ventanasResult = await getVentanasById(db, opcion.id_opcion);
 
-			const ventanas = ventanasResult.isOk() ? ventanasResult.value : [];
-			opciones.push({ id_opcion: opcion.id_opcion, ventanas });
+			const ventanas = ventanasResult.isOk()
+				? ventanasResult.value.map((ventana) => {
+						return {
+							alto: ventana.alto,
+							ancho: ventana.ancho,
+							cantidad: ventana.cantidad,
+							color: ventana.color,
+							item: ventana.item,
+							material: ventana.material,
+							precio_total: ventana.precio_total,
+							precio_unitario: ventana.precio_unitario,
+							tipo_id: ventana.id_tipo
+						};
+					})
+				: [];
+			opciones.push({ ventanas });
 		}
 		presupuestos.push({ ...presupuesto, opciones });
 	}
 	return ok(presupuestos);
 };
 
-export const savePresupuesto = async (db: D1Database, presupuesto: PresupuestoModel) => {
+export const savePresupuesto = async (
+	db: D1Database,
+	presupuesto: PresupuestoModel,
+	user_id: number
+) => {
+	if (!presupuesto.cliente) return err('Se intentó guardar un presupuesto sin cliente');
 	const presupuestoResult = await db
 		.prepare(
 			'INSERT INTO presupuesto (id_usuario, fecha, data_json, rut_cliente) VALUES (?, ?, ?, ?);'
 		)
-		.bind(presupuesto.id_usuario, presupuesto.fecha, 'json', presupuesto.rut_cliente)
+		.bind(user_id, presupuesto.fecha, 'json', presupuesto.cliente.rut)
 		.run()
 		.then((stmt) => ok(stmt))
 		.catch((error: Error) => err(error));
@@ -73,10 +108,10 @@ export const savePresupuesto = async (db: D1Database, presupuesto: PresupuestoMo
 		const opcionResult = await saveOpcion(db, presupuesto.id_presupuesto);
 		if (opcionResult.isErr()) return opcionResult;
 
-		opcion.id_opcion = opcionResult.value.meta.last_row_id;
+		const id_opcion = opcionResult.value;
 
 		opcion.ventanas.map((ventana) => {
-			insertBatch.push(saveVentana(db, ventana, opcion.id_opcion));
+			insertBatch.push(saveVentana(db, ventana, id_opcion));
 		});
 	}
 

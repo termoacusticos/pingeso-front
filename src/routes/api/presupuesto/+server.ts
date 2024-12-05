@@ -22,7 +22,7 @@ export const GET: RequestHandler = async ({ platform }) => {
 	return json(presupuestosResult.value);
 };
 
-export const POST: RequestHandler = async ({ request, platform }) => {
+export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	const connResult = getDB(platform);
 	if (connResult.isErr()) {
 		return json({ error: connResult.error }, { status: 400 });
@@ -30,13 +30,17 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 
 	const db = connResult.value;
 
-	const token = request.headers.get('Authorization') ?? '';
-	const jwtResult = await validateJWT(token);
-	if (jwtResult.isErr()) return json({ error: jwtResult.error }, { status: 400 });
+	const token = cookies.get('authToken');
+
+	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });
+
+	const validationResult = await validateJWT(token);
+	if (validationResult.isErr()) return json({ error: 'Token inválido.' }, { status: 401 });
 
 	const presupuesto = await request.json<PresupuestoModel>();
 
-	const saveResult = await savePresupuesto(db, presupuesto);
+	const user_id = validationResult.value.user_id;
+	const saveResult = await savePresupuesto(db, presupuesto, user_id);
 
 	if (saveResult.isErr()) {
 		return json({ error: saveResult.error.message }, { status: 500 });

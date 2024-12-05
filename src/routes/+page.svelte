@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	let usuario = '';
-	let password = '';
-	let error = '';
+	let usuario = $state('');
+	let password = $state('');
+	let error = $state('');
 
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
@@ -40,7 +40,7 @@
 	<p class="w-full text-center text-white font-light text-xl">Bienvenido!</p>
 	<div class="flex flex-col mx-auto gap-7 bg-white justify-center items-center p-7 rounded-lg">
 		<p class=" font-bold text-xl">Sistema de Cotización</p>
-		<form class="flex flex-col gap-2" on:submit|preventDefault={handleSubmit}>
+		<form class="flex flex-col gap-2" onsubmit={handleSubmit}>
 			<div>
 				<label class=" text-slate-600 text-sm" for="usuario">Usuario</label>
 				<input
@@ -60,12 +60,12 @@
 					placeholder="Contraseña" />
 			</div>
 			<button
-					type="submit"
-					class="w-full h-full bg-amber-500 hover:bg-amber-400 rounded-lg py-2 px-3 text-white font-bold mt-2"
-					>Ingresar</button>
+				type="submit"
+				class="w-full h-full bg-amber-500 hover:bg-amber-400 rounded-lg py-2 px-3 text-white font-bold mt-2"
+				>Ingresar</button>
 		</form>
 		{#if error}
-		<p class="error">{error}</p>
-	{/if}
+			<p class="error">{error}</p>
+		{/if}
 	</div>
 </div>

@@ -38,7 +38,7 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 		.setExpirationTime('1h')
 		.sign(TOKEN_SECRET);
 	cookies.set('authToken', token, { path: '/' });
-	
+
 	return json({ token });
 };
 
@@ -50,5 +50,12 @@ export const GET: RequestHandler = async ({ cookies }) => {
 	const validationResult = await validateJWT(token);
 	if (validationResult.isErr()) return json({ error: 'Token inválido.' }, { status: 401 });
 
-	return json({ user: validationResult.value });
+	return json(validationResult.value);
+};
+
+// Para cerrar sesión
+export const DELETE: RequestHandler = async ({ cookies }) => {
+	cookies.set('authToken', '', { path: '/' });
+
+	return new Response(null, { status: 200, statusText: 'Sesión cerrada' });
 };

@@ -22,13 +22,16 @@ export const getAllOpciones = async (db: D1Database) => {
 	return opciones;
 };
 
+/**
+ * @returns id de la opción registrada 
+ */
 export const saveOpcion = async (db: D1Database, id_presupuesto: number) => {
 	return await db
 		.prepare('INSERT INTO opcion (id_presupuesto) VALUES (?);')
 		.bind(id_presupuesto)
 		.run()
-		.then((stmt) => ok(stmt))
-		.catch((error: Error) => err(error));
+		.then((stmt) => ok(stmt.meta.last_row_id))
+		.catch((error: Error) => err(error));	
 };
 
 export const deleteOpcion = async (db: D1Database, id: number) => {

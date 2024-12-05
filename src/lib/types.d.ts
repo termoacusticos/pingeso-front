@@ -25,7 +25,7 @@ type Cotizacion = {
 type PresupuestoModel = {
 	id_presupuesto: number;
 	fecha: string;
-	cliente: ClienteEntity;
+	cliente?: ClienteEntity;
 	opciones: OpcionModel[];
 };
 
@@ -37,7 +37,7 @@ type VentanaModel = {
 	item: string;
 	cantidad: number;
 	material: string;
-	tipe: string;
+	tipo_id: number;
 	color: string;
 	alto: number;
 	ancho: number;

@@ -1,5 +1,7 @@
 import { JWT_SECRET } from '$env/static/private';
+import html2canvas from 'html2canvas';
 import { jwtVerify } from 'jose';
+import jsPDF from 'jspdf';
 import { err, ok } from 'neverthrow';
 
 const TOKEN_SECRET = new TextEncoder().encode(JWT_SECRET);
@@ -22,3 +24,5 @@ export const validateJWT = async (token: string) => {
 		return err(error);
 	}
 };
+
+
