@@ -26,8 +26,8 @@
 						tipo_id: 0,
 						item: '',
 						material: 'PVC',
-						precio_unitario: 0,
-						precio_total: 0
+						precio_unitario: 100000,
+						precio_total: 100000
 					},
 					{
 						alto: 100,
@@ -37,8 +37,8 @@
 						tipo_id: 0,
 						item: '',
 						material: 'PVC',
-						precio_unitario: 0,
-						precio_total: 0
+						precio_unitario: 120000,
+						precio_total: 120000
 					}
 				]
 			},
@@ -83,8 +83,9 @@
 		};
 		html2pdf().set(opt).from(makePDF).save();
 	}}>GUARDAR</button>
+	
 <div class="">
-	<div class="bg-blue-100 w-[210mm] p-5 py-20" id="PDF" bind:this={makePDF}>
+	<div class="border border-black w-[210mm] p-5 py-20" id="PDF" bind:this={makePDF}>
 		<Header cliente={presupuesto.cliente} />
 		{#each presupuesto.opciones as opcion, index}
 			<Tabla {opcion} {index} />
