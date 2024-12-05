@@ -1,9 +1,9 @@
 -- Tabla: quincalleria
 CREATE TABLE IF NOT EXISTS quincalleria (
   id_quincalleria INTEGER PRIMARY KEY AUTOINCREMENT,
-  descripcion_quin TEXT,
+  desc_quin TEXT,
   formula_quin TEXT,
-  precio_unitario INTEGER
+  precio_quin INTEGER
 );
 
 -- Tabla: perfil
@@ -17,10 +17,9 @@ CREATE TABLE IF NOT EXISTS perfil (
 
 -- Tabla: cristal
 CREATE TABLE IF NOT EXISTS cristal (
-  formula_cris TEXT NOT NULL PRIMARY KEY,
-  cantidad INTEGER,
-  valor_m2 INTEGER,
-  descripcion_cris TEXT
+  id_cristal INTEGER PRIMARY KEY AUTOINCREMENT,
+  desc_cristal TEXT,
+  precio_cristal INTEGER,
 );
 
 -- Tabla: usuario

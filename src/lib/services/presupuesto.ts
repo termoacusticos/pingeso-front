@@ -1,9 +1,11 @@
 import { getFormulaCantByCod, getFormulaDimByCod } from "$lib/repositories/perfil";
 import { getPerfilesTipo } from "$lib/repositories/tipo";
+import { getQuincalleriasTipo } from "$lib/repositories/tipo";
 import { Err } from "neverthrow";
 
-export async function calcularCostoTotal(db: D1Database, ventana: VentanaEntity, input: number){
+export async function calcularCostoTotal(db: D1Database, ventana: VentanaEntity, input: number, cristal: CristalEntity, porcentaje: number){
     const perfiles = await getPerfilesTipo(db, ventana.id_tipo)
+    const quincallerias = await getQuincalleriasTipo(db, ventana.id_tipo)
 
     let costoTotal = 0;
 
@@ -11,14 +13,12 @@ export async function calcularCostoTotal(db: D1Database, ventana: VentanaEntity,
         throw new Error("No se encontraron perfiles para este tipo de ventana");
     }
 
+    if (!quincallerias || quincallerias.length === 0){
+        throw new Error("No se encontraron quincallerías para este tipo de ventana");
+    }
+
     for(const perfil of perfiles){
-        const formulaDimResult = await getFormulaDimByCod(db, perfil.codigo);
-
-        if(formulaDimResult.isErr()){
-            throw new Error("Error al obtener la fórmula del perfil con código ${perfil.codigo}: ${formulaResult.error}");
-        }
-
-        const formulaDim = formulaDimResult.value.formula_dim;
+        const formulaDim = perfil.formula_dim;
 
         const parametrosDim = {
             X: ventana.ancho,
@@ -33,13 +33,7 @@ export async function calcularCostoTotal(db: D1Database, ventana: VentanaEntity,
             throw new Error ("Error al calcular la dimensión para el perfil con código ${perfil.codigo}: ${error.message}");
         }
 
-        const formulaCantResult = await getFormulaCantByCod(db, perfil.codigo)
-
-        if(formulaCantResult.isErr()){
-            throw new Error('Error al obtener la fórmula de cantidad para el perfil con código ${perfil.codigo}: ${formulaCantResult.error}');
-        }
-
-        const formulaCant = formulaCantResult.value.formula_cant;
+        const formulaCant = perfil.formula_cant;
 
         const parametrosCant = {
             Z: ventana.cantidad
@@ -58,6 +52,40 @@ export async function calcularCostoTotal(db: D1Database, ventana: VentanaEntity,
 
         costoTotal += costoPerfil;
     }
+
+    for (const quincalleria of quincallerias){
+        const formulaCant = quincalleria.formula;
+
+        const parametrosCant = {
+            X: ventana.ancho,
+            Y: ventana.alto,
+            Z: ventana.cantidad
+        }
+
+        let cantidad_quincalleria;
+
+        try {
+            cantidad_quincalleria = evalFormula(formulaCant, parametrosCant);
+        }catch (error){
+            throw new Error("Error al calcular la cantidad para la quincallería con código ${quincalleria.id}: ${error.message}");
+        }
+
+        const costoQuincalleria = cantidad_quincalleria*quincalleria.precio;
+
+        costoTotal += costoQuincalleria;
+    }
+
+    const cantidadCristal = 2 * ventana.cantidad;
+    const anchoCristal = (ventana.ancho/2) - 65;
+    const altoCristal = ventana.alto - 124;
+    const m2 = (anchoCristal/1000)*(altoCristal/1000)*cantidadCristal;
+    const costoCristal = m2*cristal.precio;
+
+    costoTotal += costoCristal;
+
+    costoTotal = costoTotal + (costoTotal * (porcentaje/100));
+
+
 }
 
 function evalFormula(formula: string, parametros: Record<string, number>){

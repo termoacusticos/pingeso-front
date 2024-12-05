@@ -21,7 +21,6 @@ type QuincalleriaEntity = {
 };
 
 type PerfilEntity = {
-	id: number;
 	codigo: number;
 	formula_dim: string;
 	formula_cant: string;
@@ -29,9 +28,9 @@ type PerfilEntity = {
 };
 
 type CristalEntity = {
-	formula: string;
-	cantidad: number;
-	valor_m2: number;
+	id_cristal: number;
+	descripcion: string;
+	precio: number;
 };
 
 type PresupuestoEntity = {

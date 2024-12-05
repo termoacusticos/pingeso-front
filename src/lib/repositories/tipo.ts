@@ -62,3 +62,25 @@ export const getPerfilesTipo = async (db: D1Database, id_tipo: number) => {
 		.then((stmt) => stmt.results);
 	return perfiles;
 }
+
+export const getQuincalleriasTipo = async (db: D1Database, id_tipo: number) => {
+  const quincallerias = await db
+    .prepare(`SELECT q.id_quincalleria, q.desc_quin, q.formula_quin, q.precio_quin,
+      t.id_tipo,
+      t.descripcion_tipo,
+      t.minimo,
+      t.maximo
+    FROM 
+      quincalleria q
+    INNER JOIN 
+      tipo_quincalleria tq ON q.id_quincalleria = tq.id_quincalleria
+    INNER JOIN 
+      tipo t ON tq.id_tipo = t.id_tipo
+    WHERE 
+      t.id_tipo = ?;`
+    )
+    .bind(id_tipo)
+    .run<QuincalleriaEntity>()
+    .then((stmt) => stmt.results);
+  return quincallerias;
+}
