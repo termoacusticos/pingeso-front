@@ -14,12 +14,10 @@ type Opcion = {
 
 type Cotizacion = {
 	id: Number;
-	materiales: string[];
-	alto: Number;
-	ancho: Number;
-	colores: string[];
+	nombreCliente: string;
+	rut: string;
 	precio: Number;
-	fecha: string;
+	fechaCreacion: string;
 };
 
 type PresupuestoModel = {

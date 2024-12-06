@@ -82,7 +82,7 @@
 							...opcion.ventanas,
 							{
 								material: opcion.material,
-								tipo: '',
+								id_tipo: -1,
 								item: '',
 								cantidad: 1,
 								color: opcion.color,

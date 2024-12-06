@@ -21,6 +21,7 @@
 		<a class="text-blue-600" href="mailto:contacto@termoacusticos.cl">CONTACTO@TERMOACUSTICOS.CL</a>
 	</span>
 </div>
+<!--
 <div class="grid grid-cols-3 grid-rows-1 w-full h-36 gap-4 place-items-center">
 	<span class="bg-gray-500 h-full w-full"></span>
 	<span class="bg-gray-500 h-full w-full"></span>
@@ -29,4 +30,4 @@
 <div class=" font-bold">
 	<p>SEÑOR(A): {cliente?.nombre ?? 'ERROR'}</p>
 	<p>A CONTINUACIÓN ENTREGAMOS PROPUESTA PARA SU PROYECTO:</p>
-</div>
+</div>-->

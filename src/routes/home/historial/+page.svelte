@@ -1,216 +1,257 @@
-<script>
+<script lang="ts">
 	import HistoryElement from '$lib/components/HistoryElement.svelte';
 
-	// Ejemplo de datos de cotización; podrías reemplazar esto con una llamada a la API
-	let cotizaciones = [
-		{
-			id: 1,
-			materiales: ['Aluminio', 'Vidrio'],
-			alto: 100,
-			ancho: 100,
-			colores: ['Blanco', 'Transparente'],
-			precio: 100,
-			fecha: '2024-01-05'
-		},
-		{
-			id: 2,
-			materiales: ['PVC', 'Vidrio'],
-			alto: 200,
-			ancho: 200,
-			colores: ['Negro', 'Transparente'],
-			precio: 200,
-			fecha: '2024-01-12'
-		},
-		{
-			id: 3,
-			materiales: ['Madera', 'Vidrio'],
-			alto: 150,
-			ancho: 120,
-			colores: ['Marrón', 'Transparente'],
-			precio: 180,
-			fecha: '2024-01-20'
-		},
-		{
-			id: 4,
-			materiales: ['Aluminio', 'Vidrio Templado'],
-			alto: 250,
-			ancho: 150,
-			colores: ['Plata', 'Transparente'],
-			precio: 300,
-			fecha: '2024-01-25'
-		},
-		{
-			id: 5,
-			materiales: ['PVC', 'Vidrio Doble'],
-			alto: 120,
-			ancho: 120,
-			colores: ['Blanco', 'Espejado'],
-			precio: 220,
-			fecha: '2024-02-03'
-		},
-		{
-			id: 6,
-			materiales: ['Acero', 'Vidrio'],
-			alto: 300,
-			ancho: 200,
-			colores: ['Gris', 'Transparente'],
-			precio: 350,
-			fecha: '2024-02-10'
-		},
-		{
-			id: 7,
-			materiales: ['Madera', 'Vidrio Doble'],
-			alto: 180,
-			ancho: 150,
-			colores: ['Caoba', 'Espejado'],
-			precio: 270,
-			fecha: '2024-02-15'
-		},
-		{
-			id: 8,
-			materiales: ['PVC', 'Vidrio Laminado'],
-			alto: 150,
-			ancho: 100,
-			colores: ['Blanco', 'Azulado'],
-			precio: 190,
-			fecha: '2024-02-18'
-		},
-		{
-			id: 9,
-			materiales: ['Aluminio', 'Vidrio'],
-			alto: 220,
-			ancho: 130,
-			colores: ['Anodizado', 'Transparente'],
-			precio: 250,
-			fecha: '2024-02-23'
-		},
-		{
-			id: 10,
-			materiales: ['PVC', 'Vidrio Triple'],
-			alto: 140,
-			ancho: 140,
-			colores: ['Negro', 'Espejado'],
-			precio: 240,
-			fecha: '2024-03-01'
-		},
-		{
-			id: 11,
-			materiales: ['Fibra de Vidrio', 'Vidrio'],
-			alto: 160,
-			ancho: 110,
-			colores: ['Verde', 'Transparente'],
-			precio: 200,
-			fecha: '2024-03-05'
-		},
-		{
-			id: 12,
-			materiales: ['Aluminio', 'Vidrio Aislante'],
-			alto: 180,
-			ancho: 180,
-			colores: ['Dorado', 'Espejado'],
-			precio: 310,
-			fecha: '2024-03-12'
-		},
-		{
-			id: 13,
-			materiales: ['Madera', 'Vidrio Laminado'],
-			alto: 130,
-			ancho: 130,
-			colores: ['Nogal', 'Espejado'],
-			precio: 220,
-			fecha: '2024-03-18'
-		},
-		{
-			id: 14,
-			materiales: ['PVC', 'Vidrio Doble'],
-			alto: 240,
-			ancho: 140,
-			colores: ['Blanco', 'Opaco'],
-			precio: 330,
-			fecha: '2024-03-22'
-		},
-		{
-			id: 15,
-			materiales: ['Aluminio', 'Vidrio Espejado'],
-			alto: 200,
-			ancho: 150,
-			colores: ['Gris', 'Espejado'],
-			precio: 280,
-			fecha: '2024-03-28'
-		},
-		{
-			id: 16,
-			materiales: ['Acero Inoxidable', 'Vidrio Templado'],
-			alto: 300,
-			ancho: 160,
-			colores: ['Plateado', 'Transparente'],
-			precio: 420,
-			fecha: '2024-04-02'
-		},
-		{
-			id: 17,
-			materiales: ['PVC', 'Vidrio'],
-			alto: 100,
-			ancho: 100,
-			colores: ['Blanco', 'Espejado'],
-			precio: 110,
-			fecha: '2024-04-05'
-		},
-		{
-			id: 18,
-			materiales: ['Aluminio', 'Vidrio Templado'],
-			alto: 250,
-			ancho: 200,
-			colores: ['Negro', 'Transparente'],
-			precio: 390,
-			fecha: '2024-04-10'
-		},
-		{
-			id: 19,
-			materiales: ['Madera', 'Vidrio Aislante'],
-			alto: 120,
-			ancho: 120,
-			colores: ['Marrón Oscuro', 'Opaco'],
-			precio: 210,
-			fecha: '2024-04-15'
-		},
-		{
-			id: 20,
-			materiales: ['Fibra de Vidrio', 'Vidrio Espejado'],
-			alto: 150,
-			ancho: 150,
-			colores: ['Gris Claro', 'Espejado'],
-			precio: 260,
-			fecha: '2024-04-20'
-		}
-	];
+	// Parámetros de paginación
+	let pageSize = 7; // Número de cotizaciones por página
+	let currentPage = 1; // Página actual (comienza en 1)
 
 	let searchQuery = ''; // Estado para almacenar el término de búsqueda
+
+	let cotizaciones = [
+	{
+		id: 1,
+		nombreCliente: "Juan Pérez",
+		rut: "12.345.678-9",
+		fechaCreacion: "2024-11-20",
+		materiales: ["Madera", "Metal"],
+		colores: ["Rojo", "Negro"],
+		precio: 100000
+	},
+	{
+		id: 2,
+		nombreCliente: "Ana Gómez",
+		rut: "19.876.543-2",
+		fechaCreacion: "2024-11-18",
+		materiales: ["Plástico", "Vidrio"],
+		colores: ["Blanco", "Azul"],
+		precio: 150000
+	},
+	{
+		id: 3,
+		nombreCliente: "Carlos López",
+		rut: "21.654.321-0",
+		fechaCreacion: "2024-11-15",
+		materiales: ["Madera", "Textil"],
+		colores: ["Verde", "Amarillo"],
+		precio: 85000
+	},
+	{
+		id: 4,
+		nombreCliente: "Sofía Fernández",
+		rut: "15.432.987-1",
+		fechaCreacion: "2024-11-10",
+		materiales: ["Metal", "Vidrio"],
+		colores: ["Negro", "Blanco"],
+		precio: 120000
+	},
+	{
+		id: 5,
+		nombreCliente: "Luis Martínez",
+		rut: "10.223.344-5",
+		fechaCreacion: "2024-10-30",
+		materiales: ["Aluminio", "Vidrio"],
+		colores: ["Azul", "Gris"],
+		precio: 200000
+	},
+	{
+		id: 6,
+		nombreCliente: "Patricia Rodríguez",
+		rut: "25.687.901-7",
+		fechaCreacion: "2024-10-28",
+		materiales: ["Plástico", "Madera"],
+		colores: ["Rojo", "Blanco"],
+		precio: 75000
+	},
+	{
+		id: 7,
+		nombreCliente: "Miguel Sánchez",
+		rut: "34.109.876-0",
+		fechaCreacion: "2024-09-25",
+		materiales: ["Textil", "Madera"],
+		colores: ["Negro", "Verde"],
+		precio: 95000
+	},
+	{
+		id: 8,
+		nombreCliente: "Laura García",
+		rut: "20.345.678-1",
+		fechaCreacion: "2024-09-10",
+		materiales: ["Metal", "Plástico"],
+		colores: ["Blanco", "Naranja"],
+		precio: 130000
+	},
+	{
+		id: 9,
+		nombreCliente: "Juan Pérez",
+		rut: "12.345.678-9",
+		fechaCreacion: "2024-08-20",
+		materiales: ["Vidrio", "Madera"],
+		colores: ["Negro", "Rojo"],
+		precio: 170000
+	},
+	{
+		id: 10,
+		nombreCliente: "Elena Castillo",
+		rut: "14.209.876-3",
+		fechaCreacion: "2024-07-12",
+		materiales: ["Metal", "Vidrio"],
+		colores: ["Azul", "Blanco"],
+		precio: 110000
+	},
+	{
+		id: 11,
+		nombreCliente: "Francisco Martínez",
+		rut: "32.567.890-6",
+		fechaCreacion: "2024-07-05",
+		materiales: ["Plástico", "Madera"],
+		colores: ["Amarillo", "Negro"],
+		precio: 90000
+	},
+	{
+		id: 12,
+		nombreCliente: "Sandra López",
+		rut: "45.234.567-8",
+		fechaCreacion: "2024-06-18",
+		materiales: ["Madera", "Textil"],
+		colores: ["Rojo", "Azul"],
+		precio: 115000
+	},
+	{
+		id: 13,
+		nombreCliente: "José Silva",
+		rut: "53.345.678-9",
+		fechaCreacion: "2024-06-10",
+		materiales: ["Vidrio", "Aluminio"],
+		colores: ["Verde", "Blanco"],
+		precio: 160000
+	},
+	{
+		id: 14,
+		nombreCliente: "Mónica Pérez",
+		rut: "61.234.567-0",
+		fechaCreacion: "2024-05-25",
+		materiales: ["Madera", "Vidrio"],
+		colores: ["Gris", "Negro"],
+		precio: 145000
+	},
+	{
+		id: 15,
+		nombreCliente: "Roberto Gómez",
+		rut: "78.901.234-5",
+		fechaCreacion: "2024-05-12",
+		materiales: ["Plástico", "Metal"],
+		colores: ["Amarillo", "Naranja"],
+		precio: 85000
+	},
+	{
+		id: 16,
+		nombreCliente: "Carmen Díaz",
+		rut: "87.654.321-6",
+		fechaCreacion: "2024-04-30",
+		materiales: ["Vidrio", "Plástico"],
+		colores: ["Rojo", "Blanco"],
+		precio: 105000
+	},
+	{
+		id: 17,
+		nombreCliente: "Víctor Herrera",
+		rut: "94.321.098-7",
+		fechaCreacion: "2024-04-20",
+		materiales: ["Aluminio", "Textil"],
+		colores: ["Negro", "Verde"],
+		precio: 160000
+	},
+	{
+		id: 18,
+		nombreCliente: "María Sánchez",
+		rut: "53.109.876-2",
+		fechaCreacion: "2024-03-15",
+		materiales: ["Madera", "Vidrio"],
+		colores: ["Azul", "Blanco"],
+		precio: 110000
+	},
+	{
+		id: 19,
+		nombreCliente: "Carlos Torres",
+		rut: "32.765.432-1",
+		fechaCreacion: "2024-03-05",
+		materiales: ["Madera", "Metal"],
+		colores: ["Negro", "Rojo"],
+		precio: 120000
+	},
+	{
+		id: 20,
+		nombreCliente: "Juliana Moreno",
+		rut: "21.908.765-4",
+		fechaCreacion: "2024-02-28",
+		materiales: ["Plástico", "Textil"],
+		colores: ["Verde", "Amarillo"],
+		precio: 95000
+	}
+];
+
 
 	// Filtrar las cotizaciones en función del término de búsqueda
 	$: filteredCotizaciones = cotizaciones.filter((cotizacion) => {
 		const materiales = cotizacion.materiales.join(' ').toLowerCase();
 		const colores = cotizacion.colores.join(' ').toLowerCase();
+		const nombreCliente = cotizacion.nombreCliente.toLowerCase();
+		const rut = cotizacion.rut.toLowerCase();
 		const query = searchQuery.toLowerCase();
-		return materiales.includes(query) || colores.includes(query);
+
+		// Comprobar si el término de búsqueda está en materiales, colores, nombreCliente o rut
+		return (
+			materiales.includes(query) ||
+			colores.includes(query) ||
+			nombreCliente.includes(query) ||
+			rut.includes(query)
+		);
 	});
+
+	// Calcular el índice de las cotizaciones para la página actual
+	$: paginatedCotizaciones = filteredCotizaciones.slice(
+		(currentPage - 1) * pageSize,
+		currentPage * pageSize
+	);
+
+	// Número total de páginas
+	$: totalPages = Math.ceil(filteredCotizaciones.length / pageSize);
+
+	// Función para cambiar la página
+	function goToPage(page: any) {
+		if (page >= 1 && page <= totalPages) {
+			currentPage = page;
+		}
+	}
+
+	// Funciones para navegar a la siguiente y anterior página
+	function goToNextPage() {
+		if (currentPage < totalPages) {
+			currentPage += 1;
+		}
+	}
+
+	function goToPreviousPage() {
+		if (currentPage > 1) {
+			currentPage -= 1;
+		}
+	}
 </script>
 
-<div
-	class="min-h-screen w-full p-8 bg-gray-100 xl:w-[50%] lg:w-[50%] md:w-[70%] mx-auto overflow-scroll">
+<div class="min-h-screen w-full p-8 bg-gray-100 xl:w-[50%] lg:w-[50%] md:w-[70%] mx-auto overflow-scroll">
 	<h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Historial de Cotizaciones</h1>
 
 	<!-- Campo de búsqueda -->
 	<input
 		type="text"
 		bind:value={searchQuery}
-		placeholder="Buscar por material o color..."
+		placeholder="Buscar por material, color, nombre de cliente o RUT..."
 		class="w-full p-3 mb-6 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring focus:ring-indigo-200" />
 
-	<!-- Lista de cotizaciones filtradas -->
+	<!-- Lista de cotizaciones filtradas y paginadas -->
 	<div>
-		{#if filteredCotizaciones.length > 0}
-			{#each filteredCotizaciones as cotizacion}
+		{#if paginatedCotizaciones.length > 0}
+			{#each paginatedCotizaciones as cotizacion}
 				<HistoryElement {cotizacion} />
 			{/each}
 		{:else}
@@ -218,5 +259,24 @@
 				No se encontraron cotizaciones para el criterio de búsqueda.
 			</p>
 		{/if}
+	</div>
+
+	<!-- Controles de paginación -->
+	<div class="flex justify-center mt-6">
+		<button
+			class="px-4 py-2 bg-teal-600 text-white rounded-lg mr-4 hover:bg-teal-700 transition-all"
+			on:click={goToPreviousPage}
+			disabled={currentPage === 1}
+		>
+			Anterior
+		</button>
+		<span class="px-4 py-2 text-lg">{currentPage} de {totalPages}</span>
+		<button
+			class="px-4 py-2 bg-teal-600 text-white rounded-lg ml-4 hover:bg-teal-700 transition-all"
+			on:click={goToNextPage}
+			disabled={currentPage === totalPages}
+		>
+			Siguiente
+		</button>
 	</div>
 </div>
