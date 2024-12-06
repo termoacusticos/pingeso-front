@@ -26,8 +26,8 @@
 	<span class="bg-gray-500 h-full w-full"></span>
 	<span class="bg-gray-500 h-full w-full"></span>
 	<span class="bg-gray-500 h-full w-full"></span>
-</div>-->
+</div>
 <div class=" font-bold">
 	<p>SEÑOR(A): {cliente?.nombre ?? 'ERROR'}</p>
 	<p>A CONTINUACIÓN ENTREGAMOS PROPUESTA PARA SU PROYECTO:</p>
-</div>
+</div>-->

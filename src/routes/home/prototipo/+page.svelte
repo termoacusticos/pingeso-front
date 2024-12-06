@@ -117,12 +117,16 @@
 <div class="border border-black w-[210mm] p-5 py-20" id="PDF" bind:this={makePDF}>
 	<Header cliente={presupuesto.cliente} />
 	
-
 	<!-- Renderizar imágenes cargadas -->
 	<div class="grid grid-cols-3 gap-4">
 		{#each images as img}
 			<img src={img} alt="Cargada" class="w-full h-auto border border-gray-300" />
 		{/each}
+	</div>
+
+	<div class=" font-bold">
+		<p>SEÑOR(A): {presupuesto.cliente?.nombre ?? 'ERROR'}</p>
+		<p>A CONTINUACIÓN ENTREGAMOS PROPUESTA PARA SU PROYECTO:</p>
 	</div>
 	
 	{#each presupuesto.opciones as opcion, index}
