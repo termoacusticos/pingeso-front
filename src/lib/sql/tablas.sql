@@ -8,8 +8,7 @@ CREATE TABLE IF NOT EXISTS quincalleria (
 
 -- Tabla: perfil
 CREATE TABLE IF NOT EXISTS perfil (
-  id_perfil INTEGER PRIMARY KEY AUTOINCREMENT,
-  codigo_per INTEGER,
+  codigo_per INTEGER PRIMARY KEY,
   formula_dim TEXT,
   formula_cant TEXT,
   kg_ml_per DECIMAL
@@ -19,7 +18,7 @@ CREATE TABLE IF NOT EXISTS perfil (
 CREATE TABLE IF NOT EXISTS cristal (
   id_cristal INTEGER PRIMARY KEY AUTOINCREMENT,
   desc_cristal TEXT,
-  precio_cristal INTEGER,
+  precio_cristal INTEGER
 );
 
 -- Tabla: usuario
@@ -60,7 +59,6 @@ CREATE TABLE IF NOT EXISTS opcion (
 -- Tabla: ventana
 CREATE TABLE IF NOT EXISTS ventana (
   id_ventana INTEGER PRIMARY KEY AUTOINCREMENT,
-  item TEXT,
   cantidad INTEGER,
   material TEXT,
   color TEXT,
@@ -95,4 +93,9 @@ CREATE TABLE IF NOT EXISTS tipo_quincalleria (
   id_quincalleria INTEGER NOT NULL,
   FOREIGN KEY (id_tipo) REFERENCES tipo (id_tipo) ON DELETE CASCADE ON UPDATE CASCADE
   FOREIGN KEY (id_quincalleria) REFERENCES quincalleria (id_quincalleria) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS material (
+  id_material INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  nombre_material TEXT NOT NULL
 );

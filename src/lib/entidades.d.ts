@@ -50,7 +50,6 @@ type OpcionEntity = {
 type VentanaEntity = {
 	id?: number;
 	id_opcion?: number;
-	item: string;
 	cantidad: number;
 	material: string;
 	id_tipo: number;
@@ -66,4 +65,9 @@ type TipoEntity = {
 	descripcion_tipo: string;
 	minimo: number;
 	maximo: number;
+};
+
+type MaterialEntity = {
+	id_material: number;
+	nombre: string;
 };

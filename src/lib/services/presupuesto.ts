@@ -1,6 +1,4 @@
-import { getFormulaCantByCod, getFormulaDimByCod } from "$lib/repositories/perfil";
-import { getPerfilesTipo } from "$lib/repositories/tipo";
-import { getQuincalleriasTipo } from "$lib/repositories/tipo";
+import { getPerfilesTipo, getQuincalleriasTipo } from "$lib/repositories/tipo";
 import { Err } from "neverthrow";
 
 export async function calcularCostoTotal(db: D1Database, ventana: VentanaEntity, input: number, cristal: CristalEntity, porcentaje: number){
@@ -85,7 +83,9 @@ export async function calcularCostoTotal(db: D1Database, ventana: VentanaEntity,
 
     costoTotal = costoTotal + (costoTotal * (porcentaje/100));
 
+    ventana.precio_total = costoTotal;
 
+    return ventana;
 }
 
 function evalFormula(formula: string, parametros: Record<string, number>){
