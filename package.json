@@ -30,7 +30,6 @@
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.36.0",
 		"globals": "^15.0.0",
-		"html2canvas": "^1.4.1",
 		"jose": "^5.9.6",
 		"jspdf": "^2.5.2",
 		"neverthrow": "^8.1.1",
@@ -48,6 +47,6 @@
 		"wrangler": "^3.85.0"
 	},
 	"dependencies": {
-		"html2pdf.js": "^0.10.2"
+		"pdf-lib": "^1.17.1"
 	}
 }

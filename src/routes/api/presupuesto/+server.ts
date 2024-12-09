@@ -3,7 +3,6 @@ import { getDB, validateJWT } from '$lib';
 import { json } from '@sveltejs/kit';
 import { savePresupuesto } from '$lib/repositories/presupuesto';
 import { getAllPresupuestos } from '$lib/repositories/presupuesto';
-import { saveCliente } from '$lib/repositories/cliente';
 
 export const GET: RequestHandler = async ({ platform }) => {
 	const connResult = getDB(platform);

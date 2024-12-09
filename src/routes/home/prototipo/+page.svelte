@@ -1,10 +1,10 @@
 <script lang="ts">
-	//@ts-ignore
-	import html2pdf from 'html2pdf.js';
-	import Header from '$lib/components/PDF/Header.svelte';
-	import Tabla from '$lib/components/PDF/Tabla.svelte';
-	import jsPDF from 'jspdf';
-	let makePDF: HTMLElement;
+	import { generatePDF } from '$lib/services/pdf_generator';
+	import { onMount } from 'svelte';
+	let header = {
+		logos: ['/logo_negro.png', '/elige_expertos.png', '/barras.png'],
+		h2: ['/favicon.png', '/barras.png']
+	};
 	const presupuesto: PresupuestoModel = {
 		fecha: '',
 		cliente: {
@@ -37,8 +37,34 @@
 						tipo_id: 0,
 						item: '',
 						material: 'PVC',
-						precio_unitario: 120000,
-						precio_total: 120000
+						precio_unitario: 1200000,
+						precio_total: 12000000
+					},
+					{
+						alto: 100,
+						ancho: 100,
+						cantidad: 3,
+						color: 'Alcntar',
+						tipo_id: 0,
+						item: '',
+						material: 'PVC',
+						precio_unitario: 1200000,
+						precio_total: 12000000
+					}
+				]
+			},
+			{
+				ventanas: [
+					{
+						alto: 100,
+						ancho: 100,
+						cantidad: 1,
+						color: 'Alcánts',
+						tipo_id: 0,
+						item: '',
+						material: 'PVC',
+						precio_unitario: 100000,
+						precio_total: 100000
 					}
 				]
 			},
@@ -88,48 +114,59 @@
 		}
 	};
 
-	const downloadPDF = () => {
-		const options = {
-			margin: 1,
-			filename: 'myfile.pdf',
-			image: { type: 'jpeg', quality: 0.98 },
-			html2canvas: { scale: 2 },
-			jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-		};
-		html2pdf().set(options).from(makePDF).save();
-	};
+	let url = '';
+	onMount(async () => {
+		url = await generatePDF(presupuesto, header);
+	});
 </script>
 
-<!-- Contenedor de botones -->
-<div class="flex flex-col items-center gap-2 my-8">
-	<button
-		on:click={downloadPDF}
-		class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none"
-		>GUARDAR</button>
-	<input
-		type="file"
-		multiple
-		accept="image/*"
-		on:change={handleImageUpload}
-		class="border border-gray-300 px-4 py-2 rounded focus:outline-none" />
-</div>
-<!-- Vista previa y área del PDF -->
-<div class="border border-black w-[210mm] p-5 py-20" id="PDF" bind:this={makePDF}>
-	<Header cliente={presupuesto.cliente} />
-	
+<div class="border border-black p-5 py-20 flex flex-col" id="PDF">
+	<!-- Contenedor de botones -->
+	<div class="flex flex-col items-center gap-2 my-8">
+		<input
+			type="file"
+			multiple
+			accept="image/*"
+			onchange={handleImageUpload}
+			class="border border-gray-300 px-4 py-2 rounded focus:outline-none" />
+	</div>
 	<!-- Renderizar imágenes cargadas -->
 	<div class="grid grid-cols-3 gap-4">
 		{#each images as img}
 			<img src={img} alt="Cargada" class="w-full h-auto border border-gray-300" />
 		{/each}
 	</div>
-
-	<div class=" font-bold">
-		<p>SEÑOR(A): {presupuesto.cliente?.nombre ?? 'ERROR'}</p>
-		<p>A CONTINUACIÓN ENTREGAMOS PROPUESTA PARA SU PROYECTO:</p>
-	</div>
-	
-	{#each presupuesto.opciones as opcion, index}
-		<Tabla {opcion} {index} />
-	{/each}
 </div>
+
+<button
+	onclick={async () => {
+		presupuesto.opciones.push({
+			ventanas: [
+				{
+					alto: 100,
+					ancho: 100,
+					cantidad: 1,
+					color: 'Alcánts',
+					tipo_id: 0,
+					item: '',
+					material: 'PVC',
+					precio_unitario: 0,
+					precio_total: 0
+				},
+				{
+					alto: 100,
+					ancho: 100,
+					cantidad: 3,
+					color: 'Alcntar',
+					tipo_id: 0,
+					item: '',
+					material: 'PVC',
+					precio_unitario: 0,
+					precio_total: 0
+				}
+			]
+		});
+		url = await generatePDF(presupuesto, header);
+	}}>GUARDAR</button>
+<!-- <a href={url} download="hola.pdf" target="_blank">DESCARGAR</a> -->
+<iframe src={url} title="PDF cotizacion" width="1200"></iframe>
