@@ -1,7 +1,7 @@
 import { getPerfilesTipo, getQuincalleriasTipo } from "$lib/repositories/tipo";
 import { Err } from "neverthrow";
 
-export async function calcularCostoTotal(db: D1Database, ventana: VentanaModel, input: number, porcentaje: number){
+export async function calcularCostoTotal(db: D1Database, ventana: VentanaModel, porcentaje: number){
     const perfiles = await getPerfilesTipo(db, ventana.tipo.id_tipo)
     const quincallerias = await getQuincalleriasTipo(db, ventana.tipo.id_tipo)
 
@@ -47,7 +47,7 @@ export async function calcularCostoTotal(db: D1Database, ventana: VentanaModel, 
         }
 
         const kilos = (dimension_perfil/1000)*cantidad_perfil*perfil.kg_ml;
-        const costoPerfil = kilos*input;
+        const costoPerfil = kilos*perfil.valor;
 
         costoTotal += costoPerfil;
     }

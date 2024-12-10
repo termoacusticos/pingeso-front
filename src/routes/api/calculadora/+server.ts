@@ -11,14 +11,14 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 
 	const db = connResult.value;
 
-	const { ventana, input, porcentaje }: { ventana: VentanaModel; input: number; porcentaje: number } = await request.json();
+	const { ventana, porcentaje }: { ventana: VentanaModel; porcentaje: number } = await request.json();
 
-	if (!ventana || typeof input !== 'number' || typeof porcentaje !== 'number') {
+	if (!ventana || typeof porcentaje !== 'number') {
 		return json({ error: 'Parámetros inválidos: asegúrese de incluir ventana, input, y porcentaje correctamente.' }, { status: 400 });
 	}
 
 	try {
-		const resultado = await calcularCostoTotal(db, ventana, input, porcentaje);
+		const resultado = await calcularCostoTotal(db, ventana, porcentaje);
 
 		return json({ message: 'Cálculo realizado correctamente', resultado });
 	} catch (error) {

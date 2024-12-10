@@ -30,7 +30,6 @@ export const saveVentana = (db: D1Database, ventana: VentanaModel, id_opcion: nu
 				'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);'
 		)
 		.bind(
-			ventana.item,
 			ventana.alto,
 			ventana.ancho,
 			id_opcion,

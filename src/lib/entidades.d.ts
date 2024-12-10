@@ -25,6 +25,7 @@ type PerfilEntity = {
 	formula_dim: string;
 	formula_cant: string;
 	kg_ml: number;
+	valor: number;
 };
 
 type CristalEntity = {

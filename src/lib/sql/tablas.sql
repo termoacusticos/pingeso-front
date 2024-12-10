@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS perfil (
   codigo_per INTEGER PRIMARY KEY,
   formula_dim TEXT,
   formula_cant TEXT,
-  kg_ml_per DECIMAL
+  kg_ml_per DECIMAL,
+  valor INTEGER
 );
 
 -- Tabla: cristal
