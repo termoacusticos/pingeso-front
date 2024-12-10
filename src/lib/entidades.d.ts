@@ -51,9 +51,10 @@ type VentanaEntity = {
 	id?: number;
 	id_opcion?: number;
 	cantidad: number;
-	material: string;
+	id_material: number;
 	id_tipo: number;
-	color: string;
+	id_color: number;
+	id_cristal: number;
 	alto: number;
 	ancho: number;
 	precio_unitario: number;
@@ -69,5 +70,10 @@ type TipoEntity = {
 
 type MaterialEntity = {
 	id_material: number;
+	nombre: string;
+};
+
+type ColorEntity = {
+	id_color: number;
 	nombre: string;
 };

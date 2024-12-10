@@ -1,11 +1,12 @@
 import { getPerfilesTipo, getQuincalleriasTipo } from "$lib/repositories/tipo";
 import { Err } from "neverthrow";
 
-export async function calcularCostoTotal(db: D1Database, ventana: VentanaEntity, input: number, cristal: CristalEntity, porcentaje: number){
-    const perfiles = await getPerfilesTipo(db, ventana.id_tipo)
-    const quincallerias = await getQuincalleriasTipo(db, ventana.id_tipo)
+export async function calcularCostoTotal(db: D1Database, ventana: VentanaModel, input: number, porcentaje: number){
+    const perfiles = await getPerfilesTipo(db, ventana.tipo.id_tipo)
+    const quincallerias = await getQuincalleriasTipo(db, ventana.tipo.id_tipo)
 
     let costoTotal = 0;
+    let costoUnitario = 0;
 
     if (!perfiles || perfiles.length === 0){
         throw new Error("No se encontraron perfiles para este tipo de ventana");
@@ -77,15 +78,17 @@ export async function calcularCostoTotal(db: D1Database, ventana: VentanaEntity,
     const anchoCristal = (ventana.ancho/2) - 65;
     const altoCristal = ventana.alto - 124;
     const m2 = (anchoCristal/1000)*(altoCristal/1000)*cantidadCristal;
-    const costoCristal = m2*cristal.precio;
+    const costoCristal = m2*ventana.cristal.precio;
 
     costoTotal += costoCristal;
 
     costoTotal = costoTotal + (costoTotal * (porcentaje/100));
+    costoUnitario = costoTotal / ventana.cantidad;
 
     ventana.precio_total = costoTotal;
+    ventana.precio_unitario = costoUnitario;
 
-    return ventana;
+    return { costoTotal, costoUnitario };
 }
 
 function evalFormula(formula: string, parametros: Record<string, number>){

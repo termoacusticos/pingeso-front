@@ -32,11 +32,12 @@ type OpcionModel = {
 };
 
 type VentanaModel = {
-	item: string;
+	id: number;
 	cantidad: number;
-	material: string;
-	tipo_id: number;
-	color: string;
+	material: MaterialEntity;
+	tipo: TipoEntity;
+	color: ColorEntity;
+	cristal: CristalEntity;
 	alto: number;
 	ancho: number;
 	precio_unitario: number;

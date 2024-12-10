@@ -60,16 +60,19 @@ CREATE TABLE IF NOT EXISTS opcion (
 CREATE TABLE IF NOT EXISTS ventana (
   id_ventana INTEGER PRIMARY KEY AUTOINCREMENT,
   cantidad INTEGER,
-  material TEXT,
-  color TEXT,
-  id_tipo INTEGER,
   alto DECIMAL,
   ancho DECIMAL,
-  id_opcion INTEGER,
-	precio_unitario DECIMAL,
 	precio_total DECIMAL,
+  id_material INTEGER,
+  id_color INTEGER,
+  id_cristal INTEGER,
+  id_opcion INTEGER,
+  id_tipo INTEGER,
   FOREIGN KEY (id_opcion) REFERENCES opcion (id_opcion) ON DELETE CASCADE ON UPDATE CASCADE
   FOREIGN KEY (id_tipo) REFERENCES tipo (id_tipo) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (id_material) REFERENCES material (id_material) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (id_color) REFERENCES color (id_color) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (id_cristal) REFERENCES cristal (id_cristal) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE  IF NOT EXISTS tipo (
@@ -98,4 +101,9 @@ CREATE TABLE IF NOT EXISTS tipo_quincalleria (
 CREATE TABLE IF NOT EXISTS material (
   id_material INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   nombre_material TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS color (
+  id_color INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  nombre_color TEXT NOT NULL
 );
