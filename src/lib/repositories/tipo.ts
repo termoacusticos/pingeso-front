@@ -5,8 +5,6 @@ import { Err, err, ok } from 'neverthrow';
 export const getTipoById = async (id: number) => {
 	return prisma.tipo
 		.findFirst({ where: { id_tipo: id } })
-		.then((response) => ok(response))
-		.catch((error) => err(error));
 };
 
 export const getAllTipos = async () => {

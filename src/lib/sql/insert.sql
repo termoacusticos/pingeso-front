@@ -94,10 +94,6 @@ INSERT INTO Cristal (desc_cristal, precio_cristal) VALUES
 ('8 mm', 32000),
 ('10 mm', 38000);
 
-INSERT INTO Material (nombre_material) VALUES
-('Aluminio'),
-('PVC');
-
 INSERT INTO Color (nombre_color) VALUES
 ('Nogal'),
 ('Titanio'),
@@ -107,12 +103,12 @@ INSERT INTO Color (nombre_color) VALUES
 ('Roble dorado'),
 ('Negro');
 
-INSERT INTO Tipo (descripcion_tipo, minimo, maximo) VALUES
-("VENTANA CORREDERA CHICA", 0, 1700),
-("CORREDERA GRANDE", 1700, 2400),
-("PAÑO FIJO", NULL, NULL),
-("VENTANA PROYECTANTE/ABATIR", NULL, NULL),
-("PUERTA ABATIR", NULL, NULL);
+INSERT INTO Tipo (descripcion_tipo, material, minimo, maximo) VALUES
+("VENTANA CORREDERA CHICA","ALUMINIO", 0, 1700),
+("CORREDERA GRANDE", "ALUMINIO", 1700, 2400),
+("PAÑO FIJO", "ALUMINIO", NULL, NULL),
+("VENTANA PROYECTANTE/ABATIR", "ALUMINIO", NULL, NULL),
+("PUERTA ABATIR", "ALUMINIO", NULL, NULL);
 
 INSERT INTO TipoPerfil (id_tipo, id_perfil) VALUES
 (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),
