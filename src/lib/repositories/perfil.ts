@@ -1,54 +1,31 @@
+import { prisma } from '$lib';
+import type { Perfil } from '@prisma/client';
 import { err, ok } from 'neverthrow';
 
-export const getPerfilById = async (db: D1Database, id: number) => {
-	const perfil = await db
-		.prepare('SELECT * FROM perfil WHERE id_perfil = ?;')
-		.bind(id)
-		.run<PerfilEntity>()
-		.then((stmt) => {
-			if (!stmt.results[0]) return err('Perfil no encontrado');
-			return ok(stmt.results[0]);
-		});
-	return perfil;
+export const getPerfilById = async (id: number) => {
+	return prisma.perfil
+		.findFirst({ where: { codigo_per: id } })
+		.then((response) => ok(response))
+		.catch((error) => err(error));
 };
 
-export const getAllPerfiles = async (db: D1Database) => {
-	const perfiles = await db
-		.prepare('SELECT * FROM perfil;')
-		.run<PerfilEntity>()
-		.then((stmt) => stmt.results);
-	return perfiles;
+export const getAllPerfiles = async () => {
+	return prisma.perfil
+		.findMany()
+		.then((response) => ok(response))
+		.catch((error) => err(error));
 };
 
-export const savePerfil = async (db: D1Database, perfil: PerfilEntity) => {
-	return await db
-		.prepare(
-			'INSERT INTO perfil (codigo_per, formula_per, cantidad, kg_ml_per) VALUES (?, ?, ?, ?);'
-		)
-		.bind(perfil.codigo, perfil.formula_dim, perfil.formula_cant, perfil.kg_ml)
-		.run()
-		.then(() => ok(true))
-		.catch((error: Error) => err(error));
+export const savePerfil = async (perfil: Perfil) => {
+	return prisma.perfil
+		.create({ data: perfil })
+		.then((response) => ok(response))
+		.catch((error) => err(error));
 };
 
-export const deletePerfil = async (db: D1Database, id: number) => {
-	return await db
-		.prepare('DELETE FROM perfil WHERE id_perfil = ?;')
-		.bind(id)
-		.run()
-		.then(() => ok(true))
-		.catch((error: Error) => err(error));
+export const deletePerfil = async (id: number) => {
+	return prisma.perfil
+		.delete({ where: { codigo_per: id } })
+		.then((response) => ok(response))
+		.catch((error) => err(error));
 };
-
-export const getPerfilByCod = async (db: D1Database, cod: number) => {
-	const perfil = await db
-		.prepare('SELECT * FROM perfil WHERE codigo_per = ?;')
-		.bind(cod)
-		.run<PerfilEntity>()
-		.then((stmt) => {
-			if (!stmt.results[0]) return err('Perfil no encontrado');
-			return ok(stmt.results[0]);
-		});
-	return perfil;
-};
-

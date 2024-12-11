@@ -28,6 +28,18 @@ Este es el archivo de configuración para cloudflare, todos los valores se sacan
 npm i
 ```
 
+#### Prisma
+
+Generar el cliente y tipos de la db
+Aplicar el script de migración que crea las tablas en la db, en --remote o --local
+
+```bash
+npx prisma generate
+npx wrangler d1 migrations apply termoacusticos-db --local
+```
+
+Más info en los [docs](https://www.prisma.io/docs/orm/prisma-client/deployment/edge/deploy-to-cloudflare#cloudflare-d1)
+
 #### Ejecutar entorno de desarrollo con `vite dev`
 
 ```bash
