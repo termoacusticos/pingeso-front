@@ -4,7 +4,7 @@ import { err, ok } from 'neverthrow';
 
 export const getPerfilById = async (id: number) => {
 	return prisma.perfil
-		.findFirst({ where: { codigo_per: id } })
+		.findFirst({ where: { id_perfil: id } })
 		.then((response) => ok(response))
 		.catch((error) => err(error));
 };

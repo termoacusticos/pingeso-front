@@ -18,7 +18,8 @@ model Quincalleria {
 }
 
 model Perfil {
-  codigo_per   Int    @id
+  id_perfil    Int    @id @default(autoincrement())
+  codigo_per   Int
   formula_dim  String
   formula_cant String
   kg_ml_per    Float
@@ -117,13 +118,13 @@ model Tipo {
 }
 
 model TipoPerfil {
-  id_tipo    Int
-  codigo_per Int
+  id_tipo   Int
+  id_perfil Int
 
   Tipo   Tipo   @relation(fields: [id_tipo], references: [id_tipo], onDelete: Cascade, onUpdate: Cascade)
-  Perfil Perfil @relation(fields: [codigo_per], references: [codigo_per], onDelete: Cascade, onUpdate: Cascade)
+  Perfil Perfil @relation(fields: [id_perfil], references: [id_perfil], onDelete: Cascade, onUpdate: Cascade)
 
-  @@id([id_tipo, codigo_per])
+  @@id([id_tipo, id_perfil])
 }
 
 model TipoQuincalleria {
