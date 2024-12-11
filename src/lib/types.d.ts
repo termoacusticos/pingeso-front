@@ -37,6 +37,7 @@ type OpcionModel = {
 type VentanaModel = {
 	id_ventana?: number;
 	cantidad: number;
+	item: string;
 	id_tipo: number;
 	id_color: number;
 	id_cristal: number;

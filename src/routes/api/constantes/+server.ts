@@ -2,7 +2,6 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { getDB, validateJWT } from '$lib';
 import { getAllConstantes } from '$lib/repositories/constantes';
-import type { Material } from '@prisma/client';
 
 export const GET: RequestHandler = async ({ platform, cookies }) => {
 	const connection = getDB(platform);
@@ -16,9 +15,8 @@ export const GET: RequestHandler = async ({ platform, cookies }) => {
 	const constantes = await getAllConstantes();
 	
 	return json({
-		materiales: constantes[0],
-		colores: constantes[1],
-		cristales: constantes[2],
-		tipos: constantes[3]
+		colores: constantes[0],
+		cristales: constantes[1],
+		tipos: constantes[2]
 	});
 };

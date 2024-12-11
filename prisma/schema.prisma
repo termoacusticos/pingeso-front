@@ -80,10 +80,11 @@ model Opcion {
 }
 
 model Ventana {
-  id_ventana      Int   @id @default(autoincrement())
+  id_ventana      Int    @id @default(autoincrement())
   cantidad        Int
   alto            Float
   ancho           Float
+  item            String
   precio_unitario Float
   precio_total    Float
   id_color        Int
