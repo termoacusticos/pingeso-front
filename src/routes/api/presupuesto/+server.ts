@@ -4,13 +4,15 @@ import { json } from '@sveltejs/kit';
 import { savePresupuesto } from '$lib/repositories/presupuesto';
 import { getAllPresupuestos } from '$lib/repositories/presupuesto';
 
-export const GET: RequestHandler = async ({ platform }) => {
+export const GET: RequestHandler = async ({ platform, cookies }) => {
 	const connResult = getDB(platform);
 	if (connResult.isErr()) {
 		return json({ error: connResult.error }, { status: 400 });
 	}
-
 	const db = connResult.value;
+
+	const token = cookies.get('authToken');
+	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });
 
 	const presupuestosResult = await getAllPresupuestos(db);
 
@@ -26,11 +28,9 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	if (connResult.isErr()) {
 		return json({ error: connResult.error }, { status: 400 });
 	}
-
 	const db = connResult.value;
 
 	const token = cookies.get('authToken');
-
 	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });
 
 	const validationResult = await validateJWT(token);

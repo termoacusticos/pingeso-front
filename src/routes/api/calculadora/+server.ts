@@ -3,18 +3,27 @@ import { getDB } from '$lib';
 import { json } from '@sveltejs/kit';
 import { calcularCostoTotal } from '$lib/services/presupuesto';
 
-export const POST: RequestHandler = async ({ request, platform }) => {
+export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	const connResult = getDB(platform);
 	if (connResult.isErr()) {
 		return json({ error: connResult.error }, { status: 400 });
 	}
-
 	const db = connResult.value;
 
-	const { ventana, porcentaje }: { ventana: VentanaModel; porcentaje: number } = await request.json();
+	const token = cookies.get('authToken');
+	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });
+
+	const { ventana, porcentaje }: { ventana: VentanaModel; porcentaje: number } =
+		await request.json();
 
 	if (!ventana || typeof porcentaje !== 'number') {
-		return json({ error: 'Parámetros inválidos: asegúrese de incluir ventana, input, y porcentaje correctamente.' }, { status: 400 });
+		return json(
+			{
+				error:
+					'Parámetros inválidos: asegúrese de incluir ventana, input, y porcentaje correctamente.'
+			},
+			{ status: 400 }
+		);
 	}
 
 	try {
@@ -26,4 +35,3 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 		return json({ error: 'Error al realizar el cálculo.' }, { status: 500 });
 	}
 };
-

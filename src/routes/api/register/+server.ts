@@ -5,10 +5,13 @@ import { getUsuario, saveUsuario } from '$lib/repositories/usuarios';
 
 import type { RequestHandler } from './$types';
 
-export const POST: RequestHandler = async ({ request, platform }) => {
+export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	const connection = getDB(platform);
 	if (connection.isErr()) return json({ error: connection.error }, { status: 400 });
 	const db = connection.value;
+
+	const token = cookies.get('authToken');
+	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });
 
 	const userToRegister = await request.json<UsuarioEntity>();
 
@@ -26,7 +29,6 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 
 export const DELETE: RequestHandler = async ({ cookies }) => {
 	const token = cookies.get('authToken');
-
 	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });
 
 	const validationResult = await validateJWT(token);

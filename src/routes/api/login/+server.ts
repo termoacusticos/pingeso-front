@@ -44,7 +44,6 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 
 export const GET: RequestHandler = async ({ cookies }) => {
 	const token = cookies.get('authToken');
-
 	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });
 
 	const validationResult = await validateJWT(token);
