@@ -9,7 +9,6 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	if (connResult.isErr()) {
 		return json({ error: connResult.error }, { status: 400 });
 	}
-	const db = connResult.value;
 
 	const token = cookies.get('authToken');
 	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });
