@@ -38,6 +38,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 
 	const nuevoPresupuesto: PresupuestoModel = {
 		fecha: '',
+		id_usuario: 1,
 		cliente: {
 			direccion: '',
 			email: 'hola123',
@@ -45,17 +46,17 @@ export const load: PageServerLoad = async ({ fetch }) => {
 			rut_cliente: '2121',
 			telefono: '123'
 		},
-		opciones: [
+		Opciones: [
 			{
-				ventanas: [
+				Ventanas: [
 					{
 						alto: 100,
 						ancho: 100,
 						cantidad: 1,
-						id_color: 0,
-						id_tipo: 0,
-						id_cristal: 0,
-						id_material: 0,
+						id_color: 1,
+						id_tipo: 1,
+						id_cristal: 1,
+						id_material: 1,
 						precio_unitario: 0,
 						precio_total: 0
 					},
@@ -88,22 +89,20 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		return response.json();
 	});
 	console.log(presupuesto);
-	console.log(inspect(presupuestos, false, null, true /* enable colors */));
+	console.log(inspect(presupuestos, false, null, true));
 
 	await fetch('/api/presupuesto', {
 		method: 'DELETE'
 	}).then((response) => {
 		return response.json();
 	});
-	// const getPresupuesto: PresupuestoModel[] = await fetch('/api/presupuesto', {
-	// 	method: 'GET',
-	// 	headers: {
-	// 		Authorization: `Bearer ${login.token}`
-	// 	}
+
+	// const constantes = await fetch('/api/constantes', {
+	// 	method: 'GET'
 	// }).then((response) => {
 	// 	return response.json();
 	// });
-	// console.log(util.inspect(getPresupuesto, false, null, true));
+	// console.log(constantes);
 
 	return {};
 };

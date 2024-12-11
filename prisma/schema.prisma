@@ -49,12 +49,11 @@ model Presupuesto {
   id_presupuesto Int      @id @default(autoincrement())
   id_usuario     Int
   fecha          DateTime
-  data_json      String
   rut_cliente    String
 
-  Usuario Usuario  @relation(fields: [id_usuario], references: [id_usuario])
-  Cliente Cliente  @relation(fields: [rut_cliente], references: [rut_cliente])
-  Opcion  Opcion[]
+  Usuario  Usuario  @relation(fields: [id_usuario], references: [id_usuario])
+  Cliente  Cliente  @relation(fields: [rut_cliente], references: [rut_cliente])
+  Opciones Opcion[]
 
   @@index([id_usuario])
   @@index([rut_cliente])
@@ -75,7 +74,7 @@ model Opcion {
   id_presupuesto Int
 
   Presupuesto Presupuesto @relation(fields: [id_presupuesto], references: [id_presupuesto], onDelete: Cascade, onUpdate: Cascade)
-  Ventana     Ventana[]
+  Ventanas    Ventana[]
 
   @@index([id_presupuesto])
 }

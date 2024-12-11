@@ -93,5 +93,5 @@ La base de datos debe ser reimplementada, las querys sql se encuentran en el arc
 Comando para generar el archivo de migración
 
 ```bash
-npx prisma migrate diff --from-empty --to-schema-datamodel ./prisma/schema.prisma --script --output migrations/0001_create_user_table.sql
+npx prisma migrate diff --from-empty --to-schema-datamodel ./prisma/schema.prisma --script --output migrations/0001_create_tables.sql
 ```

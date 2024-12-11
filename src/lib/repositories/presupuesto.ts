@@ -6,7 +6,7 @@ import { saveCliente } from './cliente';
 export const getPresupuestoById = async (id: number) => {
 	return prisma.presupuesto
 		.findFirst({
-			include: { Cliente: true, Opcion: true, Usuario: true },
+			include: { Cliente: true, Opciones: true, Usuario: true },
 			where: { id_presupuesto: { equals: id } }
 		})
 		.then((response) => ok(response))
@@ -15,7 +15,13 @@ export const getPresupuestoById = async (id: number) => {
 
 export const getAllPresupuestos = async () => {
 	return prisma.presupuesto
-		.findMany({ include: { Cliente: true, Opcion: true, Usuario: true } })
+		.findMany({
+			include: {
+				Cliente: true,
+				Opciones: { include: { Ventanas: true } },
+				Usuario: { select: { email: true } }
+			}
+		})
 		.then((response) => ok(response))
 		.catch((error) => err(error));
 };
@@ -26,18 +32,17 @@ export const savePresupuesto = async (presupuesto: PresupuestoModel, id_usuario:
 
 	return prisma.presupuesto
 		.create({
-			include: { Opcion: { include: { Ventana: true } } },
+			include: { Opciones: { include: { Ventanas: true } } },
 			data: {
 				id_presupuesto: presupuesto.id_presupuesto,
-				data_json: '',
 				fecha: new Date().toISOString(),
 				id_usuario: id_usuario,
 				rut_cliente: presupuesto.cliente.rut_cliente,
-				Opcion: {
-					create: presupuesto.opciones.map((opcion) => {
+				Opciones: {
+					create: presupuesto.Opciones.map((opcion) => {
 						return {
-							Ventana: {
-								create: opcion.ventanas.map((ventana) => {
+							Ventanas: {
+								create: opcion.Ventanas.map((ventana) => {
 									return { ...ventana };
 								})
 							}
