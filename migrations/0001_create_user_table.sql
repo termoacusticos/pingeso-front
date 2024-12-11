@@ -8,7 +8,8 @@ CREATE TABLE "Quincalleria" (
 
 -- CreateTable
 CREATE TABLE "Perfil" (
-    "codigo_per" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id_perfil" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "codigo_per" INTEGER NOT NULL,
     "formula_dim" TEXT NOT NULL,
     "formula_cant" TEXT NOT NULL,
     "kg_ml_per" REAL NOT NULL,
@@ -88,11 +89,11 @@ CREATE TABLE "Tipo" (
 -- CreateTable
 CREATE TABLE "TipoPerfil" (
     "id_tipo" INTEGER NOT NULL,
-    "codigo_per" INTEGER NOT NULL,
+    "id_perfil" INTEGER NOT NULL,
 
-    PRIMARY KEY ("id_tipo", "codigo_per"),
+    PRIMARY KEY ("id_tipo", "id_perfil"),
     CONSTRAINT "TipoPerfil_id_tipo_fkey" FOREIGN KEY ("id_tipo") REFERENCES "Tipo" ("id_tipo") ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT "TipoPerfil_codigo_per_fkey" FOREIGN KEY ("codigo_per") REFERENCES "Perfil" ("codigo_per") ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT "TipoPerfil_id_perfil_fkey" FOREIGN KEY ("id_perfil") REFERENCES "Perfil" ("id_perfil") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable

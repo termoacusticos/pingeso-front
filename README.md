@@ -87,3 +87,11 @@ Se puede cambiar a otra plataforma similar como [vercel](https://vercel.com) o [
 Para hosteo local se puede crear un [servidor de node](https://kit.svelte.dev/docs/adapter-node).
 
 La base de datos debe ser reimplementada, las querys sql se encuentran en el archivo X (TBD).
+
+## Migración prisma
+
+Comando para generar el archivo de migración
+
+```bash
+npx prisma migrate diff --from-empty --to-schema-datamodel ./prisma/schema.prisma --script --output migrations/0001_create_user_table.sql
+```

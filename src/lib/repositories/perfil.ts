@@ -25,7 +25,7 @@ export const savePerfil = async (perfil: Perfil) => {
 
 export const deletePerfil = async (id: number) => {
 	return prisma.perfil
-		.delete({ where: { codigo_per: id } })
+		.delete({ where: { id_perfil: id } })
 		.then((response) => ok(response))
 		.catch((error) => err(error));
 };

@@ -1,4 +1,4 @@
-INSERT INTO perfil (codigo_per, formula_dim, formula_cant, kg_ml_per, valor) VALUES 
+INSERT INTO Perfil (codigo_per, formula_dim, formula_cant, kg_ml_per, valor) VALUES 
 (6901, "X-12", "Z", 0.692,  5275),
 (6902, "X-12", "Z", 0.677, 5275),
 (6903, "Y", "2*Z", 0.550, 5275),
@@ -24,7 +24,7 @@ INSERT INTO perfil (codigo_per, formula_dim, formula_cant, kg_ml_per, valor) VAL
 (4314, "Y-174", "4*Z", 0.158, 5000);
 
 
-INSERT INTO quincalleria (desc_quin, formula_quin, precio_quin) VALUES 
+INSERT INTO Quincalleria (desc_quin, formula_quin, precio_quin) VALUES 
 ("EMPAQUETADURA PERFIL 6901", "2*Z", 0),
 ("EMPAQUETADURA PERFIL 6902 IZQUIERDA", "Z", 0),
 ("EMPAQUETADURA PERFIL 6902 DERECHA", "Z",0),
@@ -78,7 +78,7 @@ INSERT INTO quincalleria (desc_quin, formula_quin, precio_quin) VALUES
 ("TRCBPH 5/8 X 8", "14*Z", 15),
 ("SOPORTE X-43 PERFIL 4317 X48mm", "2*Z", 300);
 
-INSERT INTO cristal (desc_cristal, precio_cristal) VALUES
+INSERT INTO Cristal (desc_cristal, precio_cristal) VALUES
 ('4+10+4', 38000),
 ('5+10+5', 45000),
 ('4+10+6', 48000),
@@ -94,11 +94,11 @@ INSERT INTO cristal (desc_cristal, precio_cristal) VALUES
 ('8 mm', 32000),
 ('10 mm', 38000);
 
-INSERT INTO material (nombre_material) VALUES
+INSERT INTO Material (nombre_material) VALUES
 ('Aluminio'),
 ('PVC');
 
-INSERT INTO color (nombre_color) VALUES
+INSERT INTO Color (nombre_color) VALUES
 ('Nogal'),
 ('Titanio'),
 ('Mate'),
@@ -107,23 +107,23 @@ INSERT INTO color (nombre_color) VALUES
 ('Roble dorado'),
 ('Negro');
 
-INSERT INTO tipo (descripcion_tipo, minimo, maximo) VALUES
+INSERT INTO Tipo (descripcion_tipo, minimo, maximo) VALUES
 ("VENTANA CORREDERA CHICA", 0, 1700),
 ("CORREDERA GRANDE", 1700, 2400),
 ("PAÑO FIJO", NULL, NULL),
 ("VENTANA PROYECTANTE/ABATIR", NULL, NULL),
 ("PUERTA ABATIR", NULL, NULL);
 
-INSERT INTO tipo_perfil (id_tipo, id_perfil) VALUES
+INSERT INTO TipoPerfil (id_tipo, id_perfil) VALUES
 (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),
 (2,1),(2,2),(2,3),(2,4),(2,7),(2,8),
 (3,9),(3,10),(3,11),(3,12),
 (4,9),(4,10),(4,13),(4,14),(4,15),(4,16),
 (5,17),(5,18),(5,19),(5,20),(5,21),(5,22),(5,23);
 
-INSERT INTO tipo_quincalleria (id_tipo, id_quincalleria) VALUES
+INSERT INTO TipoQuincalleria (id_tipo, id_quincalleria) VALUES
 (1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15),(1,16),
 (2,2),(2,3),(2,4),(2,17),(2,18),(2,19),(2,20),(2,8),(2,9),(2,21),(2,22),(2,23),(2,24),(2,25),(2,26),(2,27),(2,28),(2,29),(2,30),(2,31),(2,32),
 (3,33),(3,34),(3,35),(3,36),
 (4,37),(4,38),(4,39),(4,40),(4,41),(4,42),(4,43),(4,44),(4,45),(4,46),
-(5,33),(5,47),(5,48),(5,49),(5,50),(5,51),(5,44),(5,45),(5,52),(5,53);
+(5,33),(5,47),(5,48),(5,49),(5,50),(5,51),(5,44),(5,45),(5,52);

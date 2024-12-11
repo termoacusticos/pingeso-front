@@ -45,7 +45,7 @@
 		"typescript-eslint": "^8.0.0",
 		"vite": "^5.0.3",
 		"vitest": "^2.0.4",
-		"wrangler": "^3.85.0"
+		"wrangler": "^3.95.0"
 	},
 	"dependencies": {
 		"@prisma/adapter-d1": "^6.0.1",
