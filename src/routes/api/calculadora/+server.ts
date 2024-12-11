@@ -2,6 +2,7 @@ import type { RequestHandler } from './$types';
 import { getDB } from '$lib';
 import { json } from '@sveltejs/kit';
 import { calcularCostoTotal } from '$lib/services/presupuesto';
+import type { VentanaModel } from "$lib/types";
 
 export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	const connResult = getDB(platform);
@@ -27,7 +28,7 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	}
 
 	try {
-		const resultado = await calcularCostoTotal(db, ventana, porcentaje);
+		const resultado = await calcularCostoTotal(ventana, porcentaje);
 
 		return json({ message: 'Cálculo realizado correctamente', resultado });
 	} catch (error) {

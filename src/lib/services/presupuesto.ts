@@ -4,7 +4,7 @@ import type { VentanaModel } from "$lib/types";
 import { getCristalById } from "$lib/repositories/cristal";
 
 
-export async function calcularCostoTotal(db: D1Database, ventana: VentanaModel, porcentaje: number){
+export async function calcularCostoTotal(ventana: VentanaModel, porcentaje: number){
     const tipo = await getTipoById(ventana.id_tipo);
     if (!tipo){
         throw new Error("No se encontró el tipo de ventana");
