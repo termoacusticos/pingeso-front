@@ -1,3 +1,5 @@
+import { prisma } from '$lib';
+import type { Cliente } from '@prisma/client';
 import { err, ok } from 'neverthrow';
 
 export const getClienteByRut = async (db: D1Database, rut: string) => {
@@ -20,15 +22,29 @@ export const getAllClientes = async (db: D1Database) => {
 	return clientes;
 };
 
-export const saveCliente = async (db: D1Database, cliente: ClienteEntity) => {
-	return await db
-		.prepare(
-			'INSERT INTO cliente (rut_cliente, nombre, direccion, email, telefono) VALUES (?, ?, ?, ?, ?);'
-		)
-		.bind(cliente.rut, cliente.nombre, cliente.direccion, cliente.email, cliente.telefono)
-		.run()
-		.then(() => ok(true))
-		.catch((error: Error) => err(error));
+export const saveCliente = async (cliente: Cliente) => {
+	return prisma.cliente
+		.findUnique({
+			where: { rut_cliente: cliente.rut_cliente }
+		})
+		.then(async (response) => {
+			if (response) return ok('Ya existe, omitiendo');
+			return prisma.cliente
+				.create({
+					data: cliente
+				})
+				.then((response) => ok(response));
+		})
+		.catch((error) => err(error));
+
+	// return await db
+	// 	.prepare(
+	// 		'INSERT INTO cliente (rut_cliente, nombre, direccion, email, telefono) VALUES (?, ?, ?, ?, ?);'
+	// 	)
+	// 	.bind(cliente.rut, cliente.nombre, cliente.direccion, cliente.email, cliente.telefono)
+	// 	.run()
+	// 	.then(() => ok(true))
+	// 	.catch((error: Error) => err(error));
 };
 
 export const deleteCliente = async (db: D1Database, rut: string) => {

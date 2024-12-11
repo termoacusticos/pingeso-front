@@ -48,8 +48,8 @@ CREATE TABLE IF NOT EXISTS cliente (
   nombre TEXT NOT NULL,
   direccion TEXT NOT NULL,
   email TEXT NOT NULL,
-  telefono TEXT
-);
+  telefono TEX
+)
 
 -- Tabla: opcion
 CREATE TABLE IF NOT EXISTS opcion (
@@ -87,9 +87,9 @@ CREATE TABLE  IF NOT EXISTS tipo (
 
 CREATE TABLE IF NOT EXISTS tipo_perfil (
   id_tipo INTEGER NOT NULL,
-  id_perfil INTEGER NOT NULL,
+  codigo_per INTEGER NOT NULL,
   FOREIGN KEY (id_tipo) REFERENCES tipo (id_tipo) ON DELETE CASCADE ON UPDATE CASCADE
-  FOREIGN KEY (id_perfil) REFERENCES perfil (id_perfil) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (codigo_per) REFERENCES perfil (codigo_per) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 

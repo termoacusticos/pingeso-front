@@ -1,4 +1,6 @@
-type Cliente = {
+import type { Material, Prisma, Tipo, Ventana, Color, Cristal, Cliente } from "@prisma/client";
+
+type ClienteUI = {
 	rut: string;
 	nombre: string;
 	direccion: string;
@@ -6,24 +8,23 @@ type Cliente = {
 	telefono: string;
 };
 
-type Opcion = {
+type OpcionUI = {
 	material: string;
 	color: string;
-	ventanas: VentanaEntity[];
+	ventanas: VentanaUI[];
 };
 
-type Cotizacion = {
+type CotizacionUI = {
 	id: Number;
 	nombreCliente: string;
 	rut: string;
 	precio: Number;
 	fechaCreacion: string;
-};
-
+}; 
 type PresupuestoModel = {
-	id_presupuesto: number;
+	id_presupuesto?: number;
 	fecha: string;
-	cliente?: ClienteEntity;
+	cliente: Cliente;
 	opciones: OpcionModel[];
 };
 
@@ -32,12 +33,12 @@ type OpcionModel = {
 };
 
 type VentanaModel = {
-	id: number;
+	id?: number;
 	cantidad: number;
-	material: MaterialEntity;
-	tipo: TipoEntity;
-	color: ColorEntity;
-	cristal: CristalEntity;
+	id_material: number;
+	id_tipo: number;
+	id_color: number;
+	id_cristal: number;
 	alto: number;
 	ancho: number;
 	precio_unitario: number;
