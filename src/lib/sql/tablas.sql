@@ -47,8 +47,8 @@ CREATE TABLE IF NOT EXISTS cliente (
   nombre TEXT NOT NULL,
   direccion TEXT NOT NULL,
   email TEXT NOT NULL,
-  telefono TEXT
-);
+  telefono TEX
+)
 
 -- Tabla: opcion
 CREATE TABLE IF NOT EXISTS opcion (

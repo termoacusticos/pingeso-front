@@ -4,7 +4,6 @@ import {
 	PDFPage,
 	PageSizes,
 	StandardFonts,
-	endMarkedContent,
 	rgb
 } from 'pdf-lib';
 

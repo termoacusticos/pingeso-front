@@ -14,11 +14,9 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	const connResult = getDB(platform);
 	if (connResult.isErr()) return json({ error: connResult.error }, { status: 400 });
 
-	const db = connResult.value;
-
 	const { email, password } = await request.json<{ email: string; password: string }>();
 
-	const getResult = await getUsuario(db, email);
+	const getResult = await getUsuario(email);
 
 	if (getResult.isErr()) return json({ error: getResult.error }, { status: 404 });
 
