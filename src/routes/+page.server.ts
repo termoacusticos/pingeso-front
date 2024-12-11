@@ -49,7 +49,6 @@ export const load: PageServerLoad = async ({ fetch }) => {
 						id_color: 1,
 						id_tipo: 1,
 						id_cristal: 1,
-						id_material: 1,
 						precio_unitario: 0,
 						precio_total: 0
 					},
@@ -60,7 +59,6 @@ export const load: PageServerLoad = async ({ fetch }) => {
 						id_color: 2,
 						id_tipo: 2,
 						id_cristal: 2,
-						id_material: 2,
 						precio_unitario: 1000,
 						precio_total: 10000
 					}

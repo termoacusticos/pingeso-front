@@ -10,8 +10,8 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 		return json({ error: connResult.error }, { status: 400 });
 	}
 
-	const token = cookies.get('authToken');
-	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });
+	/*const token = cookies.get('authToken');
+	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });*/
 
 	const { ventana, porcentaje }: { ventana: VentanaModel; porcentaje: number } =
 		await request.json();
@@ -20,7 +20,7 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 		return json(
 			{
 				error:
-					'Parámetros inválidos: asegúrese de incluir ventana, input, y porcentaje correctamente.'
+					'Parámetros inválidos: asegúrese de incluir ventana, y porcentaje correctamente.'
 			},
 			{ status: 400 }
 		);
