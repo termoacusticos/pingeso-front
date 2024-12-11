@@ -3,6 +3,7 @@ import { inspect } from 'node:util';
 import type { PageServerLoad } from './$types';
 import type { Usuario } from '@prisma/client';
 import type { JWTBody, PresupuestoModel } from '$lib/types';
+import { log } from 'node:console';
 
 export const load: PageServerLoad = async ({ fetch }) => {
 	const login = await fetch('/api/login', {
@@ -27,14 +28,6 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	// }).then((response) => {
 	// 	return response.json();
 	// });
-
-	// const login: { token: string } = await fetch('/api/login', {
-	// 	method: 'POST',
-	// 	body: JSON.stringify({ email: user.email, password: user.password })
-	// }).then((response) => {
-	// 	return response.json();
-	// });
-	// console.log(login);
 
 	const nuevoPresupuesto: PresupuestoModel = {
 		fecha: '',
@@ -75,34 +68,13 @@ export const load: PageServerLoad = async ({ fetch }) => {
 			}
 		]
 	};
-
-	console.log('presupuesto');
-	const presupuesto = await fetch('/api/presupuesto', {
+	const resultado = await fetch('/api/calculadora', {
 		method: 'POST',
-		body: JSON.stringify(nuevoPresupuesto)
+		body: JSON.stringify(nuevoPresupuesto.Opciones[0].Ventanas[0])
 	}).then((response) => {
 		return response.json();
 	});
-	const presupuestos = await fetch('/api/presupuesto', {
-		method: 'GET'
-	}).then((response) => {
-		return response.json();
-	});
-	console.log(presupuesto);
-	console.log(inspect(presupuestos, false, null, true));
-
-	await fetch('/api/presupuesto', {
-		method: 'DELETE'
-	}).then((response) => {
-		return response.json();
-	});
-
-	// const constantes = await fetch('/api/constantes', {
-	// 	method: 'GET'
-	// }).then((response) => {
-	// 	return response.json();
-	// });
-	// console.log(constantes);
+	console.log(resultado);
 
 	return {};
 };

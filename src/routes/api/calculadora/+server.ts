@@ -2,13 +2,13 @@ import type { RequestHandler } from './$types';
 import { getDB } from '$lib';
 import { json } from '@sveltejs/kit';
 import { calcularCostoTotal } from '$lib/services/presupuesto';
+import type { VentanaModel } from '$lib/types';
 
 export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	const connResult = getDB(platform);
 	if (connResult.isErr()) {
 		return json({ error: connResult.error }, { status: 400 });
 	}
-	const db = connResult.value;
 
 	const token = cookies.get('authToken');
 	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });
@@ -27,7 +27,7 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	}
 
 	try {
-		const resultado = await calcularCostoTotal(db, ventana, porcentaje);
+		const resultado = await calcularCostoTotal(ventana, porcentaje);
 
 		return json({ message: 'Cálculo realizado correctamente', resultado });
 	} catch (error) {
