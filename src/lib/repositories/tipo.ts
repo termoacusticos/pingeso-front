@@ -31,10 +31,7 @@ export const deleteTipo = async (id: number) => {
 };
 
 export const getPerfilesTipo = async (id_tipo: number) => {
-	return prisma.tipo
-		.findMany({ where: { TipoPerfil: { some: { id_tipo: id_tipo } } } })
-		.then((response) => ok(response))
-		.catch((error) => err(error));
+	return prisma.perfil.findMany({ where: { TipoPerfil: { every: { id_tipo: id_tipo } } } });
 	// const perfiles = await db
 	// 	.prepare(
 	// 		`SELECT p.id_perfil, p.codigo_per, p.formula_per, p.cantidad,
@@ -59,10 +56,10 @@ export const getPerfilesTipo = async (id_tipo: number) => {
 };
 
 export const getQuincalleriasTipo = async (id_tipo: number) => {
-	return prisma.tipo
-		.findMany({ where: { TipoQuincalleria: { some: { id_tipo } } } })
-		.then((response) => ok(response))
-		.catch((error) => err(error));
+	return prisma.quincalleria.findMany({
+		where: { TipoQuincalleria: { every: { id_tipo: id_tipo } } }
+	});
+
 	// const quincallerias = await db
 	// 	.prepare(
 	// 		`SELECT q.id_quincalleria, q.desc_quin, q.formula_quin, q.precio_quin,
