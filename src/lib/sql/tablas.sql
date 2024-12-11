@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS quincalleria (
 
 -- Tabla: perfil
 CREATE TABLE IF NOT EXISTS perfil (
-  codigo_per INTEGER PRIMARY KEY,
+  id_perfil INTEGER PRIMARY KEY AUTOINCREMENT,
+  codigo_per INTEGER,
   formula_dim TEXT,
   formula_cant TEXT,
   kg_ml_per DECIMAL,
