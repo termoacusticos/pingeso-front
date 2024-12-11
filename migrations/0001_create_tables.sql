@@ -65,14 +65,12 @@ CREATE TABLE "Ventana" (
     "ancho" REAL NOT NULL,
     "precio_unitario" REAL NOT NULL,
     "precio_total" REAL NOT NULL,
-    "id_material" INTEGER NOT NULL,
     "id_color" INTEGER NOT NULL,
     "id_cristal" INTEGER NOT NULL,
     "id_opcion" INTEGER NOT NULL,
     "id_tipo" INTEGER NOT NULL,
     CONSTRAINT "Ventana_id_opcion_fkey" FOREIGN KEY ("id_opcion") REFERENCES "Opcion" ("id_opcion") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "Ventana_id_tipo_fkey" FOREIGN KEY ("id_tipo") REFERENCES "Tipo" ("id_tipo") ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT "Ventana_id_material_fkey" FOREIGN KEY ("id_material") REFERENCES "Material" ("id_material") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "Ventana_id_color_fkey" FOREIGN KEY ("id_color") REFERENCES "Color" ("id_color") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "Ventana_id_cristal_fkey" FOREIGN KEY ("id_cristal") REFERENCES "Cristal" ("id_cristal") ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -81,6 +79,7 @@ CREATE TABLE "Ventana" (
 CREATE TABLE "Tipo" (
     "id_tipo" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "descripcion_tipo" TEXT NOT NULL,
+    "material" TEXT NOT NULL,
     "minimo" INTEGER,
     "maximo" INTEGER
 );
@@ -106,12 +105,6 @@ CREATE TABLE "TipoQuincalleria" (
 );
 
 -- CreateTable
-CREATE TABLE "Material" (
-    "id_material" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "nombre_material" TEXT NOT NULL
-);
-
--- CreateTable
 CREATE TABLE "Color" (
     "id_color" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "nombre_color" TEXT NOT NULL
@@ -128,9 +121,6 @@ CREATE INDEX "Presupuesto_rut_cliente_idx" ON "Presupuesto"("rut_cliente");
 
 -- CreateIndex
 CREATE INDEX "Opcion_id_presupuesto_idx" ON "Opcion"("id_presupuesto");
-
--- CreateIndex
-CREATE INDEX "Ventana_id_material_idx" ON "Ventana"("id_material");
 
 -- CreateIndex
 CREATE INDEX "Ventana_id_color_idx" ON "Ventana"("id_color");

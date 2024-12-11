@@ -1,9 +1,13 @@
 import { getPerfilesTipo, getQuincalleriasTipo } from "$lib/repositories/tipo";
 import { Err } from "neverthrow";
+import type { VentanaModel } from "$lib/types";
+import { getCristalById } from "$lib/repositories/cristal";
+
 
 export async function calcularCostoTotal(db: D1Database, ventana: VentanaModel, porcentaje: number){
-    const perfiles = await getPerfilesTipo(db, ventana.tipo.id_tipo)
-    const quincallerias = await getQuincalleriasTipo(db, ventana.tipo.id_tipo)
+    const perfiles = await getPerfilesTipo(ventana.id_tipo)
+    const quincallerias = await getQuincalleriasTipo(ventana.id_tipo)
+    const cristal = await getCristalById(ventana.id_cristal)
 
     let costoTotal = 0;
     let costoUnitario = 0;
@@ -14,6 +18,10 @@ export async function calcularCostoTotal(db: D1Database, ventana: VentanaModel, 
 
     if (!quincallerias || quincallerias.length === 0){
         throw new Error("No se encontraron quincallerías para este tipo de ventana");
+    }
+
+    if (!cristal){
+        throw new Error("No se encontró el cristal para esta ventana");
     }
 
     for(const perfil of perfiles){
@@ -46,14 +54,14 @@ export async function calcularCostoTotal(db: D1Database, ventana: VentanaModel, 
             throw new Error("Error al calcular la cantidad para el perfil con código ${perfil.codigo}: ${error.message}");
         }
 
-        const kilos = (dimension_perfil/1000)*cantidad_perfil*perfil.kg_ml;
+        const kilos = (dimension_perfil/1000)*cantidad_perfil*perfil.kg_ml_per;
         const costoPerfil = kilos*perfil.valor;
 
         costoTotal += costoPerfil;
     }
 
     for (const quincalleria of quincallerias){
-        const formulaCant = quincalleria.formula;
+        const formulaCant = quincalleria.formula_quin;
 
         const parametrosCant = {
             X: ventana.ancho,
@@ -69,7 +77,7 @@ export async function calcularCostoTotal(db: D1Database, ventana: VentanaModel, 
             throw new Error("Error al calcular la cantidad para la quincallería con código ${quincalleria.id}: ${error.message}");
         }
 
-        const costoQuincalleria = cantidad_quincalleria*quincalleria.precio;
+        const costoQuincalleria = cantidad_quincalleria*quincalleria.precio_quin;
 
         costoTotal += costoQuincalleria;
     }
@@ -78,7 +86,7 @@ export async function calcularCostoTotal(db: D1Database, ventana: VentanaModel, 
     const anchoCristal = (ventana.ancho/2) - 65;
     const altoCristal = ventana.alto - 124;
     const m2 = (anchoCristal/1000)*(altoCristal/1000)*cantidadCristal;
-    const costoCristal = m2*ventana.cristal.precio;
+    const costoCristal = m2*cristal.precio_cristal;
 
     costoTotal += costoCristal;
 

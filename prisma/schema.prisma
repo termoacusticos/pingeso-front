@@ -86,19 +86,16 @@ model Ventana {
   ancho           Float
   precio_unitario Float
   precio_total    Float
-  id_material     Int
   id_color        Int
   id_cristal      Int
   id_opcion       Int
   id_tipo         Int
 
-  Opcion   Opcion   @relation(fields: [id_opcion], references: [id_opcion], onDelete: Cascade, onUpdate: Cascade)
-  Tipo     Tipo     @relation(fields: [id_tipo], references: [id_tipo], onDelete: Cascade, onUpdate: Cascade)
-  Material Material @relation(fields: [id_material], references: [id_material], onDelete: Cascade, onUpdate: Cascade)
-  Color    Color    @relation(fields: [id_color], references: [id_color], onDelete: Cascade, onUpdate: Cascade)
-  Cristal  Cristal  @relation(fields: [id_cristal], references: [id_cristal], onDelete: Cascade, onUpdate: Cascade)
+  Opcion  Opcion  @relation(fields: [id_opcion], references: [id_opcion], onDelete: Cascade, onUpdate: Cascade)
+  Tipo    Tipo    @relation(fields: [id_tipo], references: [id_tipo], onDelete: Cascade, onUpdate: Cascade)
+  Color   Color   @relation(fields: [id_color], references: [id_color], onDelete: Cascade, onUpdate: Cascade)
+  Cristal Cristal @relation(fields: [id_cristal], references: [id_cristal], onDelete: Cascade, onUpdate: Cascade)
 
-  @@index([id_material])
   @@index([id_color])
   @@index([id_cristal])
   @@index([id_opcion])
@@ -108,6 +105,7 @@ model Ventana {
 model Tipo {
   id_tipo          Int    @id @default(autoincrement())
   descripcion_tipo String
+  material         String
   minimo           Int?
   maximo           Int?
 
@@ -134,13 +132,6 @@ model TipoQuincalleria {
   Quincalleria Quincalleria @relation(fields: [id_quincalleria], references: [id_quincalleria], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([id_tipo, id_quincalleria])
-}
-
-model Material {
-  id_material     Int    @id @default(autoincrement())
-  nombre_material String
-
-  Ventana Ventana[]
 }
 
 model Color {
