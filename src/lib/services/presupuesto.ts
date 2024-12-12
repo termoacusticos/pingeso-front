@@ -10,7 +10,7 @@ export async function calcularCostoTotal(ventana: VentanaModel, porcentaje: numb
         throw new Error("No se encontró el tipo de ventana");
     }
 
-    if (tipo.material === "ALUMINIO"){
+    if (tipo.Material.nombre_material === "ALUMINIO"){
         const perfiles = await getPerfilesTipo(ventana.id_tipo)
         const quincallerias = await getQuincalleriasTipo(ventana.id_tipo)
         const cristal = await getCristalById(ventana.id_cristal)

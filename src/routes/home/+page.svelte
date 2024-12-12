@@ -25,7 +25,7 @@
 <div class="min-h-screen lg:w-[60%] mx-auto p-8 bg-gray-100 animate-fade-up">
 	<!-- Título del Dashboard -->
 	<h1 class="text-3xl font-bold mb-6 text-center text-gray-800">
-		Dashboard de Cotización de Ventanas
+		Estadísticas de Cotización de Ventanas
 	</h1>
 
 	<!-- Sección de estadísticas generales -->

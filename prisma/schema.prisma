@@ -92,10 +92,12 @@ model Ventana {
   id_opcion       Int
   id_tipo         Int
 
-  Opcion  Opcion  @relation(fields: [id_opcion], references: [id_opcion], onDelete: Cascade, onUpdate: Cascade)
-  Tipo    Tipo    @relation(fields: [id_tipo], references: [id_tipo], onDelete: Cascade, onUpdate: Cascade)
-  Color   Color   @relation(fields: [id_color], references: [id_color], onDelete: Cascade, onUpdate: Cascade)
-  Cristal Cristal @relation(fields: [id_cristal], references: [id_cristal], onDelete: Cascade, onUpdate: Cascade)
+  Opcion              Opcion    @relation(fields: [id_opcion], references: [id_opcion], onDelete: Cascade, onUpdate: Cascade)
+  Tipo                Tipo      @relation(fields: [id_tipo], references: [id_tipo], onDelete: Cascade, onUpdate: Cascade)
+  Color               Color     @relation(fields: [id_color], references: [id_color], onDelete: Cascade, onUpdate: Cascade)
+  Cristal             Cristal   @relation(fields: [id_cristal], references: [id_cristal], onDelete: Cascade, onUpdate: Cascade)
+  Material            Material? @relation(fields: [materialId_material], references: [id_material])
+  materialId_material Int?
 
   @@index([id_color])
   @@index([id_cristal])
@@ -106,13 +108,22 @@ model Ventana {
 model Tipo {
   id_tipo          Int    @id @default(autoincrement())
   descripcion_tipo String
-  material         String
+  id_material      Int
   minimo           Int?
   maximo           Int?
 
   Ventana          Ventana[]
+  Material         Material           @relation(fields: [id_material], references: [id_material])
   TipoPerfil       TipoPerfil[]
   TipoQuincalleria TipoQuincalleria[]
+}
+
+model Material {
+  id_material     Int    @id @default(autoincrement())
+  nombre_material String
+
+  Ventana Ventana[]
+  Tipo    Tipo[]
 }
 
 model TipoPerfil {
