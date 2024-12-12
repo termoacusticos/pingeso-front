@@ -27,12 +27,11 @@ export const getAllPresupuestos = async () => {
 };
 
 export const savePresupuesto = async (presupuesto: PresupuestoModel, id_usuario: number) => {
-	const clienteResult = await saveCliente(presupuesto.cliente);
-	if (clienteResult.isErr()) return clienteResult;
+	await saveCliente(presupuesto.cliente);
 
 	return prisma.presupuesto
 		.create({
-			include: { Opciones: { include: { Ventanas: true } } },
+			include: { Cliente: true, Opciones: { include: { Ventanas: true } } },
 			data: {
 				id_presupuesto: presupuesto.id_presupuesto,
 				fecha: new Date().toISOString(),

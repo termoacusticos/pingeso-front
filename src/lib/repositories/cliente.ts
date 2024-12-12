@@ -17,19 +17,11 @@ export const getAllClientes = async () => {
 };
 
 export const saveCliente = async (cliente: Cliente) => {
-	return prisma.cliente
-		.findUnique({
-			where: { rut_cliente: cliente.rut_cliente }
-		})
-		.then(async (response) => {
-			if (response) return ok('Ya existe, omitiendo');
-			return prisma.cliente
-				.create({
-					data: cliente
-				})
-				.then((response) => ok(response));
-		})
-		.catch((error) => err(error));
+	return prisma.cliente.upsert({
+		where: { rut_cliente: cliente.rut_cliente },
+		create: cliente,
+		update: {}
+	});
 };
 
 export const deleteCliente = async (rut: string) => {

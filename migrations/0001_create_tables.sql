@@ -70,22 +70,31 @@ CREATE TABLE "Ventana" (
     "id_cristal" INTEGER NOT NULL,
     "id_opcion" INTEGER NOT NULL,
     "id_tipo" INTEGER NOT NULL,
+    "materialId_material" INTEGER,
     CONSTRAINT "Ventana_id_opcion_fkey" FOREIGN KEY ("id_opcion") REFERENCES "Opcion" ("id_opcion") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "Ventana_id_tipo_fkey" FOREIGN KEY ("id_tipo") REFERENCES "Tipo" ("id_tipo") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "Ventana_id_color_fkey" FOREIGN KEY ("id_color") REFERENCES "Color" ("id_color") ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT "Ventana_id_cristal_fkey" FOREIGN KEY ("id_cristal") REFERENCES "Cristal" ("id_cristal") ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT "Ventana_id_cristal_fkey" FOREIGN KEY ("id_cristal") REFERENCES "Cristal" ("id_cristal") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "Ventana_materialId_material_fkey" FOREIGN KEY ("materialId_material") REFERENCES "Material" ("id_material") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable
 CREATE TABLE "Tipo" (
     "id_tipo" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "descripcion_tipo" TEXT NOT NULL,
-    "material" TEXT NOT NULL,
+    "id_material" INTEGER NOT NULL,
     "formula_ancho" TEXT NOT NULL,
     "formula_alto" TEXT NOT NULL,
     "cantidad_cristal" TEXT NOT NULL,
     "minimo" INTEGER,
-    "maximo" INTEGER
+    "maximo" INTEGER,
+    CONSTRAINT "Tipo_id_material_fkey" FOREIGN KEY ("id_material") REFERENCES "Material" ("id_material") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "Material" (
+    "id_material" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "nombre_material" TEXT NOT NULL
 );
 
 -- CreateTable

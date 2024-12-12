@@ -3,8 +3,7 @@ import type { Tipo } from '@prisma/client';
 import { Err, err, ok } from 'neverthrow';
 
 export const getTipoById = async (id: number) => {
-	return prisma.tipo
-		.findFirst({ where: { id_tipo: id } })
+	return prisma.tipo.findFirst({ include: { Material: true }, where: { id_tipo: id } });
 };
 
 export const getAllTipos = async () => {

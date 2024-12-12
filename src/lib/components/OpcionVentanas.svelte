@@ -1,10 +1,11 @@
 <script lang="ts">
 	import Ventana2 from './Ventana2.svelte';
 	import DropdownColumn from './DropdownColumn.svelte';
-	import { itemOptions, tipoOptions, anchoOptions, altoOptions, cantidadOptions } from '$lib/store';
+	import { itemOptions, tipoOptions, anchoOptions, altoOptions, cantidadOptions, materiales, colores } from '$lib/store';
+	import type { OpcionUI } from '$lib/types';
 
 	interface Props {
-		opcion: Opcion;
+		opcion: OpcionUI;
 		index: number;
 		mostrar_eliminar_opcion: boolean;
 		eliminarOpcion: (index: number) => void;
@@ -21,41 +22,21 @@
 		eliminarVentana
 	}: Props = $props();
 
-	// opcion.material = '';
-	// opcion.color = '';
-	// opcion.ventanas = [{
-	// 		material: opcion.material,
-	// 		tipo: '',
-	// 		item: '',
-	// 		cantidad: 1,
-	// 		color: opcion.color,
-	// 		alto: 0,
-	// 		ancho: 0,
-	// 		precio_unitario: 20,
-	// 		precio_total: 0
-	// 	}];
-
-	// $effect(() => {
-
-	// });
-
 	let showMaterialDropdown = $state(false);
 	let showColorDropdown = $state(false);
 
-	let coloresDisponibles = [
-		{ nombre: 'Nogal', seleccionado: false },
-		{ nombre: 'Titanio', seleccionado: false },
-		{ nombre: 'Blanco', seleccionado: false },
-		{ nombre: 'Negro', seleccionado: false },
-		{ nombre: 'Roble Dorado', seleccionado: false },
-		{ nombre: 'Mate', seleccionado: false },
-		{ nombre: 'Antracita', seleccionado: false }
-	];
+	let materiales2 = ["Madera", "PVC", "Aluminio"]
 
-	const materiales = ['Madera', 'Aluminio', 'PVC'];
-	const tipos = ['Corredera', 'Abatible', 'Oscilobatiente'];
-	const items = ['Ventana Simple', 'Ventana Doble', 'Ventana Termopanel'];
-	const colores = ['Blanco', 'Rojo', 'Violeta'];
+	let materialesNombre: string[] = $state([]);
+	let coloresNombre: string[] = $state([]);
+
+	colores.subscribe((coloresList) => {
+		coloresNombre = coloresList.map(color => color.nombre_color);
+	})
+
+	materiales.subscribe((materialesList) => {
+		materialesNombre = materialesList.map(material => material.nombre_material);
+	});
 
 	let sumaTotal = $derived(opcion.ventanas.reduce((acc, ventana) => acc + ventana.precio_total, 0));
 
@@ -109,11 +90,12 @@
 								});
 							}}
 							columna={'Material'}
-							items={materiales}
+							items={materiales2}
 							bind:itemSelected={opcion.material}
 							bind:showDropdown={showMaterialDropdown} />
 					</th>
 					<th class="px-1 py-2"> Tipo </th>
+					<th class="px-1 py-2"> Cristal </th>
 					<th class="px-1 py-2">Item</th>
 					<th class="px-1 py-2">
 						<DropdownColumn
@@ -123,7 +105,7 @@
 								});
 							}}
 							columna={'Color'}
-							items={colores}
+							items={coloresNombre}
 							bind:itemSelected={opcion.color}
 							bind:showDropdown={showColorDropdown} />
 					</th>

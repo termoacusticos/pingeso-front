@@ -103,12 +103,17 @@ INSERT INTO Color (nombre_color) VALUES
 ('Roble dorado'),
 ('Negro');
 
-INSERT INTO Tipo (descripcion_tipo, material, formula_ancho, formula_alto, cantidad_cristal, minimo, maximo) VALUES
-("VENTANA CORREDERA CHICA","ALUMINIO", "(X/2)-65", "Y-124", "2*Z", 0, 1700),
-("CORREDERA GRANDE", "ALUMINIO", "(X/2)-68", "Y-124", "2*Z", 1700, 2400),
-("PAÑO FIJO", "ALUMINIO", "X-64", "Y-64", "Z", NULL, NULL),
-("VENTANA PROYECTANTE/ABATIR", "ALUMINIO", "X-134", "Y-134", "Z", NULL, NULL),
-("PUERTA ABATIR", "ALUMINIO", "X-230", "Y-193", "Z", NULL, NULL);
+INSERT INTO Material (nombre_material) VALUES
+("ALUMINIO"),
+("PVC");
+
+INSERT INTO Tipo (descripcion_tipo, id_material, formula_ancho, formula_alto, cantidad_cristal, minimo, maximo) VALUES
+("VENTANA CORREDERA CHICA", 1, "(X/2)-65", "Y-124", "2*Z", 0, 1700),
+("CORREDERA GRANDE", 1, "(X/2)-68", "Y-124", "2*Z", 1700, 2400),
+("PAÑO FIJO", 1, "X-64", "Y-64", "Z", NULL, NULL),
+("VENTANA PROYECTANTE/ABATIR", 1, "X-134", "Y-134", "Z", NULL, NULL),
+("PUERTA ABATIR", 1, "X-230", "Y-193", "Z", NULL, NULL);
+
 
 INSERT INTO TipoPerfil (id_tipo, id_perfil) VALUES
 (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),

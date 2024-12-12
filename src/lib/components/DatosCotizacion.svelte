@@ -1,6 +1,8 @@
 <script lang="ts">
+	import type { ClienteUI } from "$lib/types";
+
     interface Props {
-        cliente: Cliente;   
+        cliente: ClienteUI;   
     }
 
     let { cliente = $bindable() }: Props = $props();
@@ -20,7 +22,7 @@
             maxlength="10"
             minlength="10"
             class="px-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            bind:value={cliente.rut}>
+            bind:value={cliente.rut_cliente}>
     </div>
     <input 
         type="text" 

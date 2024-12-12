@@ -13,10 +13,11 @@ export const GET: RequestHandler = async ({ platform, cookies }) => {
 	if (validationResult.isErr()) return json({ error: 'Token inválido.' }, { status: 401 });
 
 	const constantes = await getAllConstantes();
-	
+
 	return json({
-		colores: constantes[0],
-		cristales: constantes[1],
-		tipos: constantes[2]
+		materiales: constantes[0],
+		colores: constantes[1],
+		cristales: constantes[2],
+		tipos: constantes[3]
 	});
 };
