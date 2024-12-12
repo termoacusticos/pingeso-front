@@ -5,20 +5,18 @@
 		tipoOptions, 
 		anchoOptions, 
 		altoOptions, 
-		cantidadOptions, materiales, colores, tipos, cristales, cristalOptions } from '$lib/store';
+		cantidadOptions, cristalOptions } from '$lib/store';
 	import type { ClienteUI, OpcionModel, OpcionUI, VentanaModel, VentanaUI } from '$lib/types';
-	import type { Cliente, Material } from '@prisma/client';
+	import type { Cliente, Color, Cristal, Material, Tipo } from '@prisma/client';
+	const { data } = $props();
 
-	let materialesNombre: string[] = $state([]);
-	let coloresNombre: string[] = $state([]);
+	let materiales: Material[] = data.materiales;
+	let colores: Color[] = data.colores;
+	let tipos: Tipo[] = data.tipos;
+	let cristales: Cristal[] = data.cristales;
 
-	colores.subscribe((coloresList) => {
-		coloresNombre = coloresList.map(color => color.nombre_color);
-	})
-
-	materiales.subscribe((materialesList) => {
-		materialesNombre = materialesList.map(material => material.nombre_material);
-	});
+	let materialesNombre: string[] = $state(materiales.map(material => material.nombre_material));
+	let coloresNombre: string[] = $state(colores.map(color => color.nombre_color));
 
 	let mostrarAgregarOpcion = $state(false);
 	let materialModal = $state('');
@@ -81,10 +79,10 @@
 	function convertirVentanas(ventanas: VentanaUI[]): VentanaModel[] {
 		return ventanas.map((ventana) => {
 			// Buscar el id del material, tipo, color y cristal en sus respectivas listas
-			const id_material = $materiales.find(m => m.nombre_material === ventana.material)?.id_material ?? 0;
-			const id_tipo = $tipos.find(t => t.descripcion_tipo === ventana.tipo)?.id_tipo ?? 0;
-			const id_color = $colores.find(c => c.nombre_color === ventana.color)?.id_color ?? 0;
-			const id_cristal = $cristales.find(c => c.desc_cristal === ventana.cristal)?.id_cristal ?? 0;
+			const id_material = materiales.find(m => m.nombre_material === ventana.material)?.id_material ?? 0;
+			const id_tipo = tipos.find(t => t.descripcion_tipo === ventana.tipo)?.id_tipo ?? 0;
+			const id_color = colores.find(c => c.nombre_color === ventana.color)?.id_color ?? 0;
+			const id_cristal = cristales.find(c => c.desc_cristal === ventana.cristal)?.id_cristal ?? 0;
 
 			// Devolver el objeto convertido a VentanaModel
 			return {
@@ -110,15 +108,9 @@
 
 	function crearCotizacion() {
 		let opcionesModel: OpcionModel[] = crearOpcionesModel(opciones);
-		let clienteModel: Cliente = cliente;
 		let cotizacion = {
-			cliente: {
-				nombre: cliente.nombre,
-				rut_cliente: cliente.rut_cliente,
-				direcccion: cliente.direccion,
-				email: cliente.email,
-				telefono: cliente.telefono
-			},
+			cliente: cliente,
+			fecha: '',
 			Opciones: opcionesModel
 		}
 		console.log(cotizacion);
@@ -138,6 +130,7 @@
 	<div class="space-y-6 w-full">
 		{#each opciones as opcion, index}
 			<OpcionVentanas
+			data={data}
 				agregarVentana={() => {
 					$tipoOptions.push('');
 					$itemOptions.push('');

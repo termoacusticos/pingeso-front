@@ -1,10 +1,12 @@
 <script lang="ts">
 	import Ventana2 from './Ventana2.svelte';
 	import DropdownColumn from './DropdownColumn.svelte';
-	import { itemOptions, tipoOptions, anchoOptions, altoOptions, cantidadOptions, materiales, colores } from '$lib/store';
-	import type { OpcionUI } from '$lib/types';
+	import { itemOptions, tipoOptions, anchoOptions, altoOptions, cantidadOptions } from '$lib/store';
+	import type { ConstantData, OpcionUI } from '$lib/types';
+	import type { Color, Cristal, Material, Tipo } from '@prisma/client';
 
 	interface Props {
+		data: ConstantData;
 		opcion: OpcionUI;
 		index: number;
 		mostrar_eliminar_opcion: boolean;
@@ -14,6 +16,7 @@
 	}
 
 	let {
+		data,
 		opcion = $bindable(),
 		index,
 		mostrar_eliminar_opcion,
@@ -25,18 +28,11 @@
 	let showMaterialDropdown = $state(false);
 	let showColorDropdown = $state(false);
 
-	let materiales2 = ["Madera", "PVC", "Aluminio"]
+	let materiales: Material[] = data.materiales;
+	let colores: Color[] = data.colores;
 
-	let materialesNombre: string[] = $state([]);
-	let coloresNombre: string[] = $state([]);
-
-	colores.subscribe((coloresList) => {
-		coloresNombre = coloresList.map(color => color.nombre_color);
-	})
-
-	materiales.subscribe((materialesList) => {
-		materialesNombre = materialesList.map(material => material.nombre_material);
-	});
+	let materialesNombre: string[] = $state(materiales.map(material => material.nombre_material));
+	let coloresNombre: string[] = $state(colores.map(color => color.nombre_color));
 
 	let sumaTotal = $derived(opcion.ventanas.reduce((acc, ventana) => acc + ventana.precio_total, 0));
 
@@ -90,7 +86,7 @@
 								});
 							}}
 							columna={'Material'}
-							items={materiales2}
+							items={materialesNombre}
 							bind:itemSelected={opcion.material}
 							bind:showDropdown={showMaterialDropdown} />
 					</th>
@@ -120,6 +116,7 @@
 			<tbody>
 				{#each opcion.ventanas as ventana, id}
 					<Ventana2
+						data={data}
 						bind:ventana={opcion.ventanas[id]}
 						{id}
 						option_index={index}

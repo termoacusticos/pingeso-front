@@ -6,15 +6,15 @@
 		tipoOptions,
 		cantidadOptions,
 		altoOptions,
-		anchoOptions, 
-		tipos, cristales,
+		anchoOptions,
 		cristalOptions
 
 	} from '$lib/store';
-	import type { VentanaUI } from '$lib/types';
+	import type { ConstantData, VentanaUI } from '$lib/types';
 	import type { Cristal, Tipo } from '@prisma/client';
 
 	interface Props {
+		data: ConstantData;
 		ventana: VentanaUI;
 		id: number;
 		option_index: number;
@@ -23,6 +23,7 @@
 	}
 
 	let {
+		data,
 		ventana = $bindable(),
 		id,
 		option_index,
@@ -30,8 +31,8 @@
 		eliminarVentana
 	}: Props = $props();
 
-	const tiposLista: Tipo[] = $tipos;
-	const cristalesLista: Cristal[] = $cristales;
+	let tiposLista: Tipo[] = data.tipos;
+	let cristalesLista: Cristal[] = data.cristales;
 
 	//$inspect('tipo ventana', ventana.tipo)
 	//$inspect('lista tipo', $tipoOptions);

@@ -76,9 +76,10 @@ export const load: PageServerLoad = async ({ fetch }) => {
 			}
 		]
 	};
-	const resultado = await fetch('/api/calculadora', {
+	
+	const resultado = await fetch('/api/presupuesto', {
 		method: 'POST',
-		body: JSON.stringify({ventana: nuevoPresupuesto.Opciones[0].Ventanas[0], porcentaje: 85})
+		body: JSON.stringify(nuevoPresupuesto)
 	}).then((response) => {
 		return response.json();
 	});
