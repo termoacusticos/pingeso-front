@@ -63,10 +63,11 @@ export const load: PageServerLoad = async ({ fetch }) => {
 					{
 						alto: 100,
 						ancho: 100,
-						cantidad: 1,
+						cantidad: 2,
+						item: 'ventana',
 						id_material: 1,
 						id_color: 1,
-						id_tipo: 2,
+						id_tipo: 1,
 						id_cristal: 1,
 						precio_unitario: 0,
 						precio_total: 0
@@ -75,9 +76,9 @@ export const load: PageServerLoad = async ({ fetch }) => {
 			}
 		]
 	};
-	const resultado = await fetch('/api/presupuesto', {
+	const resultado = await fetch('/api/calculadora', {
 		method: 'POST',
-		body: JSON.stringify(nuevoPresupuesto.Opciones[0].Ventanas[0])
+		body: JSON.stringify({ventana: nuevoPresupuesto.Opciones[0].Ventanas[0], porcentaje: 85})
 	}).then((response) => {
 		return response.json();
 	});

@@ -65,7 +65,6 @@ export async function calcularCostoTotal(ventana: VentanaModel, porcentaje: numb
     
             costoTotal += costoPerfil;
         }
-        console.log(costoTotal);
         for (const quincalleria of quincallerias){
             const formulaCant = quincalleria.formula_quin;
     
@@ -84,7 +83,6 @@ export async function calcularCostoTotal(ventana: VentanaModel, porcentaje: numb
             }
     
             const costoQuincalleria = cantidad_quincalleria*quincalleria.precio_quin;
-            console.log(costoQuincalleria);
             costoTotal += costoQuincalleria;
         }
 
