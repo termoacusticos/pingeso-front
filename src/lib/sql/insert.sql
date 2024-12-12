@@ -1,12 +1,12 @@
 INSERT INTO Perfil (codigo_per, formula_dim, formula_cant, kg_ml_per, valor) VALUES 
-(6901, "X-12", "Z", 0.692,  5275),
-(6902, "X-12", "Z", 0.677, 5275),
-(6903, "Y", "2*Z", 0.550, 5275),
+(6901, "X-12", "1", 0.692,  5275),
+(6902, "X-12", "1", 0.677, 5275),
+(6903, "Y", "2", 0.550, 5275),
 (6915, "(X/2)-13", "4*Z", 0.569, 5275),
 (6995, "Y-40", "2*Z", 0.655, 5275),
-(6914, "Y-40", "2*Z", 0.573, 5275),
+(6914, "Y-40", "2", 0.573, 5275),
 (6938, "Y-40", "2*Z", 0.825, 5275),
-(6917, "Y-40", "4*Z", 0.751, 5275),
+(6917, "Y-40", "4", 0.751, 5275),
 (4301, "X", "2*Z", 0.436, 5275),
 (4301, "Y", "2*Z", 0.436, 5275),
 (4308, "X-44", "2*Z", 0.177, 5275),
@@ -28,8 +28,8 @@ INSERT INTO Quincalleria (desc_quin, formula_quin, precio_quin) VALUES
 ("EMPAQUETADURA PERFIL 6901", "2*Z", 0),
 ("EMPAQUETADURA PERFIL 6902 IZQUIERDA", "Z", 0),
 ("EMPAQUETADURA PERFIL 6902 DERECHA", "Z",0),
-("FELPA 7X8 FIN SEAL", "4*X+6*Y", 55),
-("BURLETE EPDM", "2*X+4*Y", 830),
+("FELPA 7X8 FIN SEAL", "4*(X/1000)+6*(Y/1000)*Z", 55),
+("BURLETE EPDM", "2*(X/1000)+4*(Y/1000)*Z", 830),
 ("CAJA REG. SIMPLE AGUJA 111 E-502A", "4*Z", 2500),
 ("GUIA TAPA", "4*Z", 90),
 ("GUIA CONTRATAPA", "8*Z", 90),
@@ -42,7 +42,7 @@ INSERT INTO Quincalleria (desc_quin, formula_quin, precio_quin) VALUES
 ("TRLCBPH 1X8", "16*Z", 15),
 ("TOPE ESTANCO PERFIL 6901 SUPERIOR", "Z", 86),
 ("TOPE ESTANCO PERFIL 6902 INFERIOR", "Z", 54),
-("BURLETE 'U' EPDM", "2*X+4*Y", 830),
+("BURLETE 'U' EPDM", "2*(X/1000)+4*(Y/1000)*Z", 830),
 ("CAJA REG. SIMPLE AGUJA 111 E-502A", "4*Z", 3500),
 ("CIERRE OMNIA 2048", "Z", 2500),
 ("SUPLE 6903 KEEPER","Z", 190),
@@ -55,28 +55,28 @@ INSERT INTO Quincalleria (desc_quin, formula_quin, precio_quin) VALUES
 ("TAPA REFUERZO DERECHA", "4*Z", 34),
 ("TOPE AMORTIGUADOR PUERTA VENTANA", "4*Z", 53),
 ("TRLCBPH 1X8", "16*Z", 10),
-("KEEPER 2170/80", "Z", 302),
+("KEEPER 2170/80", "1", 302),
 ("UNION L S-43", "4*Z", 600),
-("BURLETE BASE EPDM", "2*X+2*Y", 190),
-("BURLETE CUÑA EPDM", "2*X+2*Y", 220),
+("BURLETE BASE EPDM", "2*(X/1000)+2*(Y/1000)*Z", 190),
+("BURLETE CUÑA EPDM", "2*(X/1000)+2*(Y/1000)*Z", 220),
 ("CLIP SIMPLE S-43", "(X/100)+(Y/100)", 100),
 ("UNION L S-43", "8*Z", 600),
 ("MANILLA CREMONA 879", "Z", 6447),
 ("KIT DE CIERRE K-4000E DOS PUNTAS 1 HOJA EXT.", "Z", 3116),
 ("BRAZO DE PROYECCION", "Z", 24545),
-("BURLETE DOBLE CONTACTO SID 064 EPDM", "4*X+4*Y", 126),
+("BURLETE DOBLE CONTACTO SID 064 EPDM", "4*(X/1000)+4*(Y/1000)*Z", 126),
 ("CONECTOR APERTURA EXTERIOR S-43", "2*Z", 89),
 ("BULON 8MM", "2*Z", 290),
-("BURLETE BASE EPDM", "2*X+2*Y", 178),
-("BURLETE CUÑA EPDM", "2*X+2*Y", 325),
-("CLIP SIMPLE S-43", "(X/100)+(Y/100)", 51),
+("BURLETE BASE EPDM", "2*(X/1000)+2*(Y/1000)*Z", 178),
+("BURLETE CUÑA EPDM", "2*(X/1000)+2*(Y/1000)*Z", 325),
+("CLIP SIMPLE S-43", "(X/100)+(Y/100)*Z", 51),
 ("BISAGRA 3 PALETAS 6013", "3*Z", 9498),
 ("MANON 874 SAVIO", "Z", 12800),
 ("CERRADURA 44221,30 tesa", "Z", 13300),
 ("CLIP DOBLE S-43", "(X/100)+(Y/100)", 140),
-("BURLETE EPDM DC SID-064", "2*X+4*Y", 325),
+("BURLETE EPDM DC SID-064", "2*(X/1000)+4*(Y/1000)*Z", 325),
 ("TRCBPH 5/8 X 8", "14*Z", 15),
-("SOPORTE X-43 PERFIL 4317 X48mm", "2*Z", 300);
+("SOPORTE X-43 PERFIL 4317 X48mm", "2", 300);
 
 INSERT INTO Cristal (desc_cristal, precio_cristal) VALUES
 ('4+10+4', 38000),
@@ -103,12 +103,12 @@ INSERT INTO Color (nombre_color) VALUES
 ('Roble dorado'),
 ('Negro');
 
-INSERT INTO Tipo (descripcion_tipo, material, minimo, maximo) VALUES
-("VENTANA CORREDERA CHICA","ALUMINIO", 0, 1700),
-("CORREDERA GRANDE", "ALUMINIO", 1700, 2400),
-("PAÑO FIJO", "ALUMINIO", NULL, NULL),
-("VENTANA PROYECTANTE/ABATIR", "ALUMINIO", NULL, NULL),
-("PUERTA ABATIR", "ALUMINIO", NULL, NULL);
+INSERT INTO Tipo (descripcion_tipo, material, formula_ancho, formula_alto, cantidad_cristal, minimo, maximo) VALUES
+("VENTANA CORREDERA CHICA","ALUMINIO", "(X/2)-65", "Y-124", "2*Z", 0, 1700),
+("CORREDERA GRANDE", "ALUMINIO", "(X/2)-68", "Y-124", "2*Z", 1700, 2400),
+("PAÑO FIJO", "ALUMINIO", "X-64", "Y-64", "Z", NULL, NULL),
+("VENTANA PROYECTANTE/ABATIR", "ALUMINIO", "X-134", "Y-134", "Z", NULL, NULL),
+("PUERTA ABATIR", "ALUMINIO", "X-230", "Y-193", "Z", NULL, NULL);
 
 INSERT INTO TipoPerfil (id_tipo, id_perfil) VALUES
 (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),
@@ -119,7 +119,7 @@ INSERT INTO TipoPerfil (id_tipo, id_perfil) VALUES
 
 INSERT INTO TipoQuincalleria (id_tipo, id_quincalleria) VALUES
 (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15),
-(2,1),(2,2),(2,3),(2,16),(2,17),(2,18),(2,19),(2,7),(2,8),(2,20),(2,21),(2,22),(2,23),(2,24),(2,25),(2,26),(2,27),(2,28),(2,29),(2,30),(2,31),
+(2,1),(2,2),(2,3),(2,4),(2,16),(2,17),(2,18),(2,19),(2,7),(2,8),(2,20),(2,21),(2,22),(2,23),(2,24),(2,25),(2,26),(2,27),(2,28),(2,29),(2,30),(2,31),
 (3,32),(3,33),(3,34),(3,35),
 (4,36),(4,37),(4,38),(4,39),(4,40),(4,41),(4,42),(4,43),(4,44),(4,45),
-(5,32),(5,46),(5,47),(5,48),(5,49),(5,50),(5,43),(5,44),(5,51);
+(5,32),(5,46),(5,47),(5,48),(5,49),(5,50),(5,43),(5,44),(5,51),(5,52);

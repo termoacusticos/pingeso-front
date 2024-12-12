@@ -65,7 +65,7 @@ export async function calcularCostoTotal(ventana: VentanaModel, porcentaje: numb
     
             costoTotal += costoPerfil;
         }
-    
+        console.log(costoTotal);
         for (const quincalleria of quincallerias){
             const formulaCant = quincalleria.formula_quin;
     
@@ -84,13 +84,14 @@ export async function calcularCostoTotal(ventana: VentanaModel, porcentaje: numb
             }
     
             const costoQuincalleria = cantidad_quincalleria*quincalleria.precio_quin;
-    
+            console.log(costoQuincalleria);
             costoTotal += costoQuincalleria;
         }
+
     
-        const cantidadCristal = 2 * ventana.cantidad;
-        const anchoCristal = (ventana.ancho/2) - 65;
-        const altoCristal = ventana.alto - 124;
+        const cantidadCristal = evalFormula(tipo.cantidad_cristal, {Z: ventana.cantidad});
+        const anchoCristal = evalFormula(tipo.formula_ancho, {X: ventana.ancho});
+        const altoCristal = evalFormula(tipo.formula_alto, {Y: ventana.alto});
         const m2 = (anchoCristal/1000)*(altoCristal/1000)*cantidadCristal;
         const costoCristal = m2*cristal.precio_cristal;
     

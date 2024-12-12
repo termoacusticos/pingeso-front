@@ -81,6 +81,9 @@ CREATE TABLE "Tipo" (
     "id_tipo" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "descripcion_tipo" TEXT NOT NULL,
     "material" TEXT NOT NULL,
+    "formula_ancho" TEXT NOT NULL,
+    "formula_alto" TEXT NOT NULL,
+    "cantidad_cristal" TEXT NOT NULL,
     "minimo" INTEGER,
     "maximo" INTEGER
 );

@@ -107,6 +107,9 @@ model Tipo {
   id_tipo          Int    @id @default(autoincrement())
   descripcion_tipo String
   material         String
+  formula_ancho    String
+  formula_alto     String
+  cantidad_cristal String
   minimo           Int?
   maximo           Int?
 
