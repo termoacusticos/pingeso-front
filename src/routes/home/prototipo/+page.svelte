@@ -1,101 +1,14 @@
 <script lang="ts">
 	import { generatePDF } from '$lib/services/pdf_generator';
+	import type { PresupuestoModel } from '$lib/types';
 	import { onMount } from 'svelte';
+
 	let header = {
 		logos: ['/logo_negro.png', '/elige_expertos.png', '/barras.png'],
 		h2: ['/favicon.png', '/barras.png']
 	};
-	const presupuesto: PresupuestoModel = {
-		fecha: '',
-		cliente: {
-			direccion: '',
-			email: 'cliente@ghmail.com',
-			nombre: 'cliente',
-			rut: '212121',
-			telefono: '123123'
-		},
-		id_presupuesto: 0,
-		opciones: [
-			{
-				ventanas: [
-					{
-						alto: 100,
-						ancho: 100,
-						cantidad: 1,
-						color: 'Alcánts',
-						tipo_id: 0,
-						item: '',
-						material: 'PVC',
-						precio_unitario: 100000,
-						precio_total: 100000
-					},
-					{
-						alto: 100,
-						ancho: 100,
-						cantidad: 3,
-						color: 'Alcntar',
-						tipo_id: 0,
-						item: '',
-						material: 'PVC',
-						precio_unitario: 1200000,
-						precio_total: 12000000
-					},
-					{
-						alto: 100,
-						ancho: 100,
-						cantidad: 3,
-						color: 'Alcntar',
-						tipo_id: 0,
-						item: '',
-						material: 'PVC',
-						precio_unitario: 1200000,
-						precio_total: 12000000
-					}
-				]
-			},
-			{
-				ventanas: [
-					{
-						alto: 100,
-						ancho: 100,
-						cantidad: 1,
-						color: 'Alcánts',
-						tipo_id: 0,
-						item: '',
-						material: 'PVC',
-						precio_unitario: 100000,
-						precio_total: 100000
-					}
-				]
-			},
-			{
-				ventanas: [
-					{
-						alto: 100,
-						ancho: 100,
-						cantidad: 1,
-						color: 'Alcánts',
-						tipo_id: 0,
-						item: '',
-						material: 'PVC',
-						precio_unitario: 0,
-						precio_total: 0
-					},
-					{
-						alto: 100,
-						ancho: 100,
-						cantidad: 3,
-						color: 'Alcntar',
-						tipo_id: 0,
-						item: '',
-						material: 'PVC',
-						precio_unitario: 0,
-						precio_total: 0
-					}
-				]
-			}
-		]
-	};
+
+	let presupuesto: PresupuestoModel;
 
 	let images: string[] = [];
 
@@ -138,35 +51,5 @@
 	</div>
 </div>
 
-<button
-	onclick={async () => {
-		presupuesto.opciones.push({
-			ventanas: [
-				{
-					alto: 100,
-					ancho: 100,
-					cantidad: 1,
-					color: 'Alcánts',
-					tipo_id: 0,
-					item: '',
-					material: 'PVC',
-					precio_unitario: 0,
-					precio_total: 0
-				},
-				{
-					alto: 100,
-					ancho: 100,
-					cantidad: 3,
-					color: 'Alcntar',
-					tipo_id: 0,
-					item: '',
-					material: 'PVC',
-					precio_unitario: 0,
-					precio_total: 0
-				}
-			]
-		});
-		url = await generatePDF(presupuesto, header);
-	}}>GUARDAR</button>
 <!-- <a href={url} download="hola.pdf" target="_blank">DESCARGAR</a> -->
 <iframe src={url} title="PDF cotizacion" width="1200"></iframe>

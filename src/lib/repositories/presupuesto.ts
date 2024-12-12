@@ -27,7 +27,7 @@ export const getAllPresupuestos = async () => {
 };
 
 export const savePresupuesto = async (presupuesto: PresupuestoModel, id_usuario: number) => {
-	await saveCliente(presupuesto.cliente);
+	await saveCliente(presupuesto.Cliente);
 
 	return prisma.presupuesto
 		.create({
@@ -36,7 +36,7 @@ export const savePresupuesto = async (presupuesto: PresupuestoModel, id_usuario:
 				id_presupuesto: presupuesto.id_presupuesto,
 				fecha: new Date().toISOString(),
 				id_usuario: id_usuario,
-				rut_cliente: presupuesto.cliente.rut_cliente,
+				rut_cliente: presupuesto.Cliente.rut_cliente,
 				Opciones: {
 					create: presupuesto.Opciones.map((opcion) => {
 						return {

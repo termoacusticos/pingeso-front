@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { OpcionModel } from '$lib/types';
+
 	const { opcion, index }: { opcion: OpcionModel; index: number } = $props();
 
 	const border = 'border border-slate-500 ';
@@ -27,6 +29,7 @@
 			<th class="text-left">TIPO</th>
 			<th class="text-left">DESCRIPCIÓN</th>
 			<th class="text-left">COLOR</th>
+			<th class="text-left">CRITSTAL</th>
 			<th>ANCHO</th>
 			<th>ALTO</th>
 			<th>CANT</th>
@@ -35,12 +38,13 @@
 		</tr>
 	</thead>
 	<tbody>
-		{#each opcion.ventanas as ventana}
+		{#each opcion.Ventanas as ventana}
 			<tr class="border border-slate-500 text-right">
-				<td class="text-left">{ventana.material}</td>
-				<td class="text-left">{ventana.tipo_id}</td>
+				<td class="text-left">{ventana.id_material}</td>
+				<td class="text-left">{ventana.id_tipo}</td>
 				<td class="text-left">{ventana.item}</td>
-				<td class="text-left">{ventana.color}</td>
+				<td class="text-left">{ventana.id_color}</td>
+				<td class="text-left">{ventana.id_cristal}</td>
 				<td>{ventana.ancho}</td>
 				<td>{ventana.alto}</td>
 				<td>{ventana.cantidad}</td>
@@ -53,7 +57,7 @@
 		<tr class="bg-yellow-100 border border-slate-500">
 			<td colspan="8" class="text-right">TOTAL IVA INCLUIDO</td>
 			<td class="text-right">
-				{opcion.ventanas.reduce(
+				{opcion.Ventanas.reduce(
 					(accumulator, currentValue) => accumulator + currentValue.precio_total,
 					0
 				)}

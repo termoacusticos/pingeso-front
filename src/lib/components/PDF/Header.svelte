@@ -1,5 +1,7 @@
 <script lang="ts">
-	const { cliente }: { cliente: ClienteEntity | undefined } = $props();
+	import type { Cliente } from '@prisma/client';
+
+	const { cliente }: { cliente: Cliente | undefined } = $props();
 </script>
 
 <div class="grid grid-cols-6 grid-rows-1 w-full gap-4 place-items-center">

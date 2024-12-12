@@ -1,22 +1,34 @@
 <script lang="ts">
 	import DatosCotizacion from '$lib/components/DatosCotizacion.svelte';
 	import OpcionVentanas from '$lib/components/OpcionVentanas.svelte';
-	import { itemOptions, 
-		tipoOptions, 
-		anchoOptions, 
-		altoOptions, 
-		cantidadOptions, cristalOptions } from '$lib/store';
-	import type { ClienteUI, OpcionModel, OpcionUI, VentanaModel, VentanaUI } from '$lib/types';
+	import {
+		itemOptions,
+		tipoOptions,
+		anchoOptions,
+		altoOptions,
+		cantidadOptions,
+		cristalOptions
+	} from '$lib/store';
+	import type {
+		ClienteUI,
+		ConstantData,
+		OpcionModel,
+		OpcionUI,
+		PresupuestoModel,
+		VentanaModel,
+		VentanaUI
+	} from '$lib/types';
 	import type { Cliente, Color, Cristal, Material, Tipo } from '@prisma/client';
-	const { data } = $props();
+
+	const { data }: {data: ConstantData} = $props();
 
 	let materiales: Material[] = data.materiales;
 	let colores: Color[] = data.colores;
 	let tipos: Tipo[] = data.tipos;
 	let cristales: Cristal[] = data.cristales;
 
-	let materialesNombre: string[] = $state(materiales.map(material => material.nombre_material));
-	let coloresNombre: string[] = $state(colores.map(color => color.nombre_color));
+	let materialesNombre: string[] = $state(materiales.map((material) => material.nombre_material));
+	let coloresNombre: string[] = $state(colores.map((color) => color.nombre_color));
 
 	let mostrarAgregarOpcion = $state(false);
 	let materialModal = $state('');
@@ -42,7 +54,7 @@
 	$inspect('opciones:', opciones);
 	$inspect('materialModal:', materialModal);
 	$inspect('colorModal:', colorModal);
-	$inspect('cliente: ', cliente)
+	$inspect('cliente: ', cliente);
 
 	function cambiarAgregarOpcion() {
 		mostrarAgregarOpcion = !mostrarAgregarOpcion;
@@ -79,10 +91,11 @@
 	function convertirVentanas(ventanas: VentanaUI[]): VentanaModel[] {
 		return ventanas.map((ventana) => {
 			// Buscar el id del material, tipo, color y cristal en sus respectivas listas
-			const id_material = materiales.find(m => m.nombre_material === ventana.material)?.id_material ?? 0;
-			const id_tipo = tipos.find(t => t.descripcion_tipo === ventana.tipo)?.id_tipo ?? 0;
-			const id_color = colores.find(c => c.nombre_color === ventana.color)?.id_color ?? 0;
-			const id_cristal = cristales.find(c => c.desc_cristal === ventana.cristal)?.id_cristal ?? 0;
+			const id_material =
+				materiales.find((m) => m.nombre_material === ventana.material)?.id_material ?? 0;
+			const id_tipo = tipos.find((t) => t.descripcion_tipo === ventana.tipo)?.id_tipo ?? 0;
+			const id_color = colores.find((c) => c.nombre_color === ventana.color)?.id_color ?? 0;
+			const id_cristal = cristales.find((c) => c.desc_cristal === ventana.cristal)?.id_cristal ?? 0;
 
 			// Devolver el objeto convertido a VentanaModel
 			return {
@@ -95,24 +108,32 @@
 				alto: ventana.alto,
 				ancho: ventana.ancho,
 				precio_unitario: ventana.precio_unitario,
-				precio_total: ventana.precio_total,
+				precio_total: ventana.precio_total
 			};
 		});
 	}
 
 	function crearOpcionesModel(opciones: OpcionUI[]): { Ventanas: VentanaModel[] }[] {
-		return opciones.map(opcion => ({
+		return opciones.map((opcion) => ({
 			Ventanas: convertirVentanas(opcion.ventanas)
 		}));
 	}
 
 	function crearCotizacion() {
 		let opcionesModel: OpcionModel[] = crearOpcionesModel(opciones);
-		let cotizacion = {
-			cliente: cliente,
+		let clienteModel: Cliente = cliente;
+		let cotizacion: PresupuestoModel = {
+			id_usuario: 0,
 			fecha: '',
+			Cliente: {
+				nombre: cliente.nombre,
+				rut_cliente: cliente.rut_cliente,
+				direccion: cliente.direccion,
+				email: cliente.email,
+				telefono: cliente.telefono
+			},
 			Opciones: opcionesModel
-		}
+		};
 		console.log(cotizacion);
 		fetch('/api/presupuesto', {
 			method: 'POST',
@@ -125,12 +146,12 @@
 </script>
 
 <div class="flex flex-col bg-gray-100 py-6 px-4 gap-5 xl:w-full 2xl:w-[70%] mx-auto">
-	<DatosCotizacion bind:cliente={cliente}/>
+	<DatosCotizacion bind:cliente />
 	<!-- Ventanas -->
 	<div class="space-y-6 w-full">
 		{#each opciones as opcion, index}
 			<OpcionVentanas
-			data={data}
+				{data}
 				agregarVentana={() => {
 					$tipoOptions.push('');
 					$itemOptions.push('');
@@ -156,7 +177,7 @@
 						];
 					}
 				}}
-				eliminarVentana = {() => {
+				eliminarVentana={() => {
 					// Recorrer cada opción en 'opciones'
 					opciones.forEach((opcion) => {
 						// Filtrar las ventanas de la opción actual para eliminar la del índice correspondiente
@@ -169,7 +190,6 @@
 					cristalOptions.update((current) => current.filter((_, i) => i !== index));
 					altoOptions.update((current) => current.filter((_, i) => i !== index));
 					anchoOptions.update((current) => current.filter((_, i) => i !== index));
-				
 				}}
 				bind:opcion={opciones[index]}
 				{index}

@@ -1,6 +1,8 @@
 <script lang="ts">
+	import type { CotizacionUI } from "$lib/types";
+
 	interface Props {
-		cotizacion: Cotizacion;
+		cotizacion: CotizacionUI;
 	}
 
 	let { cotizacion }: Props = $props();
@@ -24,7 +26,7 @@
 	</div>
 	<div class="flex flex-col overflow-hidden text-right">
 		<p>Valor total</p>
-		<p class="text-green-600 font-bold">${cotizacion.precio}</p>
+		<p class="text-green-600 font-bold">${cotizacion.valor_total}</p>
 	</div>
 	<button class="w-full flex flex-col overflow-hidden text-right items-end" aria-label="pdf">
 		<span class="size-8 iconify mdi--pdf-box bg-red-600 hover:bg-red-500 transition-all"></span>

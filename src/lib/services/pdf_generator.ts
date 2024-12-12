@@ -1,3 +1,4 @@
+import type { OpcionModel, PresupuestoModel } from '$lib/types';
 import {
 	PDFDocument,
 	PDFFont,
@@ -174,7 +175,7 @@ function drawTable(opcion: OpcionModel) {
 
 	//#region ventanas
 	// Dibujar filas de datos desde las opciones
-	opcion.ventanas.forEach((ventana, index) => {
+	opcion.Ventanas.forEach((ventana, index) => {
 		currentX = marginLeft;
 
 		// Dibujar bordes de las filas
@@ -188,10 +189,11 @@ function drawTable(opcion: OpcionModel) {
 		});
 
 		const row = [
-			ventana.material,
-			ventana.tipo_id.toString(),
+			ventana.id_material.toString(),
+			ventana.id_tipo.toString(),
 			ventana.item || '-',
-			ventana.color,
+			ventana.id_color.toString(),
+			ventana.id_cristal.toString(),
 			ventana.ancho.toString(),
 			ventana.alto.toString(),
 			ventana.cantidad.toString(),
@@ -231,7 +233,7 @@ function drawTable(opcion: OpcionModel) {
 	});
 
 	//#region footer
-	const totalIvaIncluido = opcion.ventanas
+	const totalIvaIncluido = opcion.Ventanas
 		.reduce((sum, ventana) => sum + ventana.precio_total, 0)
 		.toLocaleString();
 	const footerValues = [totalIvaIncluido, '120000'];
@@ -358,20 +360,20 @@ export const generatePDF = async (
 	await drawImageRow(header.logos, 100);
 
 	const clienteTexts = [
-		'SEÑOR(A): ' + presupuesto.cliente?.nombre,
+		'SEÑOR(A): ' + presupuesto.Cliente?.nombre,
 		'A CONTINUACIÓN ENTREGAMOS PROPUESTA PARA SU PROYECTO:'
 	];
 	drawLeftText(clienteTexts);
 	currentY -= verticalGap;
 
 	//#region opciones
-	for (let opcionIndex = 0; opcionIndex < presupuesto.opciones.length; opcionIndex++) {
-		const opcion = presupuesto.opciones[opcionIndex];
+	for (let opcionIndex = 0; opcionIndex < presupuesto.Opciones.length; opcionIndex++) {
+		const opcion = presupuesto.Opciones[opcionIndex];
 
 		let optRowSize = boldFont.widthOfTextAtSize('AAAAAAAAAA', fontSize + 2);
 		let optColSize = boldFont.heightAtSize(fontSize + 3);
 
-		let opcionHeight = opcion.ventanas.length * rowHeight;
+		let opcionHeight = opcion.Ventanas.length * rowHeight;
 		opcionHeight += (footerText.length + 1) * rowHeight;
 		opcionHeight += optColSize * 2;
 

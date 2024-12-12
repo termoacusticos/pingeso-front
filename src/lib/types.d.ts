@@ -5,7 +5,7 @@ type ConstantData = {
 	colores: Color[];
 	cristales: Cristal[];
 	tipos: Tipo[];
-}
+};
 
 type ClienteUI = {
 	rut_cliente: string;
@@ -35,13 +35,13 @@ type PresupuestoUI = {
 	fecha: string;
 	cliente: ClienteUI;
 	Opciones: OpcionUI[];
-}
+};
 
 type PresupuestoModel = {
 	id_presupuesto?: number;
 	id_usuario: number;
 	fecha: string;
-	cliente: Cliente;
+	Cliente: Cliente;
 	Opciones: OpcionModel[];
 };
 
@@ -62,7 +62,7 @@ type VentanaUI = {
 	ancho: number;
 	precio_unitario: number;
 	precio_total: number;
-}
+};
 
 type VentanaModel = {
 	id_ventana?: number;

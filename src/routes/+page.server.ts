@@ -31,13 +31,13 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	});
 
 	const constantes: ConstantData = await fetch('api/constantes', {
-        method: 'GET'
-    }).then((response) => {
+		method: 'GET'
+	}).then((response) => {
 		console.log(response);
-        return response.json();
-    });
-	console.log('constantes afuera')
-	console.log(constantes)
+		return response.json();
+	});
+	console.log('constantes afuera');
+	console.log(constantes);
 
 	// const login: { token: string } = await fetch('/api/login', {
 	// 	method: 'POST',
@@ -50,10 +50,10 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	const nuevoPresupuesto: PresupuestoModel = {
 		fecha: '',
 		id_usuario: 1,
-		cliente: {
+		Cliente: {
 			direccion: '',
-			email: 'hola123',
-			nombre: 'pogencio',
+			email: 'hola123@gmail',
+			nombre: 'Carlos',
 			rut_cliente: '2121',
 			telefono: '123'
 		},
@@ -85,7 +85,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	});
 	console.log(resultado);
 
-	/* await fetch('/api/presupuesto', {
+	await fetch('/api/presupuesto', {
 		method: 'DELETE'
 	}).then((response) => {
 		return response.json();
@@ -97,12 +97,11 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	// 	return response.json();
 	// });
 	// console.log(constantes);
-	*/
 
 	return {
 		materiales: constantes.materiales,
 		colores: constantes.colores,
 		cristales: constantes.cristales,
-		tipos: constantes.tipos,
+		tipos: constantes.tipos
 	};
 };
