@@ -2,7 +2,7 @@ import { redirect } from '@sveltejs/kit';
 import { inspect } from 'node:util';
 import type { PageServerLoad } from './$types';
 import type { Usuario } from '@prisma/client';
-import type { JWTBody, PresupuestoModel } from '$lib/types';
+import type { ConstantData, JWTBody, PresupuestoModel } from '$lib/types';
 import { log } from 'node:console';
 
 export const load: PageServerLoad = async ({ fetch }) => {
@@ -22,12 +22,30 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		is_admin: 0
 	};
 
-	// const registro = await fetch('/api/register', {
+	const registro = await fetch('/api/register', {
+		method: 'POST',
+		body: JSON.stringify(user)
+	}).then((response) => {
+		console.log(response);
+		return response.json();
+	});
+
+	const constantes: ConstantData = await fetch('api/constantes', {
+        method: 'GET'
+    }).then((response) => {
+		console.log(response);
+        return response.json();
+    });
+	console.log('constantes afuera')
+	console.log(constantes)
+
+	// const login: { token: string } = await fetch('/api/login', {
 	// 	method: 'POST',
-	// 	body: JSON.stringify(user)
+	// 	body: JSON.stringify({ email: user.email, password: user.password })
 	// }).then((response) => {
 	// 	return response.json();
 	// });
+	// console.log(login);
 
 	const nuevoPresupuesto: PresupuestoModel = {
 		fecha: '',
@@ -46,6 +64,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 						alto: 100,
 						ancho: 100,
 						cantidad: 1,
+						item: '',
 						id_color: 1,
 						id_tipo: 1,
 						id_cristal: 1,
@@ -56,6 +75,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 						alto: 200,
 						ancho: 200,
 						cantidad: 1,
+						item: '',
 						id_color: 2,
 						id_tipo: 2,
 						id_cristal: 2,
@@ -66,13 +86,32 @@ export const load: PageServerLoad = async ({ fetch }) => {
 			}
 		]
 	};
-	const resultado = await fetch('/api/calculadora', {
+	const resultado = await fetch('/api/presupuesto', {
 		method: 'POST',
-		body: JSON.stringify(nuevoPresupuesto.Opciones[0].Ventanas[0])
+		body: JSON.stringify(nuevoPresupuesto)
 	}).then((response) => {
 		return response.json();
 	});
 	console.log(resultado);
 
-	return {};
+	/* await fetch('/api/presupuesto', {
+		method: 'DELETE'
+	}).then((response) => {
+		return response.json();
+	});
+
+	// const constantes = await fetch('/api/constantes', {
+	// 	method: 'GET'
+	// }).then((response) => {
+	// 	return response.json();
+	// });
+	// console.log(constantes);
+	*/
+
+	return {
+		materiales: constantes.materiales,
+		colores: constantes.colores,
+		cristales: constantes.cristales,
+		tipos: constantes.tipos,
+	};
 };

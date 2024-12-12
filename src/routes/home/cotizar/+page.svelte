@@ -1,25 +1,37 @@
 <script lang="ts">
 	import DatosCotizacion from '$lib/components/DatosCotizacion.svelte';
 	import OpcionVentanas from '$lib/components/OpcionVentanas.svelte';
-	import { itemOptions, tipoOptions, anchoOptions, altoOptions, cantidadOptions } from '$lib/store';
+	import { itemOptions, 
+		tipoOptions, 
+		anchoOptions, 
+		altoOptions, 
+		cantidadOptions, materiales, colores, tipos, cristales, cristalOptions } from '$lib/store';
+	import type { ClienteUI, OpcionModel, OpcionUI, VentanaModel, VentanaUI } from '$lib/types';
+	import type { Cliente, Material } from '@prisma/client';
 
-	const materials = ['Madera', 'Aluminio', 'PVC'];
-	
-	const items = ['Ventana Simple', 'Ventana Doble', 'Ventana Termopanel'];
-	const colores = ['Blanco', 'Rojo', 'Violeta'];
+	let materialesNombre: string[] = $state([]);
+	let coloresNombre: string[] = $state([]);
+
+	colores.subscribe((coloresList) => {
+		coloresNombre = coloresList.map(color => color.nombre_color);
+	})
+
+	materiales.subscribe((materialesList) => {
+		materialesNombre = materialesList.map(material => material.nombre_material);
+	});
 
 	let mostrarAgregarOpcion = $state(false);
 	let materialModal = $state('');
 	let colorModal = $state('');
-	let cliente: Cliente = $state({
+	let cliente: ClienteUI = $state({
 		nombre: '',
-		rut: '',
+		rut_cliente: '',
 		direccion: '',
 		email: '',
 		telefono: ''
 	});
 
-	let opciones: Opcion[] = $state([
+	let opciones: OpcionUI[] = $state([
 		{
 			material: '',
 			color: '',
@@ -32,6 +44,7 @@
 	$inspect('opciones:', opciones);
 	$inspect('materialModal:', materialModal);
 	$inspect('colorModal:', colorModal);
+	$inspect('cliente: ', cliente)
 
 	function cambiarAgregarOpcion() {
 		mostrarAgregarOpcion = !mostrarAgregarOpcion;
@@ -63,10 +76,64 @@
 	function eliminarOpcion(index: any) {
 		opciones = opciones.filter((_, i) => i !== index);
 	}
+
+	// Función para convertir la lista de VentanaUI a VentanaModel
+	function convertirVentanas(ventanas: VentanaUI[]): VentanaModel[] {
+		return ventanas.map((ventana) => {
+			// Buscar el id del material, tipo, color y cristal en sus respectivas listas
+			const id_material = $materiales.find(m => m.nombre_material === ventana.material)?.id_material ?? 0;
+			const id_tipo = $tipos.find(t => t.descripcion_tipo === ventana.tipo)?.id_tipo ?? 0;
+			const id_color = $colores.find(c => c.nombre_color === ventana.color)?.id_color ?? 0;
+			const id_cristal = $cristales.find(c => c.desc_cristal === ventana.cristal)?.id_cristal ?? 0;
+
+			// Devolver el objeto convertido a VentanaModel
+			return {
+				cantidad: ventana.cantidad,
+				id_material,
+				id_tipo,
+				item: ventana.item,
+				id_color,
+				id_cristal,
+				alto: ventana.alto,
+				ancho: ventana.ancho,
+				precio_unitario: ventana.precio_unitario,
+				precio_total: ventana.precio_total,
+			};
+		});
+	}
+
+	function crearOpcionesModel(opciones: OpcionUI[]): { Ventanas: VentanaModel[] }[] {
+		return opciones.map(opcion => ({
+			Ventanas: convertirVentanas(opcion.ventanas)
+		}));
+	}
+
+	function crearCotizacion() {
+		let opcionesModel: OpcionModel[] = crearOpcionesModel(opciones);
+		let clienteModel: Cliente = cliente;
+		let cotizacion = {
+			cliente: {
+				nombre: cliente.nombre,
+				rut_cliente: cliente.rut_cliente,
+				direcccion: cliente.direccion,
+				email: cliente.email,
+				telefono: cliente.telefono
+			},
+			Opciones: opcionesModel
+		}
+		console.log(cotizacion);
+		fetch('/api/presupuesto', {
+			method: 'POST',
+			body: JSON.stringify(cotizacion)
+		}).then((response) => {
+			console.log(response);
+			return response.json();
+		});
+	}
 </script>
 
 <div class="flex flex-col bg-gray-100 py-6 px-4 gap-5 xl:w-full 2xl:w-[70%] mx-auto">
-	<DatosCotizacion {cliente}/>
+	<DatosCotizacion bind:cliente={cliente}/>
 	<!-- Ventanas -->
 	<div class="space-y-6 w-full">
 		{#each opciones as opcion, index}
@@ -74,6 +141,7 @@
 				agregarVentana={() => {
 					$tipoOptions.push('');
 					$itemOptions.push('');
+					$cristalOptions.push('');
 					$altoOptions.push(0);
 					$anchoOptions.push(0);
 					$cantidadOptions.push(1);
@@ -82,9 +150,10 @@
 							...opcion.ventanas,
 							{
 								material: opcion.material,
-								id_tipo: -1,
+								tipo: '',
 								item: '',
 								cantidad: 1,
+								cristal: '',
 								color: opcion.color,
 								alto: 0,
 								ancho: 0,
@@ -104,6 +173,7 @@
 					itemOptions.update((current) => current.filter((_, i) => i !== index));
 					tipoOptions.update((current) => current.filter((_, i) => i !== index));
 					cantidadOptions.update((current) => current.filter((_, i) => i !== index));
+					cristalOptions.update((current) => current.filter((_, i) => i !== index));
 					altoOptions.update((current) => current.filter((_, i) => i !== index));
 					anchoOptions.update((current) => current.filter((_, i) => i !== index));
 				
@@ -115,11 +185,16 @@
 		{/each}
 
 		<!-- Botón para agregar nueva ventana -->
-		<div class="text-center">
+		<div class="flex flex-row w-full justify-center gap-10">
 			<button
 				class="mt-4 bg-teal-600 hover:bg-teal-500 font-bold transition-all text-white px-4 py-2 rounded"
 				onclick={cambiarAgregarOpcion}>
 				+ Agregar otra opción
+			</button>
+			<button
+				class="mt-4 bg-blue-600 hover:bg-blue-700 font-bold transition-all text-white px-4 py-2 rounded"
+				onclick={crearCotizacion}>
+				Crear Cotización
 			</button>
 		</div>
 	</div>
@@ -148,7 +223,7 @@
 							bind:value={materialModal}
 							class="w-full border rounded-md px-3 py-2 text-gray-700 focus:ring-2 focus:ring-teal-500">
 							<option value="" disabled>Selecciona un material</option>
-							{#each materials as option}
+							{#each materialesNombre as option}
 								<option value={option}>{option}</option>
 							{/each}
 						</select>
@@ -162,7 +237,7 @@
 							bind:value={colorModal}
 							class="w-full border rounded-md px-3 py-2 text-gray-700 focus:ring-2 focus:ring-teal-500">
 							<option value="" disabled>Selecciona un color</option>
-							{#each colores as option}
+							{#each coloresNombre as option}
 								<option value={option}>{option}</option>
 							{/each}
 						</select>
@@ -181,85 +256,4 @@
 			</div>
 		</div>
 	{/if}
-
-	<!--
-	<div class="flex flex-col items-center">
-		<h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Crear Cotización de Ventanas</h1>
-		<div class="flex flex-col gap-5 w-full items-center">
-			// Seleccionar Materiales
-			<div class="w-full max-w-4xl bg-white border border-gray-300">
-				<div class="flex px-4 py-2 bg-gray-200 font-bold text-left">
-					<div class="w-1/4 text-center">Material (Hasta 3)</div>
-					<div class="w-1/4 text-center">Calidad</div>
-					<div class="w-1/4 text-center">Descripción 1</div>
-					<div class="w-1/4 text-center">Descripción 2</div>
-				</div>
-				<div>
-					{#each materiales as material}
-						<div class="flex border-t">
-							<div class="w-1/4 px-4 py-2">
-								<label class="flex items-center space-x-2">
-									<input
-										type="checkbox"
-										bind:checked={material.seleccionado}
-										oninput={() => {
-											opciones.push({
-												tipo: material.nombre,
-												item: '',
-												cantidad: '',
-												color: '',
-												alto: '',
-												ancho: '',
-												vidrio: '',
-												precio: ''
-											});
-										}} />
-									<span>{material.nombre}</span>
-								</label>
-							</div>
-							<div class="w-1/4 px-4 py-2">{material.calidad}</div>
-							<div class="w-1/4 px-4 py-2">{material.descripcion1}</div>
-							<div class="w-1/4 px-4 py-2">{material.descripcion2}</div>
-						</div>
-					{/each}
-				</div>
-			</div>			
-			<!-- Seleccionar Color
-			<div class="w-full max-w-4xl bg-white border border-gray-300 flex flex-col items-center">
-				<p class="w-full py-2 bg-gray-200 font-bold text-center">Color (Hasta 2 opciones)</p>
-				<div class="w-full">
-					{#each coloresDisponibles as color}
-						<div class="border-t px-4 py-2 flex justify-center">
-							<label class="flex flex-row w-full space-x-2">
-								<input
-									type="checkbox"
-									checked={color.seleccionado}
-									onclick={(event) => manejarSeleccion(event, color)} />
-								<span>{color.nombre}</span>
-							</label>
-						</div>
-					{/each}
-				</div>
-			</div>
-		</div>
-
-		<div class="flex justify-center mt-6 rounded-lg bg-white shadow-lg">
-			<table class="min-w-max border-gray-100">
-				<tbody>
-					<tr>
-						<td class="px-6 py-2 bg-gray-200 font-bold">DESPERDICIO</td>
-						<td class="px-4 py-2">
-							<input type="radio" id="desperdicio_si" name="desperdicio" value="SI" /> SI
-							<input type="radio" id="desperdicio_no" name="desperdicio" value="NO" /> NO
-						</td>
-					</tr>
-					<tr>
-						<td class="px-4 py-2 bg-gray-200 font-bold">GANANCIA TOTAL</td>
-						<td class="px-4 py-2">5%</td> <!-- Valor obtenido
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-	-->
 </div>

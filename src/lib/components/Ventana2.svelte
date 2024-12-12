@@ -6,11 +6,16 @@
 		tipoOptions,
 		cantidadOptions,
 		altoOptions,
-		anchoOptions
+		anchoOptions, 
+		tipos, cristales,
+		cristalOptions
+
 	} from '$lib/store';
+	import type { VentanaUI } from '$lib/types';
+	import type { Cristal, Tipo } from '@prisma/client';
 
 	interface Props {
-		ventana: VentanaEntity;
+		ventana: VentanaUI;
 		id: number;
 		option_index: number;
 		mostrar_eliminar: boolean;
@@ -25,10 +30,8 @@
 		eliminarVentana
 	}: Props = $props();
 
-	const materiales = ['Madera', 'Aluminio', 'PVC'];
-	const tipos = ['Corredera', 'Abatible', 'Oscilobatiente'];
-	const items = ['Ventana Simple', 'Ventana Doble', 'Ventana Termopanel'];
-	const colores = ['Blanco', 'Rojo', 'Violeta'];
+	const tiposLista: Tipo[] = $tipos;
+	const cristalesLista: Cristal[] = $cristales;
 
 	//$inspect('tipo ventana', ventana.tipo)
 	//$inspect('lista tipo', $tipoOptions);
@@ -42,6 +45,12 @@
     itemOptions.subscribe((value) => {
         if (value[id] !== undefined) {
             ventana.item = value[id]; // Actualiza solo si hay un valor definido
+        }
+    });
+
+	cristalOptions.subscribe((value) => {
+        if (value[id] !== undefined) {
+            ventana.cristal = value[id]; // Actualiza solo si hay un valor definido
         }
     });
 
@@ -92,8 +101,26 @@
 		}} 
 		class="p-2 rounded-md bg-white border">
 			<option selected disabled value="">Selecciona un tipo</option>
-			{#each tipos as option}
-				<option>{option}</option>
+			{#each tiposLista as option}
+				<option>{option.descripcion_tipo}</option>
+			{/each}
+		</select>
+	</td>
+
+	<!-- Tipo Selector -->
+	<td class="px-1 py-1">
+		<select bind:value={ventana.cristal} 
+		onchange={() => {
+			cristalOptions.update((current) => {
+				const updated = [...current]; // Crear una copia del arreglo actual
+				updated[id] = ventana.cristal;
+				return updated;
+			});
+		}} 
+		class="p-2 rounded-md bg-white border">
+			<option selected disabled value="">Selecciona un tipo</option>
+			{#each cristalesLista as option}
+				<option>{option.desc_cristal}</option>
 			{/each}
 		</select>
 	</td>

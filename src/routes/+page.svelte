@@ -1,8 +1,17 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { materiales, colores, cristales, tipos } from '$lib/store.js';
+	import type { Material } from '@prisma/client';
+	const { data } = $props();
 	let usuario = $state('');
 	let password = $state('');
 	let error = $state('');
+
+	materiales.set(data.materiales)
+	colores.set(data.colores)
+	cristales.set(data.cristales)
+	tipos.set(data.tipos)
+	
 
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
