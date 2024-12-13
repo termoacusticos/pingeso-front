@@ -1,6 +1,8 @@
 import { writable } from 'svelte/store';
 import type { Color, Cristal, Material, Tipo } from '@prisma/client';
+import type { PresupuestoModel } from './types';
 
+export const presupuesto = writable<PresupuestoModel>();
 // Stores para los valores de los modales
 export const materialOptions = writable<string[]>([]);
 export const colorOptions = writable<string[]>([]);

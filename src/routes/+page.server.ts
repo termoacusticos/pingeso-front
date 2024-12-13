@@ -61,6 +61,22 @@ export const load: PageServerLoad = async ({ fetch }) => {
 			{
 				Ventanas: [
 					{
+						alto: 1000,
+						ancho: 1700,
+						cantidad: 2,
+						item: 'ventana',
+						id_material: 1,
+						id_color: 1,
+						id_tipo: 1,
+						id_cristal: 1,
+						precio_unitario: 8000000,
+						precio_total: 8000000
+					}
+				]
+			},
+			{
+				Ventanas: [
+					{
 						alto: 100,
 						ancho: 100,
 						cantidad: 2,
@@ -69,8 +85,8 @@ export const load: PageServerLoad = async ({ fetch }) => {
 						id_color: 1,
 						id_tipo: 1,
 						id_cristal: 1,
-						precio_unitario: 0,
-						precio_total: 0
+						precio_unitario: 12000000,
+						precio_total: 12000000
 					}
 				]
 			}
@@ -85,11 +101,11 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	});
 	console.log(resultado);
 
-	await fetch('/api/presupuesto', {
-		method: 'DELETE'
-	}).then((response) => {
-		return response.json();
-	});
+	// await fetch('/api/presupuesto', {
+	// 	method: 'DELETE'
+	// }).then((response) => {
+	// 	return response.json();
+	// });
 
 	// const constantes = await fetch('/api/constantes', {
 	// 	method: 'GET'

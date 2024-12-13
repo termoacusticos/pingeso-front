@@ -1,14 +1,14 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { generatePDF } from '$lib/services/pdf_generator';
+	import { presupuesto } from '$lib/store';
 	import type { PresupuestoModel } from '$lib/types';
 	import { onMount } from 'svelte';
 
 	let header = {
-		logos: ['/logo_negro.png', '/elige_expertos.png', '/barras.png'],
+		logos: ['/ejemplo.png'],
 		h2: ['/favicon.png', '/barras.png']
 	};
-
-	let presupuesto: PresupuestoModel;
 
 	let images: string[] = [];
 
@@ -29,7 +29,8 @@
 
 	let url = '';
 	onMount(async () => {
-		url = await generatePDF(presupuesto, header);
+		if (!$presupuesto) goto('/home/historial');
+		url = await generatePDF($presupuesto, header);
 	});
 </script>
 

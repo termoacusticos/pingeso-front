@@ -2,6 +2,8 @@
 	import { onMount } from 'svelte';
 	import HistoryElement from '$lib/components/HistoryElement.svelte';
 	import type { PresupuestoModel } from '$lib/types';
+	import { presupuesto } from '$lib/store';
+	import { goto } from '$app/navigation';
 
 	interface Props {
 		data: any;
@@ -147,14 +149,20 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each cotizaciones as cotizacion}
+			{#each paginatedCotizaciones as cotizacion}
 				<tr class="border-b border-gray-200 hover:bg-gray-100">
 					<td class="py-3 px-4">{cotizacion.id_presupuesto}</td>
 					<td class="py-3 px-4 truncate">{cotizacion.Cliente?.nombre}</td>
 					<td class="py-3 px-4">{cotizacion.Cliente?.rut_cliente}</td>
 					<td class="py-3 px-4">{cotizacion.fecha}</td>
 					<td class="py-3 px-4">
-						<button class="w-full flex flex-col overflow-hidden text-right" aria-label="pdf">
+						<button
+							class="w-full flex flex-col overflow-hidden text-right"
+							aria-label="pdf"
+							onclick={() => {
+								presupuesto.set(cotizacion);
+								goto('/home/prototipo');
+							}}>
 							<span class="size-8 iconify mdi--pdf-box bg-red-600 hover:bg-red-500 transition-all"
 							></span>
 						</button>
