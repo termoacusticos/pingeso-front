@@ -1,5 +1,5 @@
 INSERT INTO Perfil (codigo_per, formula_dim, formula_cant, kg_ml_per, valor) VALUES 
-(6901, "X-12", "1", 0.692,  5275),
+(6901, "X-12", "1", 0.692, 5275),
 (6902, "X-12", "1", 0.677, 5275),
 (6903, "Y", "2", 0.550, 5275),
 (6915, "(X/2)-13", "4*Z", 0.569, 5275),
@@ -21,7 +21,35 @@ INSERT INTO Perfil (codigo_per, formula_dim, formula_cant, kg_ml_per, valor) VAL
 (4312, "Y-25", "2*Z", 1.047, 5000),
 (4313, "X-212", "Z", 0.801, 5000),
 (4314, "X-212", "4*Z", 0.158, 5000),
-(4314, "Y-174", "4*Z", 0.158, 5000);
+(4314, "Y-174", "4*Z", 0.158, 5000),
+(65201, "(X+6)/1000", "2", NULL, 36984),
+(65201, "(Y+6)/1000", "2", NULL, 36984),
+(61011, "(X-85)/1000", "2", NULL, 9172),
+(61011, "(Y-85)/1000", "2", NULL, 9172),
+(5050, "(X-80)/1000", "2", NULL, 8682),
+(5050, "(Y-80)/1000", "2", NULL, 8682),
+(65201, "(X+6)/1000", "1", NULL, 36984),
+(69070, "(X-85)/1000", "1", NULL, 9172),
+(69070, "(Y-85)/1000", "2", NULL, 9172),
+(65210, "(X-58)/1000", "2", NULL, 63808),
+(65210, "(Y-32)/1000", "2", NULL, 63808),
+(69025, "(X-222)/1000", "2", NULL, 7863),
+(69025, "(Y-195)/1000", "2", NULL, 7863),
+(4040, "(X-221)/1000", "2", NULL, 8662),
+(4040, "(Y-194)/1000", "2", NULL, 8662),
+(65212, "(X-58)/1000", "2", NULL, 45406),
+(65212, "(Y-58)/1000", "2", NULL, 45406),
+(61011, "(X-178)/1000", "2", NULL, 9172),
+(61011, "(Y-178)/1000", "2", NULL, 9172),
+(3030, "(X-173)/1000", "2", NULL, 8662),
+(3030, "(Y-173)/1000", "2", NULL, 8662),
+(67401, "(X+6)/1000", "2", NULL, 54777),
+(67401, "(Y+6)/1000", "2", NULL, 54777),
+(69040, "(X-70)/1000", "2", NULL, 13678),
+(69040, "(Y-70)/1000", "2", NULL, 13678),
+(67415, "((X/2)-3.5)/1000", "4", NULL, 49682),
+(67415, "(Y-88)/1000", "4", NULL, 49682);
+
 
 
 INSERT INTO Quincalleria (desc_quin, formula_quin, precio_quin) VALUES 
@@ -107,20 +135,25 @@ INSERT INTO Material (nombre_material) VALUES
 ("ALUMINIO"),
 ("PVC");
 
-INSERT INTO Tipo (descripcion_tipo, id_material, formula_ancho, formula_alto, cantidad_cristal, minimo, maximo) VALUES
-("VENTANA CORREDERA CHICA", 1, "(X/2)-65", "Y-124", "2*Z", 0, 1700),
-("CORREDERA GRANDE", 1, "(X/2)-68", "Y-124", "2*Z", 1700, 2400),
-("PAÑO FIJO", 1, "X-64", "Y-64", "Z", NULL, NULL),
-("VENTANA PROYECTANTE/ABATIR", 1, "X-134", "Y-134", "Z", NULL, NULL),
-("PUERTA ABATIR", 1, "X-230", "Y-193", "Z", NULL, NULL);
-
+INSERT INTO Tipo (descripcion_tipo, id_material, formula_ancho, formula_alto, cantidad_cristal, porcentaje_quinc, largo_perfil, minimo, maximo) VALUES
+("VENTANA CORREDERA CHICA", 1, "(X/2)-65", "Y-124", "2*Z", NULL, NULL, 0, 1700),
+("CORREDERA GRANDE", 1, "(X/2)-68", "Y-124", "2*Z", NULL, NULL, 1700, 2400),
+("PAÑO FIJO", 1, "X-64", "Y-64", "Z", NULL NULL, NULL, NULL),
+("VENTANA PROYECTANTE/ABATIR", 1, "X-134", "Y-134", "Z", NULL, NULL, NULL, NULL),
+("PUERTA ABATIR", 1, "X-230", "Y-193", "Z", NULL, NULL , NULL, NULL),
+("MARCO FIJO", 2, "X-90", "Y-90", "1", 10, 5.8, NULL, NULL),
+("PUERTA ABATIR EXTERIOR", 2, "(X-58)-173", "(Y-32)-173", "1", 19, 5.8, NULL, NULL),
+("ABATIR INTERIOR", 2, "X-183", "Y-183", "1", 8, 5.8, NULL, NULL),
+("CORREDERA CHICA", 2, "(X/2)-129.5", "Y-214", "2", 16, 5.8, NULL, NULL),
+("CORREDERA GRANDE", 2, "(X/2)-156.5", "Y-250", "2", 10, 5.8, NULL, NULL);
 
 INSERT INTO TipoPerfil (id_tipo, id_perfil) VALUES
 (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),
 (2,1),(2,2),(2,3),(2,4),(2,7),(2,8),
 (3,9),(3,10),(3,11),(3,12),
 (4,9),(4,10),(4,13),(4,14),(4,15),(4,16),
-(5,17),(5,18),(5,19),(5,20),(5,21),(5,22),(5,23);
+(5,17),(5,18),(5,19),(5,20),(5,21),(5,22),(5,23),
+(6,24),(6,25),(6,26),(6,27),(6,28),(6,29);
 
 INSERT INTO TipoQuincalleria (id_tipo, id_quincalleria) VALUES
 (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15),

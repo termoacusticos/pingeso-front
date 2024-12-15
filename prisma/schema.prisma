@@ -22,7 +22,7 @@ model Perfil {
   codigo_per   Int
   formula_dim  String
   formula_cant String
-  kg_ml_per    Float
+  kg_ml_per    Float?
   valor        Int
 
   TipoPerfil TipoPerfil[]
@@ -112,6 +112,8 @@ model Tipo {
   formula_ancho    String
   formula_alto     String
   cantidad_cristal String
+  porcentaje_quinc Int?
+  largo_perfil     Float?
   minimo           Int?
   maximo           Int?
 

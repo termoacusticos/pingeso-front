@@ -2,6 +2,8 @@ import { getPerfilesTipo, getQuincalleriasTipo, getTipoById } from "$lib/reposit
 import { Err } from "neverthrow";
 import type { VentanaModel } from "$lib/types";
 import { getCristalById } from "$lib/repositories/cristal";
+import { getMaterialById } from "$lib/repositories/material";
+import { get } from "node:http";
 
 
 export async function calcularCostoTotal(ventana: VentanaModel, porcentaje: number){
@@ -10,13 +12,15 @@ export async function calcularCostoTotal(ventana: VentanaModel, porcentaje: numb
         throw new Error("No se encontró el tipo de ventana");
     }
 
+    const material = await getMaterialById(tipo.id_material);
+
+    let costoTotal = 0;
+    let costoUnitario = 0;
+
     if (tipo.Material.nombre_material === "ALUMINIO"){
         const perfiles = await getPerfilesTipo(ventana.id_tipo)
         const quincallerias = await getQuincalleriasTipo(ventana.id_tipo)
         const cristal = await getCristalById(ventana.id_cristal)
-    
-        let costoTotal = 0;
-        let costoUnitario = 0;
     
         if (!perfiles || perfiles.length === 0){
             throw new Error("No se encontraron perfiles para este tipo de ventana");
@@ -43,7 +47,7 @@ export async function calcularCostoTotal(ventana: VentanaModel, porcentaje: numb
             try {
                 dimension_perfil = evalFormula(formulaDim, parametrosDim)
             } catch (error){
-                throw new Error ("Error al calcular la dimensión para el perfil con código ${perfil.codigo}: ${error.message}");
+                throw new Error (`Error al calcular la dimensión para el perfil con código ${perfil.codigo_per}`);
             }
     
             const formulaCant = perfil.formula_cant;
@@ -57,9 +61,12 @@ export async function calcularCostoTotal(ventana: VentanaModel, porcentaje: numb
             try {
                 cantidad_perfil = evalFormula(formulaCant, parametrosCant);
             }catch (error){
-                throw new Error("Error al calcular la cantidad para el perfil con código ${perfil.codigo}: ${error.message}");
+                throw new Error(`Error al calcular la cantidad para el perfil con código ${perfil.codigo_per}`);
             }
     
+            if (perfil.kg_ml_per === null) {
+                throw new Error(`El perfil con código ${perfil.codigo_per} tiene un valor nulo para kg_ml_per`);
+            }
             const kilos = (dimension_perfil/1000)*cantidad_perfil*perfil.kg_ml_per;
             const costoPerfil = kilos*perfil.valor;
     
@@ -94,15 +101,81 @@ export async function calcularCostoTotal(ventana: VentanaModel, porcentaje: numb
         const costoCristal = m2*cristal.precio_cristal;
     
         costoTotal += costoCristal;
-    
-        costoTotal = costoTotal + (costoTotal * (porcentaje/100));
-        costoUnitario = costoTotal / ventana.cantidad;
-    
-        ventana.precio_total = costoTotal;
-        ventana.precio_unitario = costoUnitario;
-    
-        return { costoTotal, costoUnitario };
+    }else if (tipo.Material.nombre_material === "PVC"){
+        const perfiles = await getPerfilesTipo(ventana.id_tipo)
+        const cristal = await getCristalById(ventana.id_cristal)
+
+        if (!perfiles || perfiles.length === 0){
+            throw new Error("No se encontraron perfiles para este tipo de ventana");
+        }
+
+        if (!cristal){
+            throw new Error("No se encontró el cristal para esta ventana");
+        }
+
+        let totalPerfiles = 0;
+
+        for (const perfil of perfiles){
+
+            totalPerfiles += perfil.valor;
+
+            const formulaDim = perfil.formula_dim;
+
+            const parametrosDim = {
+                X: ventana.ancho,
+                Y: ventana.alto
+            };
+
+            let dimension_perfil;
+
+            try {
+                dimension_perfil = evalFormula(formulaDim, parametrosDim)
+            } catch (error){
+                throw new Error ("Error al calcular la dimensión para el perfil con código ${perfil.codigo}: ${error.message}");
+            }
+
+            const formulaCant = perfil.formula_cant;
+
+            const parametrosCant = {
+                Z: ventana.cantidad
+            }
+
+            let cantidad_perfil;
+
+            try {
+                cantidad_perfil = evalFormula(formulaCant, parametrosCant)
+            } catch (error){
+                throw new Error ("Error al calcular la cantidad para el perfil con código ${perfil.codigo}: ${error.message}");
+            }
+
+            const costoPerfil = (dimension_perfil*cantidad_perfil*(perfil.valor/5.8));
+
+            costoTotal += costoPerfil;
+
+        }
+
+        const porcentajeQuinc = tipo.porcentaje_quinc ?? 0;
+        const costoQuincalleria = (porcentajeQuinc / 100) * totalPerfiles;
+
+        costoTotal += costoQuincalleria;
+
+        const cantidadCristal = evalFormula(tipo.cantidad_cristal, {Z: ventana.cantidad});
+        const anchoCristal = evalFormula(tipo.formula_ancho, {X: ventana.ancho});
+        const altoCristal = evalFormula(tipo.formula_alto, {Y: ventana.alto});
+
+        const auxCristal = (anchoCristal * altoCristal)/1000000;
+        const costoCristal = cristal.precio_cristal * auxCristal * cantidadCristal;
+
+        costoTotal += costoCristal;
     }
+
+    costoTotal = costoTotal + (costoTotal * (porcentaje/100));
+    costoUnitario = costoTotal / ventana.cantidad;
+    
+    ventana.precio_total = costoTotal;
+    ventana.precio_unitario = costoUnitario;
+    
+    return { costoTotal, costoUnitario };
 }
 
 function evalFormula(formula: string, parametros: Record<string, number>){

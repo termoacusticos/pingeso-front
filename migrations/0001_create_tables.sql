@@ -12,7 +12,7 @@ CREATE TABLE "Perfil" (
     "codigo_per" INTEGER NOT NULL,
     "formula_dim" TEXT NOT NULL,
     "formula_cant" TEXT NOT NULL,
-    "kg_ml_per" REAL NOT NULL,
+    "kg_ml_per" REAL,
     "valor" INTEGER NOT NULL
 );
 
@@ -86,6 +86,7 @@ CREATE TABLE "Tipo" (
     "formula_ancho" TEXT NOT NULL,
     "formula_alto" TEXT NOT NULL,
     "cantidad_cristal" TEXT NOT NULL,
+    "porcentaje_quinc" INTEGER,
     "minimo" INTEGER,
     "maximo" INTEGER,
     CONSTRAINT "Tipo_id_material_fkey" FOREIGN KEY ("id_material") REFERENCES "Material" ("id_material") ON DELETE RESTRICT ON UPDATE CASCADE
