@@ -87,6 +87,7 @@ CREATE TABLE "Tipo" (
     "formula_alto" TEXT NOT NULL,
     "cantidad_cristal" TEXT NOT NULL,
     "porcentaje_quinc" INTEGER,
+    "largo_perfil" REAL,
     "minimo" INTEGER,
     "maximo" INTEGER,
     CONSTRAINT "Tipo_id_material_fkey" FOREIGN KEY ("id_material") REFERENCES "Material" ("id_material") ON DELETE RESTRICT ON UPDATE CASCADE
