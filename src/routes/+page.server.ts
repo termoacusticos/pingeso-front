@@ -47,7 +47,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	// });
 	// console.log(login);
 
-	const nuevoPresupuesto: PresupuestoModel = {
+	/*const nuevoPresupuesto: PresupuestoModel = {
 		fecha: '',
 		id_usuario: 1,
 		Cliente: {
@@ -105,7 +105,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	// 	return response.json();
 	// });
 	// console.log(constantes);
-
+*/
 	return {
 		materiales: constantes.materiales,
 		colores: constantes.colores,

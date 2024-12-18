@@ -41,13 +41,26 @@
 		telefono: ''
 	});
 
-	let opciones: OpcionUI[] = $state([
-		{
-			material: '',
-			color: '',
-			ventanas: []
-		}
-	]);
+	 let opciones: OpcionUI[] = $state([
+        {
+            material: '',
+            color: '',
+            ventanas: [
+                {
+                    material: '',
+                    tipo: '',
+                    item: '',
+                    cantidad: 1,
+                    cristal: '',
+                    color: '',
+                    alto: 0,
+                    ancho: 0,
+                    precio_unitario: 20,
+                    precio_total: 0
+                }
+            ]
+        }
+    ]);
 
 	let mostrar_eliminar_opcion = $derived(opciones.length > 1);
 

@@ -125,6 +125,12 @@ CREATE TABLE "Color" (
     "nombre_color" TEXT NOT NULL
 );
 
+-- CreateTable
+CREATE TABLE "Imagen" (
+    "id_imagen" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "bytes" TEXT NOT NULL
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Usuario_email_key" ON "Usuario"("email");
 
