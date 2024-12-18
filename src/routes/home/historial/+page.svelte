@@ -132,11 +132,8 @@
 	<table class="w-full table-fixed bg-white shadow-md rounded-lg overflow-hidden">
 		<thead class="bg-gray-200 text-gray-700">
 			<tr>
-				<th class="py-3 px-4 text-left cursor-pointer" onclick={() => sortById()}>
-					ID
-					<span class="ml-1">{idSortDirection === 'asc' ? '▲' : '▼'}</span>
-				</th>
 				<th class="py-3 px-4 text-left">Cliente</th>
+				<th class="py-3 px-4 text-left"> Dirección </th>
 				<th class="py-3 px-4 text-left cursor-pointer" onclick={() => sortByRUT()}>
 					RUT
 					<span class="ml-1">{rutSortDirection === 'asc' ? '▲' : '▼'}</span>
@@ -151,8 +148,8 @@
 		<tbody>
 			{#each paginatedCotizaciones as cotizacion}
 				<tr class="border-b border-gray-200 hover:bg-gray-100">
-					<td class="py-3 px-4">{cotizacion.id_presupuesto}</td>
 					<td class="py-3 px-4 truncate">{cotizacion.Cliente?.nombre}</td>
+					<td class="py-3 px-4">{cotizacion.Cliente?.direccion}</td>
 					<td class="py-3 px-4">{cotizacion.Cliente?.rut_cliente}</td>
 					<td class="py-3 px-4">{cotizacion.fecha}</td>
 					<td class="py-3 px-4">

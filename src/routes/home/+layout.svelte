@@ -9,7 +9,7 @@
 	let { children }: Props = $props();
 </script>
 
-<div class="relative flex flex-row w-full bg-gray-100">
+<div class="relative flex flex-col w-full bg-gray-100">
 	<!-- <Navbar /> -->
 	<Sidebar />
 	{@render children()}

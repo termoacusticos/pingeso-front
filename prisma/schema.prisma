@@ -157,3 +157,8 @@ model Color {
 
   Ventana Ventana[]
 }
+
+model Imagen {
+  id_imagen Int    @id @default(autoincrement())
+  bytes     String
+}
