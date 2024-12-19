@@ -30,7 +30,6 @@ let verticalGap: number = 15;
 const headersTabla = [
 	'MATERIAL',
 	'TIPO',
-	'DESCRIPCIÓN',
 	'COLOR',
 	'CRISTAL',
 	'ANCHO',
@@ -39,7 +38,7 @@ const headersTabla = [
 	'PRECIO U',
 	'TOTAL'
 ];
-let columnWidths = [0, 0, 20, 15, 20, -20, -20, -30, 0, 0].map((element, idx, arr) => {
+let columnWidths = [0, 35, 15, 20, -20, -20, -30, 0, 0].map((element, idx, arr) => {
 	return element + 555 / arr.length;
 });
 const rowHeight = 13; // Altura de cada fila
@@ -189,7 +188,6 @@ function drawTable(opcion: OpcionModel) {
 		const row = [
 			ventana.id_material.toString(),
 			ventana.id_tipo.toString(),
-			ventana.item || '-',
 			ventana.id_color.toString(),
 			ventana.id_cristal.toString(),
 			ventana.ancho.toString(),
