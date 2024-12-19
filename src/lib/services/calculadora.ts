@@ -6,7 +6,7 @@ import { getMaterialById } from "$lib/repositories/material";
 import { get } from "node:http";
 
 
-export async function calcularCostoTotal(ventana: VentanaModel, porcentaje: number){
+export async function calcularCostoVentana(ventana: VentanaModel){
     const tipo = await getTipoById(ventana.id_tipo);
     if (!tipo){
         throw new Error("No se encontró el tipo de ventana");
@@ -169,7 +169,7 @@ export async function calcularCostoTotal(ventana: VentanaModel, porcentaje: numb
         costoTotal += costoCristal;
     }
 
-    costoTotal = costoTotal + (costoTotal * (porcentaje/100));
+    costoTotal = costoTotal + (costoTotal * (tipo.ganancia ?? 0 / 100));
     costoUnitario = costoTotal / ventana.cantidad;
     
     ventana.precio_total = costoTotal;

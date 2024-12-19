@@ -116,6 +116,7 @@ model Tipo {
   largo_perfil     Float?
   minimo           Int?
   maximo           Int?
+  ganancia         Float?
 
   Ventana          Ventana[]
   Material         Material           @relation(fields: [id_material], references: [id_material])
