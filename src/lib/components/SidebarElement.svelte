@@ -13,14 +13,14 @@
 {#if href}
 	<a
 		{href}
-		class="inline-flex space-x-2 items-center my-2 px-1 transition-all hover:bg-teal-500 rounded">
+		class="inline-flex space-x-2 h-full items-center pl-3 pr-4 transition-all hover:bg-teal-500">
 		<!-- sin este size 8 afuera, el icono salta un poco (?) -->
 		{@render contenido()}
 	</a>
 {:else}
 	<button
 		{onclick}
-		class="inline-flex space-x-2 items-center my-2 px-1 transition-all hover:bg-teal-500 rounded">
+		class="inline-flex space-x-2 h-full items-center transition-all hover:bg-teal-500">
 		{@render contenido()}
 	</button>{/if}
 

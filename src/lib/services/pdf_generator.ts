@@ -1,7 +1,21 @@
-import type { OpcionModel, PresupuestoModel } from '$lib/types';
+
+import type { ConstantData, OpcionModel, PresupuestoModel } from '$lib/types';
 import { PDFDocument, PDFFont, PDFPage, PageSizes, StandardFonts, rgb } from 'pdf-lib';
 
 //#region constantes
+const constantes: ConstantData = await fetch('/api/constantes', {
+	method: 'GET',
+  }).then((response) => {
+	if (!response.ok) {
+	  throw new Error(`HTTP error! status: ${response.status}`);
+	}
+	return response.json();
+  });
+
+  const materiales = constantes.materiales;
+  const colores = constantes.colores;
+  const cristales = constantes.cristales;
+  const tipos = constantes.tipos;
 
 const checkbox_0 =
 	'M19 3H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m0 2v14H5V5z';
@@ -186,12 +200,26 @@ function drawTable(opcion: OpcionModel) {
 			borderColor: rgb(0, 0, 0)
 		});
 
+		// Material
+		let material: string;
+		let tipo: string;
+		let cristal: string;
+		let color: string;
+
+		const materialEncontrado = materiales.find((mat) => mat.id_material === ventana.id_material);
+		material = materialEncontrado ? materialEncontrado.nombre_material : 'Material no encontrado';
+		const tipoEncontrado = tipos.find((t) => t.id_tipo === ventana.id_tipo);
+		tipo = tipoEncontrado ? tipoEncontrado.descripcion_tipo : 'Tipo no encontrado';
+		const cristalEncontrado = cristales.find((c) => c.id_cristal === ventana.id_cristal);
+		cristal = cristalEncontrado ? cristalEncontrado.desc_cristal : 'Cristal no encontrado';
+		const colorEncontrado = colores.find((c) => c.id_color === ventana.id_color);
+		color = colorEncontrado ? colorEncontrado.nombre_color : 'Color no encontrado';
+
 		const row = [
-			ventana.id_material.toString(),
-			ventana.id_tipo.toString(),
-			ventana.item || '-',
-			ventana.id_color.toString(),
-			ventana.id_cristal.toString(),
+			material,
+			tipo,
+			color,
+			cristal,
 			ventana.ancho.toString(),
 			ventana.alto.toString(),
 			ventana.cantidad.toString(),

@@ -6,8 +6,8 @@
 	let isExpanded = $state(true);
 </script>
 
-<div class="bg-teal-600 text-white p-4 justify-evenly flex">
-	<SidebarController
+<div class="bg-teal-600 text-white h-16 justify-evenly flex">
+	<!--<SidebarController
 		bind:isExpanded
 		buttonName="Menú"
 		icon="mdi--menu"
@@ -15,6 +15,7 @@
 			isExpanded = !isExpanded;
 			console.log(isExpanded);
 		}}></SidebarController>
+	-->
 	<SidebarElement {isExpanded} href="/home" buttonName="Inicio" icon="mdi--home" />
 	<SidebarElement {isExpanded} href="/home/cotizar" buttonName="Cotizar" icon="mdi--document" />
 	<SidebarElement {isExpanded} href="/home/historial" buttonName="Historial" icon="mdi--history" />

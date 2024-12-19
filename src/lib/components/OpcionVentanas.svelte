@@ -74,7 +74,7 @@
 
 	<!-- Lista de ventanas -->
 	<div class="flex flex-col rounded-lg">
-		<table class="table-auto w-full rounded-lg bg-white">
+		<table class=" table-auto w-full rounded-lg bg-white">
 			<thead class="rounded-lg">
 				<tr class="py-2 items-center rounded-lg">
 					<th class="px-1 pl-2 py-2 ">N°</th>

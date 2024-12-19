@@ -176,7 +176,7 @@
 	
 </script>
 
-<div class="flex flex-col bg-gray-100 py-6 px-4 gap-5 xl:w-full 2xl:w-[70%] mx-auto">
+<div class="flex flex-col bg-gray-100 py-6 px-4 gap-5 xl:w-full 2xl:w-[80%] mx-auto">
 	<DatosCotizacion bind:cliente />
 	<!-- Ventanas -->
 	<div class="space-y-6 w-full">
