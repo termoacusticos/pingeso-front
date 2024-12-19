@@ -2,12 +2,14 @@
 	import DatosCotizacion from '$lib/components/DatosCotizacion.svelte';
 	import OpcionVentanas from '$lib/components/OpcionVentanas.svelte';
 	import {
-		itemOptions,
 		tipoOptions,
 		anchoOptions,
 		altoOptions,
 		cantidadOptions,
-		cristalOptions
+		cristalOptions,
+
+		gananciaOptions
+
 	} from '$lib/store';
 	import type {
 		ClienteUI,
@@ -41,26 +43,26 @@
 		telefono: ''
 	});
 
-	 let opciones: OpcionUI[] = $state([
-        {
-            material: '',
-            color: '',
-            ventanas: [
-                {
-                    material: '',
-                    tipo: '',
-                    item: '',
-                    cantidad: 1,
-                    cristal: '',
-                    color: '',
-                    alto: 0,
-                    ancho: 0,
-                    precio_unitario: 20,
-                    precio_total: 0
-                }
-            ]
-        }
-    ]);
+	let opciones: OpcionUI[] = $state([
+		{
+			material: '',
+			color: '',
+			ventanas: [
+				{
+					material: '',
+					tipo: '',
+					cantidad: 1,
+					cristal: '',
+					color: '',
+					alto: undefined,
+					ancho: undefined,
+					precio_unitario: 20,
+					precio_total: 0,
+					ganancia: undefined
+				}
+			]
+		}
+	]);
 
 	let mostrar_eliminar_opcion = $derived(opciones.length > 1);
 
@@ -115,13 +117,13 @@
 				cantidad: ventana.cantidad,
 				id_material,
 				id_tipo,
-				item: ventana.item,
 				id_color,
 				id_cristal,
-				alto: ventana.alto,
-				ancho: ventana.ancho,
+				alto: ventana.alto ?? 0,
+				ancho: ventana.ancho ?? 0,
 				precio_unitario: ventana.precio_unitario,
-				precio_total: ventana.precio_total
+				precio_total: ventana.precio_total,
+				ganancia: ventana.ganancia ?? 0
 			};
 		});
 	}
@@ -164,7 +166,7 @@
 			};
 		});
 
-		itemOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
+
 		tipoOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
 		cantidadOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
 		cristalOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
@@ -188,23 +190,23 @@
 							{
 								material: opc.material,
 								tipo: '',
-								item: '',
 								cantidad: 1,
 								cristal: '',
 								color: opc.color,
-								alto: 0,
-								ancho: 0,
+								alto: undefined,
+								ancho: undefined,
 								precio_unitario: 20,
-								precio_total: 0
+								precio_total: 0,
+								ganancia: undefined
 							}
 						];
 					}
 					$tipoOptions.push('');
-					$itemOptions.push('');
 					$cristalOptions.push('');
-					$altoOptions.push(0);
-					$anchoOptions.push(0);
+					$altoOptions.push();
+					$anchoOptions.push();
 					$cantidadOptions.push(1);
+					$gananciaOptions.push();
 				}}
 				eliminarVentana={(ventanaIndex: number) => eliminarVentana(opcionIndex, ventanaIndex)}
 				bind:opcion={opciones[opcionIndex]}

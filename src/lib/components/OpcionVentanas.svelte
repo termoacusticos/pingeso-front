@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Ventana2 from './Ventana2.svelte';
 	import DropdownColumn from './DropdownColumn.svelte';
-	import { itemOptions, tipoOptions, anchoOptions, altoOptions, cantidadOptions } from '$lib/store';
+	import { tipoOptions, anchoOptions, altoOptions, cantidadOptions } from '$lib/store';
 	import type { ConstantData, OpcionUI } from '$lib/types';
 	import type { Color, Cristal, Material, Tipo } from '@prisma/client';
 
@@ -92,7 +92,6 @@
 					</th>
 					<th class="px-1 py-2"> Tipo </th>
 					<th class="px-1 py-2"> Cristal </th>
-					<th class="px-1 py-2">Item</th>
 					<th class="px-1 py-2">
 						<DropdownColumn
 							onSelectItem={() => {
@@ -108,6 +107,7 @@
 					<th class="px-1 py-2 min-w-20">Cantidad</th>
 					<th class="px-1 py-2 min-w-20">Alto</th>
 					<th class="px-1 py-2 min-w-20">Ancho</th>
+					<th class="px-1 py-2 min-w-20">Ganancia</th>
 					<th class="px-1 py-2 w-32 min-w-32">Valor Unitario</th>
 					<th class="px-1 py-2 w-32 min-w-32">Valor Total</th>
 					<th class="px-1 pr-2 py-2"></th>

@@ -55,19 +55,18 @@ type VentanaUI = {
 	cantidad: number;
 	material: string;
 	tipo: string;
-	item: string;
 	color: string;
 	cristal: string;
-	alto: number;
-	ancho: number;
+	alto?: number;
+	ancho?: number;
 	precio_unitario: number;
 	precio_total: number;
+	ganancia?: number;
 };
 
 type VentanaModel = {
 	id_ventana?: number;
 	cantidad: number;
-	item: string;
 	id_tipo: number;
 	id_color: number;
 	id_cristal: number;

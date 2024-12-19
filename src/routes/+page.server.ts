@@ -47,7 +47,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	// });
 	// console.log(login);
 
-	/*const nuevoPresupuesto: PresupuestoModel = {
+	const nuevoPresupuesto: PresupuestoModel = {
 		fecha: '',
 		id_usuario: 1,
 		Cliente: {
@@ -64,7 +64,6 @@ export const load: PageServerLoad = async ({ fetch }) => {
 						alto: 800,
 						ancho: 2530,
 						cantidad: 1,
-						item: 'ventana',
 						id_material: 2,
 						id_color: 1,
 						id_tipo: 6,
@@ -105,7 +104,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	// 	return response.json();
 	// });
 	// console.log(constantes);
-*/
+
 	return {
 		materiales: constantes.materiales,
 		colores: constantes.colores,

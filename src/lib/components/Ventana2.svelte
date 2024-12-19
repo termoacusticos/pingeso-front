@@ -2,12 +2,12 @@
 	import {
 		materialOptions,
 		colorOptions,
-		itemOptions,
 		tipoOptions,
 		cantidadOptions,
 		altoOptions,
 		anchoOptions,
-		cristalOptions
+		cristalOptions,
+		gananciaOptions
 
 	} from '$lib/store';
 	import type { ConstantData, VentanaUI } from '$lib/types';
@@ -33,6 +33,7 @@
 
 	let tiposLista: Tipo[] = data.tipos;
 	let cristalesLista: Cristal[] = data.cristales;
+	let mostrar_porcentaje = false; // Define the variable
 
 	//$inspect('tipo ventana', ventana.tipo)
 	//$inspect('lista tipo', $tipoOptions);
@@ -43,11 +44,7 @@
         }
     });
 
-    itemOptions.subscribe((value) => {
-        if (value[id] !== undefined) {
-            ventana.item = value[id]; // Actualiza solo si hay un valor definido
-        }
-    });
+   
 
 	cristalOptions.subscribe((value) => {
         if (value[id] !== undefined) {
@@ -126,21 +123,7 @@
 		</select>
 	</td>
 
-	<!-- Item Input -->
-	<td class="px-1 py-1">
-		<input
-			type="text"
-			bind:value={ventana.item}
-			oninput={() => {
-				itemOptions.update((current) => {
-					const updated = [...current]; // Crear una copia del arreglo actual
-					updated[id] = ventana.item;
-					return updated;
-				});
-			}}
-			class="p-2 border rounded-md w-32"
-			placeholder="Ingrese item" />
-	</td>
+	
 
 	<!-- Color Input -->
 	<td class="px-1 py-1">
@@ -165,30 +148,56 @@
 
 	<!-- Dimensiones Alto y Ancho -->
 	<td class="px-1 py-1">
-		<input type="number" 
+		<input type="text"
 		bind:value={ventana.alto} 
 		oninput={() => {
 			altoOptions.update((current) => {
 				const updated = [...current]; // Crear una copia del arreglo actual
-				updated[id] = ventana.alto;
+				if (ventana.alto !== undefined) {
+					updated[id] = ventana.alto;
+				}
 				return updated;
 			});
 		}}
-		min="0" class="p-2 border rounded-md w-full"/>
+		class="p-2 border rounded-md w-full" 
+		placeholder="0"/>
 	</td>
 
-	<td class="px-1 py-1">
-		<input type="number" 
+
+
+	<td class="px-1 pr-2 py-1">
+		<input type="text"
 		bind:value={ventana.ancho} 
 		oninput={() => {
 			anchoOptions.update((current) => {
 				const updated = [...current]; // Crear una copia del arreglo actual
-				updated[id] = ventana.ancho;
+				if (ventana.ancho !== undefined) {
+					updated[id] = ventana.ancho;
+				}
 				return updated;
 			});
 		}}
-		min="0" class="p-2 border rounded-md w-full" />
+		class="p-2 border rounded-md w-full" 
+		placeholder="0"/>
 	</td>
+
+
+	<!-- Ganancia -->
+	<td class="px-1 py-1">
+		<input type="text"
+			bind:value={ventana.ganancia}
+			onchange={() => {
+				gananciaOptions.update((current) => {
+					const updated = [...current]; // Crear una copia del arreglo actual
+					if (ventana.ganancia !== undefined) {
+						updated[id] = ventana.ganancia;
+					}
+					return updated;
+				});
+			}} 
+			class="p-2 border rounded-md w-full" placeholder="0"/>
+	</td>
+
 
 	<!-- Precio Unitario -->
 	<td class="px-1 py-1">
@@ -199,6 +208,8 @@
 	<td class="px-1 py-1">
 		<p class="p-2 rounded-md w-full bg-white border">{ventana.precio_total}</p>
 	</td>
+
+
 
 	<!-- Delete Button -->
 	<td class="px-1 pr-2 py-1">
