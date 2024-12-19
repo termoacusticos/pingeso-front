@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { generatePDF } from '$lib/services/pdf_generator';
 	import { presupuesto } from '$lib/store';
-	import type { PresupuestoModel } from '$lib/types';
+	import type { PresupuestoUI } from '$lib/types';
 	import { onMount } from 'svelte';
 
 	let header = {

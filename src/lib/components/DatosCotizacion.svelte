@@ -18,7 +18,7 @@
         bind:value={cliente.nombre}>
         <input 
             type="text" 
-            placeholder="RUT (sin puntos, con guión)" 
+            placeholder="RUT (Ej: 12345678-9)" 
             maxlength="10"
             minlength="10"
             class="px-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

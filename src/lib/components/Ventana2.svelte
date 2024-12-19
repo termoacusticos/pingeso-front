@@ -97,28 +97,30 @@
 				return updated;
 			});
 		}} 
-		class="p-2 rounded-md bg-white border">
+		class="p-2 rounded-md bg-white border w-44 truncate overflow-hidden whitespace-nowrap">
 			<option selected disabled value="">Selecciona un tipo</option>
 			{#each tiposLista as option}
-				<option>{option.descripcion_tipo}</option>
+				<option class="w-auto">{option.descripcion_tipo}</option>
 			{/each}
 		</select>
 	</td>
 
-	<!-- Tipo Selector -->
+	<!-- Cristal Selector -->
 	<td class="px-1 py-1">
-		<select bind:value={ventana.cristal} 
-		onchange={() => {
-			cristalOptions.update((current) => {
+		<select 
+			bind:value={ventana.cristal} 
+			onchange={() => {
+				cristalOptions.update((current) => {
 				const updated = [...current]; // Crear una copia del arreglo actual
 				updated[id] = ventana.cristal;
 				return updated;
-			});
-		}} 
-		class="p-2 rounded-md bg-white border">
+				});
+			}}
+			class="p-2 rounded-md bg-white border w-32 truncate overflow-hidden whitespace-nowrap"
+			>
 			<option selected disabled value="">Selecciona un tipo</option>
 			{#each cristalesLista as option}
-				<option>{option.desc_cristal}</option>
+				<option class="w-auto">{option.desc_cristal}</option>
 			{/each}
 		</select>
 	</td>
@@ -127,7 +129,7 @@
 
 	<!-- Color Input -->
 	<td class="px-1 py-1">
-		<p class="p-2 rounded-md w-full bg-white border">{ventana.color}</p>
+		<p class="p-2 rounded-md bg-white border w-24 truncate">{ventana.color}</p>
 	</td>
 
 	<!-- Cantidad Input -->
