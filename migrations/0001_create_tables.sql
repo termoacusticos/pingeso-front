@@ -90,6 +90,7 @@ CREATE TABLE "Tipo" (
     "largo_perfil" REAL,
     "minimo" INTEGER,
     "maximo" INTEGER,
+    "ganancia" REAL,
     CONSTRAINT "Tipo_id_material_fkey" FOREIGN KEY ("id_material") REFERENCES "Material" ("id_material") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
@@ -123,6 +124,12 @@ CREATE TABLE "TipoQuincalleria" (
 CREATE TABLE "Color" (
     "id_color" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "nombre_color" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Imagen" (
+    "id_imagen" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "bytes" TEXT NOT NULL
 );
 
 -- CreateIndex
