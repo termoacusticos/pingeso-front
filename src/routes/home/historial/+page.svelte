@@ -151,7 +151,7 @@
 					<td class="py-3 px-4 truncate">{cotizacion.Cliente?.nombre}</td>
 					<td class="py-3 px-4">{cotizacion.Cliente?.direccion}</td>
 					<td class="py-3 px-4">{cotizacion.Cliente?.rut_cliente}</td>
-					<td class="py-3 px-4">{new Date(cotizacion.fecha).toLocaleString()}</td>
+					<td class="py-3 px-4">{new Date(cotizacion.fecha).toLocaleDateString()}</td>
 					<td class="py-3 px-4">
 						<button
 							class="w-full flex flex-col overflow-hidden text-right"
