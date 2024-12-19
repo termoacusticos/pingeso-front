@@ -1,21 +1,12 @@
-
 import type { ConstantData, OpcionModel, PresupuestoModel } from '$lib/types';
+import type { Color, Cristal, Material, Tipo } from '@prisma/client';
 import { PDFDocument, PDFFont, PDFPage, PageSizes, StandardFonts, rgb } from 'pdf-lib';
 
 //#region constantes
-const constantes: ConstantData = await fetch('/api/constantes', {
-	method: 'GET',
-  }).then((response) => {
-	if (!response.ok) {
-	  throw new Error(`HTTP error! status: ${response.status}`);
-	}
-	return response.json();
-  });
-
-  const materiales = constantes.materiales;
-  const colores = constantes.colores;
-  const cristales = constantes.cristales;
-  const tipos = constantes.tipos;
+let materiales: Material[];
+let colores: Color[];
+let cristales: Cristal[];
+let tipos: Tipo[];
 
 const checkbox_0 =
 	'M19 3H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m0 2v14H5V5z';
@@ -52,7 +43,7 @@ const headersTabla = [
 	'PRECIO U',
 	'TOTAL'
 ];
-let columnWidths = [0, 35, 15, 20, -20, -20, -30, 0, 0].map((element, idx, arr) => {
+let columnWidths = [0, 65, 15, 20, -20, -20, -30, -45, 0].map((element, idx, arr) => {
 	return element + 555 / arr.length;
 });
 const rowHeight = 13; // Altura de cada fila
@@ -301,8 +292,13 @@ function drawTable(opcion: OpcionModel) {
 // Función para generar el PDF iterando sobre los elementos.
 export const generatePDF = async (
 	presupuesto: PresupuestoModel,
-	header: { logos: string[]; h2: string[] }
+	header: { logos: string[]; h2: string[] },
+	constantes: ConstantData
 ) => {
+	colores = constantes.colores;
+	cristales = constantes.cristales;
+	materiales = constantes.materiales;
+	tipos = constantes.tipos;
 	pdfDoc = await PDFDocument.create();
 
 	font = await pdfDoc.embedFont(StandardFonts.Helvetica);

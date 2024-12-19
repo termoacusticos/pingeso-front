@@ -5,6 +5,7 @@
 	import type { PresupuestoUI } from '$lib/types';
 	import { onMount } from 'svelte';
 
+	const { data } = $props();
 	let header = {
 		logos: ['/ejemplo.png'],
 		h2: ['/favicon.png', '/barras.png']
@@ -27,10 +28,10 @@
 		}
 	};
 
-	let url = '';
+	let url = $state('');
 	onMount(async () => {
 		if (!$presupuesto) goto('/home/historial');
-		url = await generatePDF($presupuesto, header);
+		url = await generatePDF($presupuesto, header, data);
 	});
 </script>
 
