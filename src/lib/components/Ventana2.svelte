@@ -70,13 +70,14 @@
         }
     });
 
-	function calculateTotal() {
+	/*function calculateTotal() {
 		ventana.precio_total = ventana.cantidad * ventana.precio_unitario;
 	}
 
 	$effect(() => {
 		ventana.precio_total = ventana.cantidad * ventana.precio_unitario;
-	});
+	});*/
+
 </script>
 
 <tr class=" border-b">

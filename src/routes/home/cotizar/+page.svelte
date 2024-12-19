@@ -8,7 +8,13 @@
 		cantidadOptions,
 		cristalOptions,
 
-		gananciaOptions
+		gananciaOptions,
+
+		precioUnitarioOptions,
+
+		precioTotalOptions
+
+
 
 	} from '$lib/store';
 	import type {
@@ -56,7 +62,7 @@
 					color: '',
 					alto: undefined,
 					ancho: undefined,
-					precio_unitario: 20,
+					precio_unitario: 0,
 					precio_total: 0,
 					ganancia: undefined
 				}
@@ -172,7 +178,39 @@
 		cristalOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
 		altoOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
 		anchoOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
+		gananciaOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
+		precioUnitarioOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
+		precioTotalOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
 	}
+
+
+async function handleCalcularCosto(ventana: VentanaUI) {
+	const response = await fetch('/api/calculadora', {
+		method: 'POST',
+		body: JSON.stringify({
+			alto: ventana.alto,
+			ancho: ventana.ancho,
+			material: ventana.material,
+			tipo: ventana.tipo,
+			cristal: ventana.cristal,
+			color: ventana.color
+		})
+	});
+	const data: { precio_unitario: number, precio_total: number } = await response.json();
+	ventana.precio_unitario = data.precio_unitario;
+	ventana.precio_total = data.precio_total;
+}
+
+$effect(() => {
+	for (const opcion of opciones) {
+		for (const ventana of opcion.ventanas) {
+			if (ventana.alto !== undefined && ventana.ancho !== undefined) {
+				handleCalcularCosto(ventana);
+			}
+		}
+	}
+});
+
 	
 </script>
 
@@ -195,7 +233,7 @@
 								color: opc.color,
 								alto: undefined,
 								ancho: undefined,
-								precio_unitario: 20,
+								precio_unitario: 0,
 								precio_total: 0,
 								ganancia: undefined
 							}
@@ -207,6 +245,8 @@
 					$anchoOptions.push();
 					$cantidadOptions.push(1);
 					$gananciaOptions.push();
+					$precioUnitarioOptions.push();
+					$precioTotalOptions.push();
 				}}
 				eliminarVentana={(ventanaIndex: number) => eliminarVentana(opcionIndex, ventanaIndex)}
 				bind:opcion={opciones[opcionIndex]}

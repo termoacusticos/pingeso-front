@@ -12,6 +12,8 @@ export const cantidadOptions = writable<number[]>([]);
 export const altoOptions = writable<number[]>([]);
 export const anchoOptions = writable<number[]>([]);
 export const gananciaOptions = writable<number[]>([]);
+export const precioUnitarioOptions = writable<number[]>([]);
+export const precioTotalOptions = writable<number[]>([]);
 
 export const materiales = writable<Material[]>([]);
 export const colores = writable<Color[]>([]);
