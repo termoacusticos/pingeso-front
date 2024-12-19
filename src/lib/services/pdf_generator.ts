@@ -44,7 +44,7 @@ const headersTabla = [
 	'PRECIO U',
 	'TOTAL'
 ];
-let columnWidths = [0, 65, 15, 20, -20, -20, -30, -45, 0].map((element, idx, arr) => {
+let columnWidths = [0, 0, 20, 15, 20, -20, -20, -30, -45, 0].map((element, idx, arr) => {
 	return element + 555 / arr.length;
 });
 const rowHeight = 13; // Altura de cada fila
@@ -152,6 +152,7 @@ function drawTable(opcion: OpcionModel) {
 	headersTabla.forEach((header, index) => {
 		const cellX = currentX + 5;
 		const columnWidth = columnWidths[index];
+		console.log(header);
 
 		if (index > 7) {
 			const textWidth = font.widthOfTextAtSize(header, tableFontSize);

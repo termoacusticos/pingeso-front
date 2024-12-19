@@ -7,15 +7,9 @@
 		altoOptions,
 		cantidadOptions,
 		cristalOptions,
-
 		gananciaOptions,
-
 		precioUnitarioOptions,
-
 		precioTotalOptions
-
-
-
 	} from '$lib/store';
 	import type {
 		ClienteUI,
@@ -28,7 +22,7 @@
 	} from '$lib/types';
 	import type { Cliente, Color, Cristal, Material, Tipo } from '@prisma/client';
 
-	const { data }: {data: ConstantData} = $props();
+	const { data }: { data: ConstantData } = $props();
 
 	let materiales: Material[] = data.materiales;
 	let colores: Color[] = data.colores;
@@ -110,6 +104,31 @@
 	}
 
 	// Función para convertir la lista de VentanaUI a VentanaModel
+	function convertirVentana(ventana: VentanaUI): VentanaModel {
+		// Buscar el id del material, tipo, color y cristal en sus respectivas listas
+		const id_material =
+			materiales.find((m) => m.nombre_material === ventana.material)?.id_material ?? 0;
+		const id_tipo = tipos.find((t) => t.descripcion_tipo === ventana.tipo)?.id_tipo ?? 0;
+		const id_color = colores.find((c) => c.nombre_color === ventana.color)?.id_color ?? 0;
+		const id_cristal = cristales.find((c) => c.desc_cristal === ventana.cristal)?.id_cristal ?? 0;
+
+		// Devolver el objeto convertido a VentanaModel
+		return {
+			cantidad: ventana.cantidad,
+			id_material,
+			id_tipo,
+			id_color,
+			id_cristal,
+			item: ventana.item,
+			alto: ventana.alto ?? 0,
+			ancho: ventana.ancho ?? 0,
+			precio_unitario: ventana.precio_unitario,
+			precio_total: ventana.precio_total,
+			ganancia: ventana.ganancia ?? 0
+		};
+	}
+
+	// Función para convertir la lista de VentanaUI a VentanaModel
 	function convertirVentanas(ventanas: VentanaUI[]): VentanaModel[] {
 		return ventanas.map((ventana) => {
 			// Buscar el id del material, tipo, color y cristal en sus respectivas listas
@@ -174,7 +193,6 @@
 			};
 		});
 
-
 		tipoOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
 		cantidadOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
 		cristalOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
@@ -185,35 +203,32 @@
 		precioTotalOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
 	}
 
+	async function handleCalcularCosto(ventana: VentanaUI) {
+		const response = await fetch('/api/calculadora', {
+			method: 'POST',
+			body: JSON.stringify(convertirVentana(ventana))
+		});
+		const data: {
+			resultado: {
+				costoTotal: number;
+				costoUnitario: number;
+			};
+		} = await response.json();
+		console.log(data);
 
-async function handleCalcularCosto(ventana: VentanaUI) {
-	const response = await fetch('/api/calculadora', {
-		method: 'POST',
-		body: JSON.stringify({
-			alto: ventana.alto,
-			ancho: ventana.ancho,
-			material: ventana.material,
-			tipo: ventana.tipo,
-			cristal: ventana.cristal,
-			color: ventana.color
-		})
-	});
-	const data: { precio_unitario: number, precio_total: number } = await response.json();
-	ventana.precio_unitario = data.precio_unitario;
-	ventana.precio_total = data.precio_total;
-}
+		ventana.precio_unitario = data.resultado.costoUnitario;
+		ventana.precio_total = data.resultado.costoTotal;
+	}
 
-$effect(() => {
-	for (const opcion of opciones) {
-		for (const ventana of opcion.ventanas) {
-			if (ventana.alto !== undefined && ventana.ancho !== undefined) {
-				handleCalcularCosto(ventana);
+	$effect(() => {
+		for (const opcion of opciones) {
+			for (const ventana of opcion.ventanas) {
+				if (ventana.alto !== undefined && ventana.ancho !== undefined) {
+					handleCalcularCosto(ventana);
+				}
 			}
 		}
-	}
-});
-
-	
+	});
 </script>
 
 <div class="flex flex-col bg-gray-100 py-6 px-4 gap-5 xl:w-full 2xl:w-[80%] mx-auto">

@@ -2,7 +2,7 @@ import type { RequestHandler } from './$types';
 import { getDB } from '$lib';
 import { json } from '@sveltejs/kit';
 import { calcularCostoVentana } from '$lib/services/calculadora';
-import type { VentanaModel } from "$lib/types";
+import type { VentanaModel, VentanaUI } from '$lib/types';
 
 export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	const connResult = getDB(platform);
@@ -13,14 +13,12 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	/*const token = cookies.get('authToken');
 	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });*/
 
-	const { ventana, porcentaje }: { ventana: VentanaModel; porcentaje: number } =
-		await request.json();
+	const ventana: VentanaModel = await request.json();
 
-	if (!ventana || typeof porcentaje !== 'number') {
+	if (!ventana) {
 		return json(
 			{
-				error:
-					'Parámetros inválidos: asegúrese de incluir ventana, y porcentaje correctamente.'
+				error: 'Parámetros inválidos: asegúrese de incluir ventana, y porcentaje correctamente.'
 			},
 			{ status: 400 }
 		);

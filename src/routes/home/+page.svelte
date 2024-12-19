@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { materiales } from "$lib/store";
+	import { materiales } from '$lib/store';
 	// Datos ficticios sobre las ventanas más cotizadas, colores y otros datos
 	const data = {
 		windowsQuoted: [
@@ -22,7 +22,7 @@
 		}
 	};
 
-	console.log($materiales)
+	console.log($materiales);
 </script>
 
 <div class="min-h-screen lg:w-[60%] mx-auto p-8 bg-gray-100 animate-fade-up">

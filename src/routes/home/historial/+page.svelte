@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import HistoryElement from '$lib/components/HistoryElement.svelte';
 	import type { PresupuestoModel } from '$lib/types';
 	import { presupuesto } from '$lib/store';
 	import { goto } from '$app/navigation';

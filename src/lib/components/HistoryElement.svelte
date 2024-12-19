@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { CotizacionUI } from "$lib/types";
+	import type { CotizacionUI } from '$lib/types';
 
 	interface Props {
 		cotizacion: CotizacionUI;
@@ -8,7 +8,8 @@
 	let { cotizacion }: Props = $props();
 </script>
 
-<div class="grid grid-flow-row grid-cols-6 h-20 bg-white p-4 my-2 rounded-lg shadow-md text-left align-middle items-center">
+<div
+	class="grid grid-flow-row grid-cols-6 h-20 bg-white p-4 my-2 rounded-lg shadow-md text-left align-middle items-center">
 	<div class="flex flex-col">
 		<h2 class="flex text-lg font-semibold items-center w-fit">#{cotizacion.id}</h2>
 	</div>

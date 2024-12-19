@@ -7,11 +7,10 @@
 	let password = $state('');
 	let error = $state('');
 
-	materiales.set(data.materiales)
-	colores.set(data.colores)
-	cristales.set(data.cristales)
-	tipos.set(data.tipos)
-	
+	materiales.set(data.materiales);
+	colores.set(data.colores);
+	cristales.set(data.cristales);
+	tipos.set(data.tipos);
 
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
