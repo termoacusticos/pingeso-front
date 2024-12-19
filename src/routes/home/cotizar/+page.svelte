@@ -156,32 +156,42 @@
 			return response.json();
 		});
 	}
+	function eliminarVentana(_opcionIndex: number, ventanaIndex: number) {
+		opciones = opciones.map((opcion) => {
+			return {
+				...opcion,
+				ventanas: opcion.ventanas.filter((_, i) => i !== ventanaIndex)
+			};
+		});
+
+		itemOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
+		tipoOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
+		cantidadOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
+		cristalOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
+		altoOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
+		anchoOptions.update((current) => current.filter((_, i) => i !== ventanaIndex));
+	}
+	
 </script>
 
 <div class="flex flex-col bg-gray-100 py-6 px-4 gap-5 xl:w-full 2xl:w-[70%] mx-auto">
 	<DatosCotizacion bind:cliente />
 	<!-- Ventanas -->
 	<div class="space-y-6 w-full">
-		{#each opciones as opcion, index}
+		{#each opciones as opcion, opcionIndex}
 			<OpcionVentanas
 				{data}
 				agregarVentana={() => {
-					$tipoOptions.push('');
-					$itemOptions.push('');
-					$cristalOptions.push('');
-					$altoOptions.push(0);
-					$anchoOptions.push(0);
-					$cantidadOptions.push(1);
-					for (const opcion of opciones) {
-						opcion.ventanas = [
-							...opcion.ventanas,
+					for (const opc of opciones) {
+						opc.ventanas = [
+							...opc.ventanas,
 							{
-								material: opcion.material,
+								material: opc.material,
 								tipo: '',
 								item: '',
 								cantidad: 1,
 								cristal: '',
-								color: opcion.color,
+								color: opc.color,
 								alto: 0,
 								ancho: 0,
 								precio_unitario: 20,
@@ -189,23 +199,16 @@
 							}
 						];
 					}
+					$tipoOptions.push('');
+					$itemOptions.push('');
+					$cristalOptions.push('');
+					$altoOptions.push(0);
+					$anchoOptions.push(0);
+					$cantidadOptions.push(1);
 				}}
-				eliminarVentana={() => {
-					// Recorrer cada opción en 'opciones'
-					opciones.forEach((opcion) => {
-						// Filtrar las ventanas de la opción actual para eliminar la del índice correspondiente
-						opcion.ventanas = opcion.ventanas.filter((_, i) => i !== index);
-					});
-
-					itemOptions.update((current) => current.filter((_, i) => i !== index));
-					tipoOptions.update((current) => current.filter((_, i) => i !== index));
-					cantidadOptions.update((current) => current.filter((_, i) => i !== index));
-					cristalOptions.update((current) => current.filter((_, i) => i !== index));
-					altoOptions.update((current) => current.filter((_, i) => i !== index));
-					anchoOptions.update((current) => current.filter((_, i) => i !== index));
-				}}
-				bind:opcion={opciones[index]}
-				{index}
+				eliminarVentana={(ventanaIndex: number) => eliminarVentana(opcionIndex, ventanaIndex)}
+				bind:opcion={opciones[opcionIndex]}
+				index={opcionIndex}
 				{eliminarOpcion}
 				{mostrar_eliminar_opcion} />
 		{/each}
