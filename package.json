@@ -36,7 +36,7 @@
 		"prettier": "^3.3.2",
 		"prettier-plugin-svelte": "^3.2.6",
 		"prettier-plugin-tailwindcss": "^0.6.5",
-		"prisma": "^6.0.1",
+		"prisma": "^6.1.0",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
 		"tailwindcss": "^3.4.9",
@@ -49,7 +49,7 @@
 	},
 	"dependencies": {
 		"@prisma/adapter-d1": "^6.0.1",
-		"@prisma/client": "^6.0.1",
+		"@prisma/client": "^6.1.0",
 		"pdf-lib": "^1.17.1"
 	}
 }

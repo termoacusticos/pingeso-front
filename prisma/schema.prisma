@@ -86,6 +86,8 @@ model Ventana {
   ancho           Float
   precio_unitario Float
   precio_total    Float
+  item            String
+  ganancia        Float
   id_color        Int
   id_material     Int
   id_cristal      Int

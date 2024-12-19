@@ -155,7 +155,7 @@
 
 	<!-- Dimensiones Alto y Ancho -->
 	<td class="px-1 py-1">
-		<input type="text"
+		<input type="number"
 		bind:value={ventana.alto} 
 		oninput={() => {
 			altoOptions.update((current) => {
@@ -173,7 +173,7 @@
 
 
 	<td class="px-1 pr-2 py-1">
-		<input type="text"
+		<input type="number"
 		bind:value={ventana.ancho} 
 		oninput={() => {
 			anchoOptions.update((current) => {
@@ -191,7 +191,7 @@
 
 	<!-- Ganancia -->
 	<td class="px-1 py-1">
-		<input type="text"
+		<input type="number"
 			bind:value={ventana.ganancia}
 			onchange={() => {
 				gananciaOptions.update((current) => {

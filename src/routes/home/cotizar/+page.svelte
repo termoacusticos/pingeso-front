@@ -64,7 +64,8 @@
 					ancho: undefined,
 					precio_unitario: 0,
 					precio_total: 0,
-					ganancia: undefined
+					ganancia: undefined,
+					item: ''
 				}
 			]
 		}
@@ -125,6 +126,7 @@
 				id_tipo,
 				id_color,
 				id_cristal,
+				item: ventana.item,
 				alto: ventana.alto ?? 0,
 				ancho: ventana.ancho ?? 0,
 				precio_unitario: ventana.precio_unitario,
@@ -235,7 +237,8 @@ $effect(() => {
 								ancho: undefined,
 								precio_unitario: 0,
 								precio_total: 0,
-								ganancia: undefined
+								ganancia: undefined,
+								item: ''
 							}
 						];
 					}

@@ -63,6 +63,8 @@ CREATE TABLE "Ventana" (
     "cantidad" INTEGER NOT NULL,
     "alto" REAL NOT NULL,
     "ancho" REAL NOT NULL,
+    "ganancia" REAL NOT NULL,
+    "item" TEXT NOT NULL,
     "precio_unitario" REAL NOT NULL,
     "precio_total" REAL NOT NULL,
     "id_color" INTEGER NOT NULL,

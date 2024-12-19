@@ -69,7 +69,9 @@ export const load: PageServerLoad = async ({ fetch }) => {
 						id_tipo: 6,
 						id_cristal: 1,
 						precio_unitario: 0,
-						precio_total: 0
+						precio_total: 0,
+						ganancia: 0.1,
+						item: ''
 					}
 				]
 			}

@@ -35,6 +35,7 @@ let verticalGap: number = 15;
 const headersTabla = [
 	'MATERIAL',
 	'TIPO',
+	'ITEM',
 	'COLOR',
 	'CRISTAL',
 	'ANCHO',
@@ -208,6 +209,7 @@ function drawTable(opcion: OpcionModel) {
 		const row = [
 			material,
 			tipo,
+			ventana.item,
 			color,
 			cristal,
 			ventana.ancho.toString(),
