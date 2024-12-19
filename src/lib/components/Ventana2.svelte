@@ -91,6 +91,10 @@
 	<td class="px-1 py-1">
 		<select bind:value={ventana.tipo} 
 		onchange={() => {
+			const ganancia = tiposLista.find((tipo) => tipo.descripcion_tipo === ventana.tipo)?.ganancia;
+			if (ganancia !== null) {
+				ventana.ganancia = ganancia;
+			}
 			tipoOptions.update((current) => {
 				const updated = [...current]; // Crear una copia del arreglo actual
 				updated[id] = ventana.tipo;

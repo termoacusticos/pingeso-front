@@ -27,7 +27,7 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	}
 
 	try {
-		const resultado = await calcularCostoVentana(ventana, porcentaje);
+		const resultado = await calcularCostoVentana(ventana);
 
 		return json({ message: 'Cálculo realizado correctamente', resultado });
 	} catch (error) {
