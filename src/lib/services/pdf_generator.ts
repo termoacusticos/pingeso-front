@@ -44,7 +44,7 @@ const headersTabla = [
 	'PRECIO U',
 	'TOTAL'
 ];
-let columnWidths = [0, 0, 20, 15, 20, -20, -20, -30, -45, 0].map((element, idx, arr) => {
+let columnWidths = [0, 40, 15, -10, 20, -20, -20, -30, -15, 0].map((element, idx, arr) => {
 	return element + 555 / arr.length;
 });
 const rowHeight = 13; // Altura de cada fila
@@ -152,7 +152,6 @@ function drawTable(opcion: OpcionModel) {
 	headersTabla.forEach((header, index) => {
 		const cellX = currentX + 5;
 		const columnWidth = columnWidths[index];
-		console.log(header);
 
 		if (index > 7) {
 			const textWidth = font.widthOfTextAtSize(header, tableFontSize);
@@ -216,8 +215,8 @@ function drawTable(opcion: OpcionModel) {
 			ventana.ancho.toString(),
 			ventana.alto.toString(),
 			ventana.cantidad.toString(),
-			ventana.precio_unitario.toLocaleString(),
-			ventana.precio_total.toLocaleString()
+			ventana.precio_unitario.toLocaleString().split(',')[0],
+			ventana.precio_total.toLocaleString().split(',')[0]
 		];
 
 		row.forEach((cell, index) => {
@@ -236,6 +235,12 @@ function drawTable(opcion: OpcionModel) {
 				});
 			} else {
 				// Texto alineado a la izquierda
+				let add_dot = false;
+				while (font.widthOfTextAtSize(cell, tableFontSize) > columnWidth) {
+					cell = cell.slice(0, cell.length - 1);
+					add_dot = true;
+				}
+				if (add_dot) cell = cell.concat('.');
 				page.drawText(cell, {
 					x: cellX,
 					y: currentY - rowGap,
@@ -252,11 +257,8 @@ function drawTable(opcion: OpcionModel) {
 	});
 
 	//#region footer
-	const totalIvaIncluido = opcion.Ventanas.reduce(
-		(sum, ventana) => sum + ventana.precio_total,
-		0
-	).toLocaleString();
-	const footerValues = [totalIvaIncluido, '120000'];
+	const totalIvaIncluido = opcion.Ventanas.reduce((sum, ventana) => sum + ventana.precio_total, 0);
+	const footerValues = [totalIvaIncluido, 120000];
 
 	footerText.forEach((text, index) => {
 		page.drawRectangle({
@@ -277,7 +279,7 @@ function drawTable(opcion: OpcionModel) {
 			color: rgb(0, 0, 0)
 		});
 
-		const value = footerValues[index];
+		const value = footerValues[index].toLocaleString().split(',')[0];
 		const valueWidth = font.widthOfTextAtSize(value, tableFontSize);
 		page.drawText(value, {
 			x: currentX - valueWidth + 10, // Ajuste para alinearlo al borde derecho
