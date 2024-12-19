@@ -1,7 +1,13 @@
 <script lang="ts">
 	import Ventana2 from './Ventana2.svelte';
 	import DropdownColumn from './DropdownColumn.svelte';
-	import { tipoOptions, anchoOptions, altoOptions, cantidadOptions } from '$lib/store';
+	import {
+		tipoOptions,
+		anchoOptions,
+		altoOptions,
+		cantidadOptions,
+		gananciaOptions
+	} from '$lib/store';
 	import type { ConstantData, OpcionUI } from '$lib/types';
 	import type { Color, Cristal, Material, Tipo } from '@prisma/client';
 
@@ -31,10 +37,15 @@
 	let materiales: Material[] = data.materiales;
 	let colores: Color[] = data.colores;
 
-	let materialesNombre: string[] = $state(materiales.map(material => material.nombre_material));
-	let coloresNombre: string[] = $state(colores.map(color => color.nombre_color));
+	let materialesNombre: string[] = $state(materiales.map((material) => material.nombre_material));
+	let coloresNombre: string[] = $state(colores.map((color) => color.nombre_color));
 
-	let sumaTotal = $derived(opcion.ventanas.reduce((acc, ventana) => acc + ventana.precio_total, 0));
+	let sumaTotal = $derived(
+		opcion.ventanas.reduce(
+			(acc, ventana) => acc + ventana.precio_total * (1 + (ventana.ganancia ?? 0)),
+			0
+		)
+	);
 
 	let mostrar_eliminar = $derived(opcion.ventanas.length > 1);
 
@@ -50,7 +61,6 @@
 		anchoOptions.update((current) => current.filter((_, i) => i !== index));
 	}
 	*/
-
 </script>
 
 <div class="space-y-4 bg-white pt-5 px-5 shadow rounded-lg">
@@ -77,7 +87,7 @@
 		<table class=" table-auto w-full rounded-lg bg-white">
 			<thead class="rounded-lg">
 				<tr class="py-2 items-center rounded-lg">
-					<th class="px-1 pl-2 py-2 ">N°</th>
+					<th class="px-1 pl-2 py-2">N°</th>
 					<th class="px-1 py-2 justify-center">
 						<DropdownColumn
 							onSelectItem={() => {
@@ -116,7 +126,7 @@
 			<tbody>
 				{#each opcion.ventanas as ventana, id}
 					<Ventana2
-						data={data}
+						{data}
 						bind:ventana={opcion.ventanas[id]}
 						{id}
 						option_index={index}
