@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import DatosCotizacion from '$lib/components/DatosCotizacion.svelte';
 	import OpcionVentanas from '$lib/components/OpcionVentanas.svelte';
 	import {
@@ -9,7 +10,10 @@
 		cristalOptions,
 		gananciaOptions,
 		precioUnitarioOptions,
-		precioTotalOptions
+		precioTotalOptions,
+
+		presupuesto
+
 	} from '$lib/store';
 	import type {
 		ClienteUI,
@@ -23,6 +27,9 @@
 	import type { Cliente, Color, Cristal, Material, Tipo } from '@prisma/client';
 
 	const { data }: { data: ConstantData } = $props();
+
+	let successModal = $state(false);
+	let errorModal = $state(false);
 
 	let materiales: Material[] = data.materiales;
 	let colores: Color[] = data.colores;
@@ -71,6 +78,14 @@
 	$inspect('materialModal:', materialModal);
 	$inspect('colorModal:', colorModal);
 	$inspect('cliente: ', cliente);
+
+	function cerrarSuccessModal() {
+		location.assign('/home/cotizar');
+	}
+
+	function cerrarErrorModal() {
+		errorModal = !errorModal;
+	}
 
 	function cambiarAgregarOpcion() {
 		mostrarAgregarOpcion = !mostrarAgregarOpcion;
@@ -162,29 +177,49 @@
 	}
 
 	function crearCotizacion() {
-		let opcionesModel: OpcionModel[] = crearOpcionesModel(opciones);
-		let clienteModel: Cliente = cliente;
-		let cotizacion: PresupuestoModel = {
-			id_usuario: 0,
-			fecha: '',
-			Cliente: {
-				nombre: cliente.nombre,
-				rut_cliente: cliente.rut_cliente,
-				direccion: cliente.direccion,
-				email: cliente.email,
-				telefono: cliente.telefono
-			},
-			Opciones: opcionesModel
-		};
-		console.log(cotizacion);
-		fetch('/api/presupuesto', {
-			method: 'POST',
-			body: JSON.stringify(cotizacion)
-		}).then((response) => {
-			console.log(response);
-			return response.json();
-		});
+		try {
+			let opcionesModel: OpcionModel[] = crearOpcionesModel(opciones);
+			let cotizacion: PresupuestoModel = {
+				id_usuario: 0,
+				fecha: '',
+				Cliente: {
+					nombre: cliente.nombre,
+					rut_cliente: cliente.rut_cliente,
+					direccion: cliente.direccion,
+					email: cliente.email,
+					telefono: cliente.telefono
+				},
+				Opciones: opcionesModel
+			};
+			fetch('/api/presupuesto', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(cotizacion),
+			})
+				.then((response) => {
+					if (!response.ok) {
+						throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
+					}
+					return response.json();
+				})
+				.then((data) => {
+					presupuesto.set(cotizacion);
+					successModal = true;
+					console.log('Respuesta del servidor:', data);
+				})
+				.catch((error) => {
+					errorModal = true;
+					console.error('Error durante la solicitud:', error);
+				});
+		} catch (error) {
+			errorModal = true;
+			console.error('Error al crear la cotización:', error);
+		}
 	}
+
+
 	function eliminarVentana(_opcionIndex: number, ventanaIndex: number) {
 		opciones = opciones.map((opcion) => {
 			return {
@@ -276,17 +311,83 @@
 		<!-- Botón para agregar nueva ventana -->
 		<div class="flex flex-row w-full justify-center gap-10">
 			<button
-				class="mt-4 bg-teal-600 hover:bg-teal-500 font-bold transition-all text-white px-4 py-2 rounded"
+				class="flex flex-row mt-4 bg-teal-600 hover:bg-teal-500 font-bold transition-all text-white px-4 py-2 rounded items-center"
 				onclick={cambiarAgregarOpcion}>
-				+ Agregar otra opción
+				<span class=" iconify mdi--plus size-6"></span> Agregar otra opción
 			</button>
 			<button
-				class="mt-4 bg-blue-600 hover:bg-blue-700 font-bold transition-all text-white px-4 py-2 rounded"
+				class="mt-4 bg-amber-500 hover:bg-amber-600 font-bold transition-all text-white px-4 py-2 rounded"
 				onclick={crearCotizacion}>
-				Crear Cotización
+				Crear cotización
 			</button>
 		</div>
 	</div>
+
+	{#if successModal}
+		<div class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+			<div class="bg-white rounded-lg shadow-xl w-96 p-8">
+				<!-- Botón de cierre -->
+				<div class="flex justify-end">
+					<button
+						onclick={cerrarSuccessModal}
+						class="text-gray-500 hover:text-gray-800 font-bold text-lg iconify mdi--close size-6"
+						aria-label="X">
+					</button>
+				</div>
+
+				<div class="w-full iconify mdi--success-circle bg-teal-500 size-16"></div>
+			
+				<!-- Contenido del modal -->
+				<div class="flex flex-col gap-2 text-center mt-2 items-center">
+					<h2 class="text-2xl font-extrabold text-gray-800">¡Éxito!</h2>
+					<p class="text-gray-700">Presupuesto creado correctamente</p>
+
+					<!-- Botón para realizar otra acción o cerrar -->
+					<button
+						onclick={cerrarSuccessModal}
+						class="bg-transparent text-gray-700 mt-2 w-fit font-medium py-2 px-4 rounded hover:underline">
+						Cerrar
+					</button>
+					<button
+						onclick={() => goto('/home/prototipo')}
+						class="w-full bg-teal-500 text-white font-bold py-2 px-4 rounded hover:bg-teal-600">
+						Visualizar cotización
+					</button>
+				</div>
+			</div>
+		</div>
+	{/if}
+
+	{#if errorModal}
+		<div class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+			<div class="bg-white rounded-lg shadow-xl w-96 p-8">
+				<!-- Botón de cierre -->
+				<div class="flex justify-end">
+					<button
+						onclick={cerrarErrorModal}
+						class="text-gray-500 hover:text-gray-800 font-bold text-lg iconify mdi--close size-6"
+						aria-label="X">
+					</button>
+				</div>
+
+				<div class="w-full iconify mdi--error bg-red-500 size-16"></div>
+			
+				<!-- Contenido del modal -->
+				<div class="flex flex-col gap-2 text-center mt-2 items-center">
+					<h2 class="text-2xl font-extrabold text-gray-800">Error</h2>
+					<p class="text-gray-700">Algo sucedió. Intente nuevamente.</p>
+
+					<!-- Botón para realizar otra acción o cerrar -->
+					<button
+						onclick={cerrarErrorModal}
+						class="w-full mt-2 bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600">
+						Cerrar ventana
+					</button>
+				</div>
+			</div>
+		</div>
+	{/if}
+
 
 	{#if mostrarAgregarOpcion}
 		<div class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">

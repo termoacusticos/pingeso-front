@@ -19,3 +19,22 @@ export const materiales = writable<Material[]>([]);
 export const colores = writable<Color[]>([]);
 export const cristales = writable<Cristal[]>([]);
 export const tipos = writable<Tipo[]>([]);
+
+export function resetStores() {
+	materialOptions.set([]);
+	colorOptions.set([]);
+	tipoOptions.set([]);
+	cristalOptions.set([]);
+	cantidadOptions.set([]);
+	altoOptions.set([]);
+	anchoOptions.set([]);
+	gananciaOptions.set([]);
+	precioUnitarioOptions.set([]);
+	precioTotalOptions.set([]);
+
+	materiales.set([]);
+	colores.set([]);
+	cristales.set([]);
+	tipos.set([]);
+}
+

@@ -47,36 +47,36 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	// });
 	// console.log(login);
 
-	// const nuevoPresupuesto: PresupuestoModel = {
-	// 	fecha: '',
-	// 	id_usuario: 1,
-	// 	Cliente: {
-	// 		direccion: '',
-	// 		email: 'hola123@gmail',
-	// 		nombre: 'Carlos',
-	// 		rut_cliente: '2121',
-	// 		telefono: '123'
-	// 	},
-	// 	Opciones: [
-	// 		{
-	// 			Ventanas: [
-	// 				{
-	// 					alto: 800,
-	// 					ancho: 2530,
-	// 					cantidad: 1,
-	// 					id_material: 2,
-	// 					id_color: 1,
-	// 					id_tipo: 6,
-	// 					id_cristal: 1,
-	// 					precio_unitario: 0,
-	// 					precio_total: 0,
-	// 					ganancia: 0.1,
-	// 					item: ''
-	// 				}
-	// 			]
-	// 		}
-	// 	]
-	// };
+	/* const nuevoPresupuesto: PresupuestoModel = {
+		fecha: '',
+		id_usuario: 1,
+		Cliente: {
+			direccion: '',
+			email: 'hola123@gmail',
+			nombre: 'Carlos',
+			rut_cliente: '2121',
+			telefono: '123'
+		},
+		Opciones: [
+			{
+				Ventanas: [
+					{
+						alto: 800,
+						ancho: 2530,
+						cantidad: 1,
+						id_material: 2,
+						id_color: 1,
+						id_tipo: 6,
+						id_cristal: 1,
+						precio_unitario: 0,
+						precio_total: 0,
+						ganancia: 0.1,
+						item: ''
+					}
+				]
+			}
+		]
+	}; */
 
 	// const resultado = await fetch('/api/presupuesto', {
 	// 	method: 'POST',
@@ -86,13 +86,13 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	// });
 	// console.log(resultado);
 
-	const calculadora = await fetch('/api/calculadora', {
+	/* const calculadora = await fetch('/api/calculadora', {
 		method: 'POST',
 		body: JSON.stringify(nuevoPresupuesto.Opciones[0].Ventanas[0])
 	}).then((response) => {
 		return response.json();
 	});
-	console.log(calculadora);
+	console.log(calculadora); */
 
 	// await fetch('/api/presupuesto', {
 	// 	method: 'DELETE'
