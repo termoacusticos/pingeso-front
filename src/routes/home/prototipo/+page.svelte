@@ -31,7 +31,7 @@
 	let url = $state('');
 	onMount(async () => {
 		if (!$presupuesto) goto('/home/historial');
-		url = await generatePDF($presupuesto, header, data);
+		await generatePDF($presupuesto, header, data);
 	});
 </script>
 

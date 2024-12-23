@@ -437,5 +437,4 @@ export const generatePDF = async (
 	const blob = new Blob([pdfBytes], { type: 'application/pdf' });
 	const url = URL.createObjectURL(blob);
 	window.open(url);
-	return url;
 };

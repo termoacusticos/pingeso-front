@@ -46,10 +46,12 @@ model Usuario {
 }
 
 model Presupuesto {
-  id_presupuesto Int      @id @default(autoincrement())
-  id_usuario     Int
-  fecha          DateTime
-  rut_cliente    String
+  id_presupuesto    Int      @id @default(autoincrement())
+  id_usuario        Int
+  fecha             DateTime
+  rut_cliente       String
+  valor_despacho    Int
+  valor_instalacion Int
 
   Usuario  Usuario  @relation(fields: [id_usuario], references: [id_usuario])
   Cliente  Cliente  @relation(fields: [rut_cliente], references: [rut_cliente])
@@ -163,4 +165,10 @@ model Color {
 model Imagen {
   id_imagen Int    @id @default(autoincrement())
   bytes     String
+  img_group Int
+}
+
+model constantes {
+  id_constantes    Int @id @default(autoincrement())
+  total_img_groups Int
 }

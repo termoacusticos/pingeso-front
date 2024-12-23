@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import DatosCotizacion from '$lib/components/DatosCotizacion.svelte';
 	import OpcionVentanas from '$lib/components/OpcionVentanas.svelte';
+	import { generatePDF } from '$lib/services/pdf_generator';
 	import {
 		tipoOptions,
 		anchoOptions,
@@ -27,9 +28,15 @@
 	import type { Cliente, Color, Cristal, Material, Tipo } from '@prisma/client';
 
 	const { data }: { data: ConstantData } = $props();
+	const constantData = data; // horrible pero necesito usar data dentro de un fetch
 
 	let successModal = $state(false);
 	let errorModal = $state(false);
+	// Reemplazar después por cte de la db
+	let header = {
+		logos: ['/ejemplo.png'],
+		h2: ['/favicon.png', '/barras.png']
+	};
 
 	let materiales: Material[] = data.materiales;
 	let colores: Color[] = data.colores;
@@ -207,6 +214,7 @@
 				.then((data) => {
 					presupuesto.set(cotizacion);
 					successModal = true;
+					generatePDF(cotizacion, header, constantData);
 					console.log('Respuesta del servidor:', data);
 				})
 				.catch((error) => {

@@ -86,13 +86,13 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	// });
 	// console.log(resultado);
 
-	/* const calculadora = await fetch('/api/calculadora', {
-		method: 'POST',
-		body: JSON.stringify(nuevoPresupuesto.Opciones[0].Ventanas[0])
-	}).then((response) => {
-		return response.json();
-	});
-	console.log(calculadora); */
+	// const calculadora = await fetch('/api/calculadora', {
+	// 	method: 'POST',
+	// 	body: JSON.stringify(nuevoPresupuesto.Opciones[0].Ventanas[0])
+	// }).then((response) => {
+	// 	return response.json();
+	// });
+	// console.log(calculadora);
 
 	// await fetch('/api/presupuesto', {
 	// 	method: 'DELETE'
