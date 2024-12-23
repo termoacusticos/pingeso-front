@@ -42,7 +42,7 @@
 
 	let sumaTotal = $derived(
 		opcion.ventanas.reduce(
-			(acc, ventana) => acc + ventana.precio_total * (1 + (ventana.ganancia ?? 0)),
+			(acc, ventana) => acc + ventana.precio_total * (1 + (ventana.ganancia ?? 0)/100),
 			0
 		)
 	);

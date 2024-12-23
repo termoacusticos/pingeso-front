@@ -108,6 +108,7 @@ export async function calcularCostoVentana(ventana: VentanaModel) {
 		const costoCristal = m2 * cristal.precio_cristal;
 
 		costoTotal += costoCristal;
+
 	} else if (tipo.Material.nombre_material === 'PVC') {
 		const perfiles = await getPerfilesTipo(ventana.id_tipo);
 		const cristal = await getCristalById(ventana.id_cristal);
@@ -179,11 +180,12 @@ export async function calcularCostoVentana(ventana: VentanaModel) {
 		costoTotal += costoCristal;
 	}
 
-	costoTotal = costoTotal + costoTotal * (tipo.ganancia ?? 0 / 100);
+	costoTotal = costoTotal + costoTotal * ((tipo.ganancia ?? 0) / 100);	
 	costoUnitario = costoTotal / ventana.cantidad;
 
 	ventana.precio_total = costoTotal;
 	ventana.precio_unitario = costoUnitario;
+
 
 	return { costoTotal, costoUnitario };
 }
