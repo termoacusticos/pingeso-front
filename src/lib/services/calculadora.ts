@@ -100,19 +100,16 @@ export async function calcularCostoVentana(ventana: VentanaModel) {
 			const costoQuincalleria = cantidad_quincalleria * quincalleria.precio_quin;
 			costoTotal += costoQuincalleria;
 		}
-
 		const cantidadCristal = evalFormula(tipo.cantidad_cristal, { Z: ventana.cantidad });
 		const anchoCristal = evalFormula(tipo.formula_ancho, { X: ventana.ancho });
 		const altoCristal = evalFormula(tipo.formula_alto, { Y: ventana.alto });
 		const m2 = (anchoCristal / 1000) * (altoCristal / 1000) * cantidadCristal;
 		const costoCristal = m2 * cristal.precio_cristal;
-
 		costoTotal += costoCristal;
 
 	} else if (tipo.Material.nombre_material === 'PVC') {
 		const perfiles = await getPerfilesTipo(ventana.id_tipo);
 		const cristal = await getCristalById(ventana.id_cristal);
-		console.log(perfiles);
 
 		if (!perfiles || perfiles.length === 0) {
 			throw new Error('No se encontraron perfiles para este tipo de ventana');
@@ -123,7 +120,6 @@ export async function calcularCostoVentana(ventana: VentanaModel) {
 		}
 
 		let totalPerfiles = 0;
-
 		for (const perfil of perfiles) {
 			totalPerfiles += perfil.valor;
 
@@ -161,7 +157,6 @@ export async function calcularCostoVentana(ventana: VentanaModel) {
 			}
 
 			const costoPerfil = dimension_perfil * cantidad_perfil * (perfil.valor / 5.8);
-
 			costoTotal += costoPerfil;
 		}
 
@@ -169,6 +164,8 @@ export async function calcularCostoVentana(ventana: VentanaModel) {
 		const costoQuincalleria = (porcentajeQuinc / 100) * totalPerfiles;
 
 		costoTotal += costoQuincalleria;
+
+		console.log(costoQuincalleria);
 
 		const cantidadCristal = evalFormula(tipo.cantidad_cristal, { Z: ventana.cantidad });
 		const anchoCristal = evalFormula(tipo.formula_ancho, { X: ventana.ancho });
@@ -179,6 +176,7 @@ export async function calcularCostoVentana(ventana: VentanaModel) {
 
 		costoTotal += costoCristal;
 	}
+
 
 	costoTotal = costoTotal + costoTotal * ((tipo.ganancia ?? 0) / 100);	
 	costoUnitario = costoTotal / ventana.cantidad;

@@ -55,15 +55,14 @@ INSERT INTO Perfil (codigo_per, formula_dim, formula_cant, kg_ml_per, valor) VAL
 (2020, "(Y-204)/1000", "4*Z", NULL, 11288),
 (67419, "((Y-88)/1000)-0.006", "2*Z", NULL, 22858),
 (61016, "(X-114)/1000", "2*Z", NULL, 9223),
-(67401, "(X+6)/1000", "2*Z", NULL, 109554),
-(69014, "(X-70)/1000", "2*Z", NULL, 27356),
+(69014, "(X-70)/1000", "2*Z", NULL, 13678),
 (69014, "(Y-70)/1000", "2*Z", NULL, 13678),
-(67414, "((X/2)+5.5)/1000", "4*Z", NULL, 124914),
-(67414, "(Y-88)/1000", "4*Z", NULL, 124914),
-(69069, "(((X/2)+5.5)/1000)-0.006-0.16", "4*Z", NULL, 26498),
-(69069, "((Y-88)/1000)-0.006-0.16", "4*Z", NULL, 26498),
-(1010, "((X/2)-146.5)/1000", "4*Z", NULL, 22576),
-(1010, "(Y-240)/1000", "4*Z", NULL, 22576),
+(67414, "((X/2)+5.5)/1000", "4*Z", NULL, 62457),
+(67414, "(Y-88)/1000", "4*Z", NULL, 62457),
+(69069, "(((X/2)+5.5)/1000)-0.006-0.16", "4*Z", NULL, 13249),
+(69069, "((Y-88)/1000)-0.006-0.16", "4*Z", NULL, 13249),
+(1010, "((X/2)-146.5)/1000", "4*Z", NULL, 11288),
+(1010, "(Y-240)/1000", "4*Z", NULL, 11288),
 (67418, "((Y-88)/1000)-0.006", "2*Z", NULL, 24640);
 
 
@@ -103,7 +102,7 @@ INSERT INTO Quincalleria (desc_quin, formula_quin, precio_quin) VALUES
 ("UNION L S-43", "4*Z", 600),
 ("BURLETE BASE EPDM", "2*(X/1000)+2*(Y/1000)*Z", 190),
 ("BURLETE CUÑA EPDM", "2*(X/1000)+2*(Y/1000)*Z", 220),
-("CLIP SIMPLE S-43", "(X/100)+(Y/100)", 100),
+("CLIP SIMPLE S-43", "(X/100)+(Y/100)*Z", 100),
 ("UNION L S-43", "8*Z", 600),
 ("MANILLA CREMONA 879", "Z", 6447),
 ("KIT DE CIERRE K-4000E DOS PUNTAS 1 HOJA EXT.", "Z", 3116),
@@ -153,7 +152,7 @@ INSERT INTO Material (nombre_material) VALUES
 
 INSERT INTO Tipo (descripcion_tipo, id_material, formula_ancho, formula_alto, cantidad_cristal, porcentaje_quinc, largo_perfil, minimo, maximo, ganancia) VALUES
 ("VENTANA CORREDERA CHICA", 1, "(X/2)-65", "Y-124", "2*Z", NULL, NULL, 0, 1700, 85),
-("CORREDERA GRANDE", 1, "(X/2)-68", "Y-124", "2*Z", NULL, NULL, 1700, 2400, 85),
+("VENTANA CORREDERA GRANDE", 1, "(X/2)-65", "Y-124", "2*Z", NULL, NULL, 1700, 2400, 85),
 ("PAÑO FIJO", 1, "X-64", "Y-64", "Z", NULL, NULL, NULL, NULL, 85),
 ("VENTANA PROYECTANTE/ABATIR", 1, "X-134", "Y-134", "Z", NULL, NULL, NULL, NULL, 85),
 ("PUERTA ABATIR", 1, "X-230", "Y-193", "Z", NULL, NULL , NULL, NULL, 85),
@@ -173,7 +172,7 @@ INSERT INTO TipoPerfil (id_tipo, id_perfil) VALUES
 (7,30),(7,25),(7,31),(7,32),(7,33),(7,34),(7,35),(7,36),(7,37),(7,38),
 (8,24),(8,25),(8,26),(8,27),(8,39),(8,40),(8,41),(8,42),(8,43),(8,44),
 (9,45),(9,46),(9,47),(9,48),(9,49),(9,50),(9,51),(9,52),(9,53),(9,54),(9,55),(9,56),
-(10,57),(10,46),(10,58),(10,59),(10,60),(10,61),(10,62),(10,63),(10,64),(10,65),(10,66),(10,56);
+(10,45),(10,46),(10,57),(10,58),(10,59),(10,60),(10,61),(10,62),(10,63),(10,64),(10,65),(10,56);
 
 INSERT INTO TipoQuincalleria (id_tipo, id_quincalleria) VALUES
 (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15),
