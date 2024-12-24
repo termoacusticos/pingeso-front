@@ -32,10 +32,26 @@
 
 	let tiposLista: Tipo[] = data.tipos;
 	let cristalesLista: Cristal[] = data.cristales;
+	let tiposFiltrados = $state<Tipo[]>([]);
 	let mostrar_porcentaje = false; // Define the variable
 
 	//$inspect('tipo ventana', ventana.tipo)
 	//$inspect('lista tipo', $tipoOptions);
+
+	//Reactividad para obtener los tipos de acuerdo al material seleccionado
+	$effect(() => {
+		const materialSeleccionado = data.materiales.find(
+			(m) => m.nombre_material === ventana.material
+		);
+		if (!materialSeleccionado) {
+			tiposFiltrados = [];
+		} else {
+			// Filtra solo los tipos que tengan el mismo id_material
+			tiposFiltrados = data.tipos.filter(
+				(t) => t.id_material === materialSeleccionado.id_material
+			);
+		}
+	});
 
 	tipoOptions.subscribe((value) => {
 		if (value[id] !== undefined) {
@@ -89,7 +105,7 @@
 		<select
 			bind:value={ventana.tipo}
 			onchange={() => {
-				const ganancia = tiposLista.find(
+				const ganancia = tiposFiltrados.find(
 					(tipo) => tipo.descripcion_tipo === ventana.tipo
 				)?.ganancia;
 				if (ganancia !== null) {
@@ -101,9 +117,10 @@
 					return updated;
 				});
 			}}
-			class="p-2 rounded-md bg-white border w-44 truncate overflow-hidden whitespace-nowrap">
+			class="p-2 rounded-md bg-white border w-44 truncate overflow-hidden whitespace-nowrap"
+		>
 			<option selected disabled value="">Selecciona un tipo</option>
-			{#each tiposLista as option}
+			{#each tiposFiltrados as option}
 				<option class="w-auto">{option.descripcion_tipo}</option>
 			{/each}
 		</select>
