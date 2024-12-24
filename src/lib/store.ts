@@ -3,6 +3,7 @@ import type { Color, Cristal, Material, Tipo } from '@prisma/client';
 import type { PresupuestoModel } from './types';
 
 export const presupuesto = writable<PresupuestoModel>();
+export const url = writable<string>();
 // Stores para los valores de los modales
 export const materialOptions = writable<string[]>([]);
 export const colorOptions = writable<string[]>([]);

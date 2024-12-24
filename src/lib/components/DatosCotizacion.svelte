@@ -1,11 +1,12 @@
 <script lang="ts">
-	import type { ClienteUI } from '$lib/types';
+	import type { ClienteUI, DatosAdicionales } from '$lib/types';
 
 	interface Props {
 		cliente: ClienteUI;
+		datos_adicionales: DatosAdicionales;
 	}
 
-	let { cliente = $bindable() }: Props = $props();
+	let { cliente = $bindable(), datos_adicionales = $bindable() }: Props = $props();
 </script>
 
 <div class="flex flex-row w-full space-x-5 justify-between">
@@ -49,14 +50,17 @@
 		<input
 			type="number"
 			placeholder="Costo de Despacho"
-			class="px-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+			class="px-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+			bind:value={datos_adicionales.costo_despacho} />
 		<input
 			type="number"
 			placeholder="Costo de Instalación"
-			class="px-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+			class="px-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+			bind:value={datos_adicionales.costo_instalacion} />
 		<input
 			type="number"
 			placeholder="Ganancia Global (%)"
-			class="px-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+			class="px-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+			bind:value={datos_adicionales.ganancia_global} />
 	</div>
 </div>

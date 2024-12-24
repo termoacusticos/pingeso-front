@@ -12,26 +12,31 @@
 		gananciaOptions,
 		precioUnitarioOptions,
 		precioTotalOptions,
+		url,
+		presupuesto,
+		resetStores
 
-		presupuesto
 
 	} from '$lib/store';
 	import type {
 		ClienteUI,
 		ConstantData,
+		DatosAdicionales,
 		OpcionModel,
 		OpcionUI,
 		PresupuestoModel,
 		VentanaModel,
 		VentanaUI
 	} from '$lib/types';
-	import type { Cliente, Color, Cristal, Material, Tipo } from '@prisma/client';
+	import type { Color, Cristal, Material, Tipo } from '@prisma/client';
+	import { get } from 'svelte/store';
 
 	const { data }: { data: ConstantData } = $props();
 	const constantData = data; // horrible pero necesito usar data dentro de un fetch
 
 	let successModal = $state(false);
 	let errorModal = $state(false);
+
 	// Reemplazar después por cte de la db
 	let header = {
 		logos: ['/ejemplo.png'],
@@ -79,6 +84,12 @@
 		}
 	]);
 
+	let datosAdicionales: DatosAdicionales = $state({
+		costo_despacho: undefined,
+		costo_instalacion: undefined,
+		ganancia_global: undefined
+	})
+
 	let mostrar_eliminar_opcion = $derived(opciones.length > 1);
 
 	$inspect('opciones:', opciones);
@@ -88,6 +99,13 @@
 
 	function cerrarSuccessModal() {
 		location.assign('/home/cotizar');
+		resetStores();
+	}
+
+	function visualizarCotizacion() {
+		successModal = !successModal;
+		window.open(get(url));
+		resetStores();
 	}
 
 	function cerrarErrorModal() {
@@ -154,8 +172,7 @@
 	function convertirVentanas(ventanas: VentanaUI[]): VentanaModel[] {
 		return ventanas.map((ventana) => {
 			// Buscar el id del material, tipo, color y cristal en sus respectivas listas
-			const id_material =
-				materiales.find((m) => m.nombre_material === ventana.material)?.id_material ?? 0;
+			const id_material = materiales.find((m) => m.nombre_material === ventana.material)?.id_material ?? 0;
 			const id_tipo = tipos.find((t) => t.descripcion_tipo === ventana.tipo)?.id_tipo ?? 0;
 			const id_color = colores.find((c) => c.nombre_color === ventana.color)?.id_color ?? 0;
 			const id_cristal = cristales.find((c) => c.desc_cristal === ventana.cristal)?.id_cristal ?? 0;
@@ -189,6 +206,8 @@
 			let cotizacion: PresupuestoModel = {
 				id_usuario: 0,
 				fecha: '',
+				valor_despacho: datosAdicionales.costo_despacho??0,
+				valor_instalacion: datosAdicionales.costo_instalacion??0,
 				Cliente: {
 					nombre: cliente.nombre,
 					rut_cliente: cliente.rut_cliente,
@@ -211,10 +230,11 @@
 					}
 					return response.json();
 				})
-				.then((data) => {
+				.then(async (data) => {
 					presupuesto.set(cotizacion);
 					successModal = true;
-					generatePDF(cotizacion, header, constantData);
+					const urlLocal = await generatePDF(cotizacion, header, constantData);
+					url.set(urlLocal);
 					console.log('Respuesta del servidor:', data);
 				})
 				.catch((error) => {
@@ -275,7 +295,7 @@
 </script>
 
 <div class="flex flex-col bg-gray-100 py-6 px-4 gap-5 xl:w-full 2xl:w-[80%] mx-auto">
-	<DatosCotizacion bind:cliente />
+	<DatosCotizacion bind:cliente bind:datos_adicionales={datosAdicionales} />
 	<!-- Ventanas -->
 	<div class="space-y-6 w-full">
 		{#each opciones as opcion, opcionIndex}
@@ -357,7 +377,7 @@
 						Cerrar
 					</button>
 					<button
-						onclick={() => goto('/home/prototipo')}
+						onclick={visualizarCotizacion}
 						class="w-full bg-teal-500 text-white font-bold py-2 px-4 rounded hover:bg-teal-600">
 						Visualizar cotización
 					</button>

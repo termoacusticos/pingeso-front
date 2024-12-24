@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PresupuestoModel } from '$lib/types';
-	import { presupuesto } from '$lib/store';
+	import { presupuesto, url } from '$lib/store';
 	import { goto } from '$app/navigation';
 
 	interface Props {
@@ -127,7 +127,7 @@
 		class="w-full p-3 mb-6 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring focus:ring-indigo-200" />
 
 	<!-- Tabla de cotizaciones -->
-	<table class="w-full table-fixed bg-white shadow-md rounded-lg overflow-hidden">
+	<table class="w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
 		<thead class="bg-gray-200 text-gray-700">
 			<tr>
 				<th class="py-3 px-4 text-left">Cliente</th>
@@ -140,6 +140,8 @@
 					Fecha
 					<span class="ml-1">{fechaSortDirection === 'asc' ? '▲' : '▼'}</span>
 				</th>
+				<th>Despacho</th>
+				<th>Instalación</th>
 				<th class="py-3 px-4 text-left">Acciones</th>
 			</tr>
 		</thead>
@@ -150,13 +152,15 @@
 					<td class="py-3 px-4">{cotizacion.Cliente?.direccion}</td>
 					<td class="py-3 px-4">{cotizacion.Cliente?.rut_cliente}</td>
 					<td class="py-3 px-4">{new Date(cotizacion.fecha).toLocaleDateString()}</td>
+					<td class="py-3 px-4">{cotizacion.valor_despacho}</td>
+					<td class="py-3 px-4">{cotizacion.valor_instalacion}</td>
 					<td class="py-3 px-4">
 						<button
 							class="w-full flex flex-col overflow-hidden text-right"
 							aria-label="pdf"
-							onclick={() => {
+							onclick={async () => {
 								presupuesto.set(cotizacion);
-								goto('/home/prototipo');
+								url.set();
 							}}>
 							<span class="size-8 iconify mdi--pdf-box bg-red-600 hover:bg-red-500 transition-all"
 							></span>

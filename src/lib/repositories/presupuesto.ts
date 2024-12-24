@@ -33,6 +33,8 @@ export const savePresupuesto = async (presupuesto: PresupuestoModel, id_usuario:
 		.create({
 			include: { Cliente: true, Opciones: { include: { Ventanas: true } } },
 			data: {
+				valor_despacho: presupuesto.valor_despacho,
+				valor_instalacion: presupuesto.valor_instalacion,
 				id_presupuesto: presupuesto.id_presupuesto,
 				fecha: new Date().toISOString(),
 				id_usuario: id_usuario,

@@ -436,5 +436,6 @@ export const generatePDF = async (
 	const pdfBytes = await pdfDoc.save();
 	const blob = new Blob([pdfBytes], { type: 'application/pdf' });
 	const url = URL.createObjectURL(blob);
-	window.open(url);
+	console.log(url);
+	return url;
 };

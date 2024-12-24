@@ -41,9 +41,18 @@ type PresupuestoModel = {
 	id_presupuesto?: number;
 	id_usuario: number;
 	fecha: string;
+	valor_despacho: number;
+	valor_instalacion: number;
 	Cliente: Cliente;
 	Opciones: OpcionModel[];
 };
+
+type DatosAdicionales = {
+	id_datos?: number;
+	costo_despacho?: number;
+	costo_instalacion?: number;
+	ganancia_global?: number;
+}
 
 type OpcionModel = {
 	id_opcion?: number;
