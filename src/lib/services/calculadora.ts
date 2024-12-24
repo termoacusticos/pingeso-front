@@ -177,8 +177,9 @@ export async function calcularCostoVentana(ventana: VentanaModel) {
 		costoTotal += costoCristal;
 	}
 
-
-	costoTotal = costoTotal + costoTotal * ((tipo.ganancia ?? 0) / 100);	
+	const gananciaFinal= ventana.ganancia ?? tipo.ganancia ?? 0;
+	costoTotal = costoTotal * (1 + gananciaFinal / 100);
+	//costoTotal = costoTotal + costoTotal * ((tipo.ganancia ?? 0) / 100);	
 	costoUnitario = costoTotal / ventana.cantidad;
 
 	ventana.precio_total = costoTotal;
