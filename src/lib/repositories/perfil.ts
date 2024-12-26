@@ -23,6 +23,13 @@ export const savePerfil = async (perfil: Perfil) => {
 		.catch((error) => err(error));
 };
 
+export const updatePerfil = async (id: number, perfil: Perfil) => {
+	return prisma.perfil
+		.update({ where: { id_perfil: id }, data: perfil })
+		.then((response) => ok(response))
+		.catch((error) => err(error));
+};
+
 export const deletePerfil = async (id: number) => {
 	return prisma.perfil
 		.delete({ where: { id_perfil: id } })

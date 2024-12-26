@@ -19,3 +19,17 @@ export const saveCristal = async (cristal: Cristal) => {
 		.then((response) => ok(response))
 		.catch((error) => err(error));
 };
+
+export const updateCristal = async (id: number, cristal: Cristal) =>{
+	return prisma.cristal
+		.update({ where: {id_cristal: id}, data: cristal })
+		.then((response) => ok(response))
+		.catch((error) => err(error));
+}
+
+export const deleteCristal = async (id: number) => {
+	return prisma.cristal
+		.delete({ where: { id_cristal: id } })
+		.then((response) => ok(response))
+		.catch((error) => err(error));
+};
