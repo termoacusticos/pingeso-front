@@ -1,3 +1,4 @@
+import type { ConstantData } from '$lib/types';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch }) => {
@@ -8,5 +9,17 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	});
 	console.log(presupuestos);
 
-	return { presupuestos };
+	const constantes: ConstantData = await fetch('/api/constantes', {
+			method: 'GET'
+		}).then((response) => {
+			return response.json();
+		});
+
+	return { 
+		presupuestos,
+		materiales: constantes.materiales,
+		colores: constantes.colores,
+		cristales: constantes.cristales,
+		tipos: constantes.tipos
+	 };
 };

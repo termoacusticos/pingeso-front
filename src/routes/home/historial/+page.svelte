@@ -2,12 +2,21 @@
 	import type { PresupuestoModel } from '$lib/types';
 	import { presupuesto, url } from '$lib/store';
 	import { goto } from '$app/navigation';
+	import { generatePDF } from '$lib/services/pdf_generator';
+	import { get } from 'svelte/store';
 
 	interface Props {
 		data: any;
 	}
 
 	let { data }: Props = $props();
+	const constantData = data; // horrible pero necesito usar data dentro de un fetch
+
+	// Reemplazar después por cte de la db
+	let header = {
+		logos: ['/ejemplo.png'],
+		h2: ['/favicon.png', '/barras.png']
+	};
 
 	// Parámetros de paginación
 	let pageSize = 15; // Número de cotizaciones por página
@@ -160,7 +169,9 @@
 							aria-label="pdf"
 							onclick={async () => {
 								presupuesto.set(cotizacion);
-								url.set();
+								const urlLocal = await generatePDF(cotizacion, header, constantData);
+								url.set(urlLocal);
+								window.open(get(url));
 							}}>
 							<span class="size-8 iconify mdi--pdf-box bg-red-600 hover:bg-red-500 transition-all"
 							></span>
