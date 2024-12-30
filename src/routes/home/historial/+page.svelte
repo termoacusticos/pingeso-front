@@ -31,6 +31,14 @@
 
 	let cotizaciones: PresupuestoModel[] = $state(data.presupuestos);
 
+	function formatoChileno(valor: number) {
+		return new Intl.NumberFormat("es-CL", {
+		style: "currency",
+		currency: "CLP",
+		minimumFractionDigits: 0
+		}).format(valor);
+	}
+
 	function sortByDate() {
 		// Alternar la dirección de orden
 		fechaSortDirection = fechaSortDirection === 'asc' ? 'desc' : 'asc';
@@ -125,7 +133,7 @@
 </script>
 
 <div
-	class="min-h-screen w-full p-8 bg-gray-100 xl:w-[50%] lg:w-[50%] md:w-[70%] mx-auto overflow-scroll">
+	class="min-h-screen w-full p-8 bg-gray-100 xl:w-[60%] lg:w-[50%] md:w-[70%] mx-auto overflow-scroll">
 	<h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Historial de Cotizaciones</h1>
 
 	<!-- Campo de búsqueda -->
@@ -161,8 +169,8 @@
 					<td class="py-3 px-4">{cotizacion.Cliente?.direccion}</td>
 					<td class="py-3 px-4">{cotizacion.Cliente?.rut_cliente}</td>
 					<td class="py-3 px-4">{new Date(cotizacion.fecha).toLocaleDateString()}</td>
-					<td class="py-3 px-4">{cotizacion.valor_despacho}</td>
-					<td class="py-3 px-4">{cotizacion.valor_instalacion}</td>
+					<td class="py-3 px-4">{formatoChileno(cotizacion.valor_despacho)}</td>
+					<td class="py-3 px-4">{formatoChileno(cotizacion.valor_instalacion)}</td>
 					<td class="py-3 px-4">
 						<button
 							class="w-full flex flex-col overflow-hidden text-right"
