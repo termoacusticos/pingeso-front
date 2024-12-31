@@ -1,12 +1,12 @@
 import { redirect } from '@sveltejs/kit';
 import { inspect } from 'node:util';
 import type { PageServerLoad } from './$types';
-import type { Usuario } from '@prisma/client';
+import type { Cristal, Perfil, Quincalleria, Tipo, Usuario } from '@prisma/client';
 import type { ConstantData, JWTBody, PresupuestoModel } from '$lib/types';
 import { log } from 'node:console';
 
 export const load: PageServerLoad = async ({ fetch }) => {
-	const login = await fetch('/api/login', {
+	await fetch('/api/login', {
 		method: 'GET'
 	}).then((response) => {
 		// if (response.ok) {
@@ -39,13 +39,13 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	console.log('constantes afuera');
 	console.log(constantes);
 
-	// const login: { token: string } = await fetch('/api/login', {
-	// 	method: 'POST',
-	// 	body: JSON.stringify({ email: user.email, password: user.password })
-	// }).then((response) => {
-	// 	return response.json();
-	// });
-	// console.log(login);
+	const login: { token: string } = await fetch('/api/login', {
+		method: 'POST',
+		body: JSON.stringify({ email: user.email, password: user.password })
+	}).then((response) => {
+		return response.json();
+	});
+	console.log(login);
 
 	/* const nuevoPresupuesto: PresupuestoModel = {
 		fecha: '',
@@ -106,6 +106,119 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	// 	return response.json();
 	// });
 	// console.log(constantes);
+
+	console.log('!/// constantes ///');
+
+	const cristal_nuevo = await fetch('api/cristal', {
+		method: 'POST',
+		body: JSON.stringify({
+			cristalData: {
+				desc_cristal: 'prueba_c',
+				precio_cristal: 100000
+			}
+		})
+	}).then((resp) => resp.json<Cristal>());
+
+	await fetch('api/cristal', {
+		method: 'PUT',
+		body: JSON.stringify({
+			id: cristal_nuevo.id_cristal,
+			cristalData: {
+				desc_cristal: 'ejemplo2',
+				precio_cristal: 100000,
+				id_cristal: cristal_nuevo.id_cristal
+			}
+		})
+	});
+	const cristales = await fetch('api/cristal', {
+		method: 'GET'
+	});
+	console.log(await cristales.json());
+
+	await fetch('api/material', {
+		method: 'DELETE',
+		body: JSON.stringify({
+			id_material: 1
+		})
+	});
+
+	await fetch('api/tipo', {
+		method: 'PUT',
+		body: JSON.stringify({
+			id: 1,
+			tipo: { ...constantes.tipos[0], descripcion_tipo: 'ejemplo' }
+		})
+	});
+
+	await fetch('api/tipo', {
+		method: 'DELETE',
+		body: JSON.stringify({
+			id_tipo: constantes.tipos[0]
+		})
+	});
+
+	await fetch('api/quincalleria', {
+		method: 'POST',
+		body: JSON.stringify({
+			desc_quin: 'Ejemplo',
+			formula_quin: 'X*Y',
+			id_quincalleria: 0,
+			precio_quin: 100000
+		})
+	});
+	await fetch('api/quincalleria', {
+		method: 'PUT',
+		body: JSON.stringify({
+			id: 1,
+			quincalleriaData: {
+				desc_quin: 'Ejemplo2',
+				formula_quin: 'X*Y',
+				id_quincalleria: 0,
+				precio_quin: 100000
+			}
+		})
+	});
+
+	await fetch('api/quincalleria', {
+		method: 'DELETE',
+		body: JSON.stringify({
+			id_quincalleria: 0
+		})
+	});
+	await fetch('api/perfil', {
+		method: 'POST',
+		body: JSON.stringify({
+			perfilData: {
+				codigo_per: 2,
+				formula_cant: 'X',
+				formula_dim: '2',
+				id_perfil: 0,
+				kg_ml_per: 100,
+				valor: 10000
+			}
+		})
+	});
+	await fetch('api/perfil', {
+		method: 'PUT',
+		body: JSON.stringify({
+			id: 1,
+			perfilData: {
+				codigo_per: 2,
+				formula_cant: 'X',
+				formula_dim: '2',
+				id_perfil: 0,
+				kg_ml_per: 100,
+				valor: 10000
+			}
+		})
+	});
+
+	await fetch('api/quincalleria', {
+		method: 'DELETE',
+		body: JSON.stringify({
+			id_perfil: 0
+		})
+	});
 
 	return {
 		materiales: constantes.materiales,
