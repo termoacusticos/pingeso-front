@@ -49,7 +49,7 @@ let columnWidths = [0, 40, 15, -10, 20, -20, -20, -30, -15, 0].map((element, idx
 });
 const rowHeight = 13; // Altura de cada fila
 const rowGap = 9;
-const footerText = ['TOTAL IVA INCLUIDO', 'TRANSPORTE'];
+const footerText = ['TRANSPORTE', 'INSTALACIÓN', 'TOTAL IVA INCLUIDO'];
 
 //#region funciones
 async function embedImg(pdfDoc: PDFDocument, url: string) {
@@ -133,7 +133,7 @@ function drawOptionHeaderRow(
 }
 
 //#region tabla
-function drawTable(opcion: OpcionModel) {
+function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacion: number) {
 	const tableFontSize = fontSize - 3;
 
 	currentX = marginLeft;
@@ -205,7 +205,6 @@ function drawTable(opcion: OpcionModel) {
 		cristal = cristalEncontrado ? cristalEncontrado.desc_cristal : 'Cristal no encontrado';
 		const colorEncontrado = colores.find((c) => c.id_color === ventana.id_color);
 		color = colorEncontrado ? colorEncontrado.nombre_color : 'Color no encontrado';
-
 		const row = [
 			material,
 			tipo,
@@ -215,8 +214,8 @@ function drawTable(opcion: OpcionModel) {
 			ventana.ancho.toString(),
 			ventana.alto.toString(),
 			ventana.cantidad.toString(),
-			ventana.precio_unitario.toLocaleString().split(',')[0],
-			ventana.precio_total.toLocaleString().split(',')[0]
+			ventana.precio_unitario.toLocaleString('en-US').split(',')[0],
+			ventana.precio_total.toLocaleString('en-US').split(',')[0]
 		];
 
 		row.forEach((cell, index) => {
@@ -258,7 +257,11 @@ function drawTable(opcion: OpcionModel) {
 
 	//#region footer
 	const totalIvaIncluido = opcion.Ventanas.reduce((sum, ventana) => sum + ventana.precio_total, 0);
-	const footerValues = [totalIvaIncluido, 120000];
+	const footerValues = [
+		valor_despacho,
+		valor_instalacion,
+		totalIvaIncluido + valor_despacho + valor_instalacion
+	];
 
 	footerText.forEach((text, index) => {
 		page.drawRectangle({
@@ -279,7 +282,7 @@ function drawTable(opcion: OpcionModel) {
 			color: rgb(0, 0, 0)
 		});
 
-		const value = footerValues[index].toLocaleString().split(',')[0];
+		const value = footerValues[index].toLocaleString('en-US').split(',')[0];
 		const valueWidth = font.widthOfTextAtSize(value, tableFontSize);
 		page.drawText(value, {
 			x: currentX - valueWidth + 10, // Ajuste para alinearlo al borde derecho
@@ -427,7 +430,7 @@ export const generatePDF = async (
 		drawOptionHeaderRow(lowerRow, optRowSize, optColSize, optionMargin);
 		currentY += verticalGap / 2;
 
-		drawTable(opcion);
+		drawTable(opcion, presupuesto.valor_despacho, presupuesto.valor_instalacion);
 	}
 
 	await drawImageRow(header.logos, 80);
