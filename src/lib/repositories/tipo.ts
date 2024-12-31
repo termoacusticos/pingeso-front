@@ -1,6 +1,6 @@
 import { prisma } from '$lib';
 import type { Tipo } from '@prisma/client';
-import { Err, err, ok } from 'neverthrow';
+import { err, ok } from 'neverthrow';
 
 export const getTipoById = async (id: number) => {
 	return prisma.tipo.findFirst({ include: { Material: true }, where: { id_tipo: id } });
@@ -28,47 +28,35 @@ export const deleteTipo = async (id: number) => {
 };
 
 interface RelacionesTipo {
-	perfilesAgregar?: number[];
-	perfilesEliminar?: number[];
-	quincalleriasAgregar?: number[];
-	quincalleriasEliminar?: number[];
+    perfiles?: number[];
+    quincallerias?: number[];
 }
 
 export const updateTipo = async (id: number, tipo: Tipo, relaciones?: RelacionesTipo) => {
-	return prisma.$transaction(async (tx) => {
-		const tipoActualizado = await tx.tipo.update({ where: { id_tipo: id }, data: tipo });
+    return prisma.$transaction(async (tx) => {
+        const tipoActualizado = await tx.tipo.update({ 
+            where: { id_tipo: id }, 
+            data: {
+                ...tipo,
+                TipoPerfil: relaciones?.perfiles ? {
+                    deleteMany: {},
+                    create: relaciones.perfiles.map(id_perfil => ({ id_perfil }))
+                } : undefined,
+                TipoQuincalleria: relaciones?.quincallerias ? {
+                    deleteMany: {},
+                    create: relaciones.quincallerias.map(id_quincalleria => ({ id_quincalleria }))
+                } : undefined
+            },
+            include: {
+                TipoPerfil: { include: { Perfil: true } },
+                TipoQuincalleria: { include: { Quincalleria: true } }
+            }
+        });
 
-		if (relaciones){
-			if (relaciones.perfilesEliminar?.length){
-				await Promise.all(
-					relaciones.perfilesEliminar.map((id_perfil) => tx.tipoPerfil.delete({ where: { id_tipo_id_perfil: { id_tipo: id, id_perfil } } }))
-				);
-			}
-
-			if (relaciones.perfilesAgregar?.length){
-				await Promise.all(
-					relaciones.perfilesAgregar.map((id_perfil) => tx.tipoPerfil.create({ data: { id_tipo: id, id_perfil } }))
-				);
-			}
-
-			if (relaciones.quincalleriasEliminar?.length){
-				await Promise.all(
-					relaciones.quincalleriasEliminar.map((id_quincalleria) => tx.tipoQuincalleria.delete({ where: { id_tipo_id_quincalleria: { id_tipo: id, id_quincalleria } } }))
-				);
-			}
-
-			if (relaciones.quincalleriasAgregar?.length){
-				await Promise.all(
-					relaciones.quincalleriasAgregar.map((id_quincalleria) => tx.tipoQuincalleria.create({ data: { id_tipo: id, id_quincalleria } }))
-				);
-			}
-		}
-
-		return tipoActualizado;
-
-	})
-	.then((response) => ok(response))
-	.catch((error) => err(error));
+        return tipoActualizado;
+    })
+    .then((response) => ok(response))
+    .catch((error) => err(error));
 };
 
 export const getPerfilesTipo = async (id_tipo: number) => {
@@ -80,31 +68,3 @@ export const getQuincalleriasTipo = async (id_tipo: number) => {
 		where: { TipoQuincalleria: { some: { id_tipo: id_tipo } } }
 	});
 };
-
-export const addPerfil = async (id_tipo: number, id_perfil: number) => {
-	return prisma.tipoPerfil
-		.create({ data: { id_tipo, id_perfil } })
-		.then((response) => ok(response))
-		.catch((error) => err(error));
-}
-
-export const deletePerfil = async (id_tipo: number, id_perfil: number) => {
-	return prisma.tipoPerfil
-		.delete({ where: { id_tipo_id_perfil: { id_tipo, id_perfil } } })
-		.then((response) => ok(response))
-		.catch((error) => err(error));
-}
-
-export const addQuincalleria = async (id_tipo: number, id_quincalleria: number) => {
-	return prisma.tipoQuincalleria
-		.create({ data: { id_tipo, id_quincalleria } })
-		.then((response) => ok(response))
-		.catch((error) => err(error));
-}
-
-export const deleteQuincalleria = async (id_tipo: number, id_quincalleria: number) => {
-	return prisma.tipoQuincalleria
-		.delete({ where: { id_tipo_id_quincalleria: { id_tipo, id_quincalleria } } })
-		.then((response) => ok(response))
-		.catch((error) => err(error));
-}
