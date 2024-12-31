@@ -294,7 +294,12 @@
 	});
 </script>
 
-<div class="flex flex-col bg-gray-100 py-6 px-4 gap-5 xl:w-full 2xl:w-[80%] mx-auto">
+<div class="flex flex-col bg-gray-100 p-8 gap-5 xl:w-full 2xl:w-[80%] mx-auto">
+	<div class="flex flex-row items-center">
+		<button onclick={() => {location.assign('/home');}} aria-label="home" class="hover:underline">Home</button>
+		<div class="iconify mdi--keyboard-arrow-right size-5"></div>
+		<span class=" text-slate-400">Cotizar</span>
+	</div>
 	<DatosCotizacion bind:cliente bind:datos_adicionales={datosAdicionales} />
 	<!-- Ventanas -->
 	<div class="space-y-6 w-full">

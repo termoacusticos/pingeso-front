@@ -27,7 +27,12 @@
 
 </script>
 
-<div class="min-h-screen w-full p-8 bg-gray-100 xl:w-[60%] lg:w-[50%] md:w-[70%] mx-auto overflow-scroll">
+<div class="min-h-screen w-full p-8 gap-5 flex flex-col bg-gray-100 xl:w-[60%] lg:w-[50%] md:w-[70%] mx-auto overflow-scroll">
+    <div class="flex flex-row items-center">
+		<button onclick={() => {location.assign('/home');}} aria-label="home" class="hover:underline">Home</button>
+		<div class="iconify mdi--keyboard-arrow-right size-5"></div>
+		<span class=" text-slate-400">Modificar</span>
+	</div>
     <select
         bind:value={constantSelected}
         class="p-2 rounded-md bg-white border w-44 truncate overflow-hidden whitespace-nowrap"
@@ -88,7 +93,7 @@
 
     {#if constantSelected == 'Tipos'}
         <table class="table-auto w-full rounded-lg bg-white shadow">
-            <thead class="w-full bg-slate-200">
+            <thead class="w-full bg-gray-200 text-gray-700">
                 <tr>
                     <th>ID</th>
                     <th>Descripción</th>
@@ -105,7 +110,7 @@
             </thead>
             <tbody class="w-full"> 
                 {#each tipos as tipo}
-                    <tr onselect={() => {}} class=" hover:bg-slate-200">
+                    <tr onselect={() => {}} class=" hover:bg-gray-200">
                         <td>{tipo.id_tipo}</td>
                         <td>{tipo.descripcion_tipo}</td>
                         <td>{tipo.id_material}</td>

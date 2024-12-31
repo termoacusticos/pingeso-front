@@ -133,15 +133,19 @@
 </script>
 
 <div
-	class="min-h-screen w-full p-8 bg-gray-100 xl:w-[60%] lg:w-[50%] md:w-[70%] mx-auto overflow-scroll">
-	<h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Historial de Cotizaciones</h1>
+	class="min-h-screen w-full flex flex-col p-8 bg-gray-100 gap-5 xl:w-[60%] lg:w-[50%] md:w-[70%] mx-auto overflow-scroll">
+	<div class="flex flex-row items-center">
+		<button onclick={() => {location.assign('/home');}} aria-label="home" class="hover:underline">Home</button>
+		<div class="iconify mdi--keyboard-arrow-right size-5"></div>
+		<span class=" text-slate-400">Historial</span>
+	</div>
 
 	<!-- Campo de búsqueda -->
 	<input
 		type="text"
 		bind:value={searchQuery}
 		placeholder="Buscar nombre de cliente o RUT..."
-		class="w-full p-3 mb-6 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring focus:ring-indigo-200" />
+		class="w-full p-3 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring focus:ring-indigo-200" />
 
 	<!-- Tabla de cotizaciones -->
 	<table class="w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
