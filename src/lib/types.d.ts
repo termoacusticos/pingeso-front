@@ -52,7 +52,7 @@ type DatosAdicionales = {
 	costo_despacho?: number;
 	costo_instalacion?: number;
 	ganancia_global?: number;
-}
+};
 
 type OpcionModel = {
 	id_opcion?: number;

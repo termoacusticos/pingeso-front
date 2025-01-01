@@ -32,10 +32,10 @@
 	let cotizaciones: PresupuestoModel[] = $state(data.presupuestos);
 
 	function formatoChileno(valor: number) {
-		return new Intl.NumberFormat("es-CL", {
-		style: "currency",
-		currency: "CLP",
-		minimumFractionDigits: 0
+		return new Intl.NumberFormat('es-CL', {
+			style: 'currency',
+			currency: 'CLP',
+			minimumFractionDigits: 0
 		}).format(valor);
 	}
 
@@ -135,7 +135,12 @@
 <div
 	class="min-h-screen w-full flex flex-col p-8 bg-gray-100 gap-5 xl:w-[60%] lg:w-[50%] md:w-[70%] mx-auto overflow-scroll">
 	<div class="flex flex-row items-center">
-		<button onclick={() => {location.assign('/home');}} aria-label="home" class="hover:underline">Home</button>
+		<button
+			onclick={() => {
+				location.assign('/home');
+			}}
+			aria-label="home"
+			class="hover:underline">Home</button>
 		<div class="iconify mdi--keyboard-arrow-right size-5"></div>
 		<span class=" text-slate-400">Historial</span>
 	</div>

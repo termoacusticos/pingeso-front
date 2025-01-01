@@ -15,8 +15,6 @@
 		url,
 		presupuesto,
 		resetStores
-
-
 	} from '$lib/store';
 	import type {
 		ClienteUI,
@@ -88,7 +86,7 @@
 		costo_despacho: undefined,
 		costo_instalacion: undefined,
 		ganancia_global: undefined
-	})
+	});
 
 	let mostrar_eliminar_opcion = $derived(opciones.length > 1);
 
@@ -172,7 +170,8 @@
 	function convertirVentanas(ventanas: VentanaUI[]): VentanaModel[] {
 		return ventanas.map((ventana) => {
 			// Buscar el id del material, tipo, color y cristal en sus respectivas listas
-			const id_material = materiales.find((m) => m.nombre_material === ventana.material)?.id_material ?? 0;
+			const id_material =
+				materiales.find((m) => m.nombre_material === ventana.material)?.id_material ?? 0;
 			const id_tipo = tipos.find((t) => t.descripcion_tipo === ventana.tipo)?.id_tipo ?? 0;
 			const id_color = colores.find((c) => c.nombre_color === ventana.color)?.id_color ?? 0;
 			const id_cristal = cristales.find((c) => c.desc_cristal === ventana.cristal)?.id_cristal ?? 0;
@@ -206,8 +205,8 @@
 			let cotizacion: PresupuestoModel = {
 				id_usuario: 0,
 				fecha: '',
-				valor_despacho: datosAdicionales.costo_despacho??0,
-				valor_instalacion: datosAdicionales.costo_instalacion??0,
+				valor_despacho: datosAdicionales.costo_despacho ?? 0,
+				valor_instalacion: datosAdicionales.costo_instalacion ?? 0,
 				Cliente: {
 					nombre: cliente.nombre,
 					rut_cliente: cliente.rut_cliente,
@@ -220,9 +219,9 @@
 			fetch('/api/presupuesto', {
 				method: 'POST',
 				headers: {
-					'Content-Type': 'application/json',
+					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify(cotizacion),
+				body: JSON.stringify(cotizacion)
 			})
 				.then((response) => {
 					if (!response.ok) {
@@ -246,7 +245,6 @@
 			console.error('Error al crear la cotización:', error);
 		}
 	}
-
 
 	function eliminarVentana(_opcionIndex: number, ventanaIndex: number) {
 		opciones = opciones.map((opcion) => {
@@ -296,7 +294,12 @@
 
 <div class="flex flex-col bg-gray-100 p-8 gap-5 xl:w-full 2xl:w-[80%] mx-auto">
 	<div class="flex flex-row items-center">
-		<button onclick={() => {location.assign('/home');}} aria-label="home" class="hover:underline">Home</button>
+		<button
+			onclick={() => {
+				location.assign('/home');
+			}}
+			aria-label="home"
+			class="hover:underline">Home</button>
 		<div class="iconify mdi--keyboard-arrow-right size-5"></div>
 		<span class=" text-slate-400">Cotizar</span>
 	</div>
@@ -369,7 +372,7 @@
 				</div>
 
 				<div class="w-full iconify mdi--success-circle bg-teal-500 size-16"></div>
-			
+
 				<!-- Contenido del modal -->
 				<div class="flex flex-col gap-2 text-center mt-2 items-center">
 					<h2 class="text-2xl font-extrabold text-gray-800">¡Éxito!</h2>
@@ -404,7 +407,7 @@
 				</div>
 
 				<div class="w-full iconify mdi--error bg-red-500 size-16"></div>
-			
+
 				<!-- Contenido del modal -->
 				<div class="flex flex-col gap-2 text-center mt-2 items-center">
 					<h2 class="text-2xl font-extrabold text-gray-800">Error</h2>
@@ -420,7 +423,6 @@
 			</div>
 		</div>
 	{/if}
-
 
 	{#if mostrarAgregarOpcion}
 		<div class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">

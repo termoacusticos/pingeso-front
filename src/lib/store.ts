@@ -38,4 +38,3 @@ export function resetStores() {
 	cristales.set([]);
 	tipos.set([]);
 }
-

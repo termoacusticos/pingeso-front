@@ -25,7 +25,7 @@ export const saveQuincalleria = async (quincalleria: Quincalleria) => {
 
 export const updateQuincalleria = async (id: number, quincalleria: Quincalleria) => {
 	return prisma.quincalleria
-		.update({ where: { id_quincalleria: id }, data: {...quincalleria, id_quincalleria: id} })
+		.update({ where: { id_quincalleria: id }, data: { ...quincalleria, id_quincalleria: id } })
 		.then((response) => ok(response))
 		.catch((error) => err(error));
 };

@@ -10,16 +10,16 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	console.log(presupuestos);
 
 	const constantes: ConstantData = await fetch('/api/constantes', {
-			method: 'GET'
-		}).then((response) => {
-			return response.json();
-		});
+		method: 'GET'
+	}).then((response) => {
+		return response.json();
+	});
 
-	return { 
+	return {
 		presupuestos,
 		materiales: constantes.materiales,
 		colores: constantes.colores,
 		cristales: constantes.cristales,
 		tipos: constantes.tipos
-	 };
+	};
 };
