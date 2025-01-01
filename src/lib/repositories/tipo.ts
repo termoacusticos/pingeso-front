@@ -27,36 +27,14 @@ export const deleteTipo = async (id: number) => {
 		.catch((error) => err(error));
 };
 
-interface RelacionesTipo {
-    perfiles?: number[];
-    quincallerias?: number[];
-}
-
-export const updateTipo = async (id: number, tipo: Tipo, relaciones?: RelacionesTipo) => {
-    return prisma.$transaction(async (tx) => {
-        const tipoActualizado = await tx.tipo.update({ 
-            where: { id_tipo: id }, 
-            data: {
-                ...tipo,
-                TipoPerfil: relaciones?.perfiles ? {
-                    deleteMany: {},
-                    create: relaciones.perfiles.map(id_perfil => ({ id_perfil }))
-                } : undefined,
-                TipoQuincalleria: relaciones?.quincallerias ? {
-                    deleteMany: {},
-                    create: relaciones.quincallerias.map(id_quincalleria => ({ id_quincalleria }))
-                } : undefined
-            },
-            include: {
-                TipoPerfil: { include: { Perfil: true } },
-                TipoQuincalleria: { include: { Quincalleria: true } }
-            }
-        });
-
-        return tipoActualizado;
-    })
-    .then((response) => ok(response))
-    .catch((error) => err(error));
+export const updateTipo = async (id: number, tipo: Tipo) => {
+	return prisma.tipo
+		.update({
+			where: { id_tipo: id },
+			data: { ...tipo, id_tipo: id }
+		})
+		.then((response) => ok(response))
+		.catch((error) => err(error));
 };
 
 export const getPerfilesTipo = async (id_tipo: number) => {

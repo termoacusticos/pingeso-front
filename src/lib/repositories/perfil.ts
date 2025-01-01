@@ -18,14 +18,14 @@ export const getAllPerfiles = async () => {
 
 export const savePerfil = async (perfil: Perfil) => {
 	return prisma.perfil
-		.create({ data: perfil })
+		.create({ data: { ...perfil, id_perfil: undefined } })
 		.then((response) => ok(response))
 		.catch((error) => err(error));
 };
 
 export const updatePerfil = async (id: number, perfil: Perfil) => {
 	return prisma.perfil
-		.update({ where: { id_perfil: id }, data: perfil })
+		.update({ where: { id_perfil: id }, data: { ...perfil, id_perfil: id } })
 		.then((response) => ok(response))
 		.catch((error) => err(error));
 };

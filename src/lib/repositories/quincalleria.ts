@@ -18,14 +18,14 @@ export const getAllQuincallerias = async () => {
 
 export const saveQuincalleria = async (quincalleria: Quincalleria) => {
 	return prisma.quincalleria
-		.create({ data: quincalleria })
+		.create({ data: { ...quincalleria, id_quincalleria: undefined } })
 		.then((response) => ok(response))
 		.catch((error) => err(error));
 };
 
 export const updateQuincalleria = async (id: number, quincalleria: Quincalleria) => {
 	return prisma.quincalleria
-		.update({ where: { id_quincalleria: id }, data: quincalleria })
+		.update({ where: { id_quincalleria: id }, data: {...quincalleria, id_quincalleria: id} })
 		.then((response) => ok(response))
 		.catch((error) => err(error));
 };

@@ -15,17 +15,17 @@ export const getAllCristales = async () => {
 
 export const saveCristal = async (cristal: Cristal) => {
 	return prisma.cristal
-		.create({ data: cristal })
+		.create({ data: { ...cristal, id_cristal: undefined } })
 		.then((response) => ok(response))
 		.catch((error) => err(error));
 };
 
-export const updateCristal = async (id: number, cristal: Cristal) =>{
+export const updateCristal = async (id: number, cristal: Cristal) => {
 	return prisma.cristal
-		.update({ where: {id_cristal: id}, data: cristal })
+		.update({ where: { id_cristal: id }, data: { ...cristal, id_cristal: id } })
 		.then((response) => ok(response))
 		.catch((error) => err(error));
-}
+};
 
 export const deleteCristal = async (id: number) => {
 	return prisma.cristal
