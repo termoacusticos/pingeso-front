@@ -1,7 +1,7 @@
 import type { ConstantData } from '$lib/types';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ fetch }) => {
+export const load: PageServerLoad = async ({ fetch, locals }) => {
 	const constantes: ConstantData = await fetch('/api/constantes', {
 		method: 'GET'
 	}).then((response) => {

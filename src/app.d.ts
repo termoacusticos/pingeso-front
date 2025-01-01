@@ -1,4 +1,7 @@
 // See https://kit.svelte.dev/docs/types#app
+
+import type { JWTBody } from '$lib/types';
+
 // for information about these interfaces
 declare global {
 	namespace App {
@@ -15,6 +18,9 @@ declare global {
 				waitUntil(promise: Promise<any>): void;
 			};
 			caches: CacheStorage & { default: Cache };
+		}
+		interface Locals {
+			session: JWTBody | null;
 		}
 	}
 }

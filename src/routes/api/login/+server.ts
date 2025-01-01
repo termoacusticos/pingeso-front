@@ -35,24 +35,23 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 		.setProtectedHeader({ alg: 'HS256' })
 		.setExpirationTime('1h')
 		.sign(TOKEN_SECRET);
-	cookies.set('authToken', token, { path: '/' });
+
+	const exp = new Date();
+	exp.setHours(exp.getHours() + 1);
+
+	cookies.set('authToken', token, {
+		path: '/',
+		sameSite: 'lax',
+		httpOnly: true,
+		expires: exp
+	});
 
 	return json({ token });
 };
 
-export const GET: RequestHandler = async ({ cookies }) => {
-	const token = cookies.get('authToken');
-	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });
-
-	const validationResult = await validateJWT(token);
-	if (validationResult.isErr()) return json({ error: 'Token inválido.' }, { status: 401 });
-
-	return json(validationResult.value);
-};
-
 // Para cerrar sesión
 export const DELETE: RequestHandler = async ({ cookies }) => {
-	cookies.set('authToken', '', { path: '/' });
+	cookies.set('authToken', '', { path: '/', maxAge: 0, httpOnly: true, sameSite: 'lax' });
 
 	return new Response(null, { status: 200, statusText: 'Sesión cerrada' });
 };
