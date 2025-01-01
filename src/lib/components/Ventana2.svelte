@@ -7,7 +7,7 @@
 		altoOptions,
 		anchoOptions,
 		cristalOptions,
-		gananciaOptions
+		gananciaOptions,
 	} from '$lib/store';
 	import type { ConstantData, VentanaUI } from '$lib/types';
 	import type { Cristal, Tipo } from '@prisma/client';
@@ -34,6 +34,10 @@
 	let cristalesLista: Cristal[] = data.cristales;
 	let tiposFiltrados = $state<Tipo[]>([]);
 	let mostrar_porcentaje = false; // Define the variable
+
+	// Mensajes para mostrar si alto/ancho quedan fuera de los rangos
+	let msgAlto = $state('');
+	let msgAncho = $state('');
 
 	//$inspect('tipo ventana', ventana.tipo)
 	//$inspect('lista tipo', $tipoOptions);
@@ -81,6 +85,34 @@
 		if (value[id] !== undefined) {
 			ventana.ancho = value[id]; // Actualiza solo si hay un valor definido
 		}
+	});
+
+	// Valida los rangos cada vez que cambien alto, ancho o el tipo
+	$effect(() => {
+		// Limpia mensajes antes de recalcular
+		msgAlto = '';
+		msgAncho = '';
+
+		const tipoSeleccionado = data.tipos.find(
+			(t) => t.descripcion_tipo === ventana.tipo
+		);
+		if (!tipoSeleccionado) return;
+
+		const { minimo, maximo } = tipoSeleccionado;
+
+		// Validar ALTO
+		if (ventana.alto === undefined || ventana.alto === null) {
+			msgAlto = ''; 
+		} else if (minimo !== null && maximo !== null) {
+			if (ventana.alto < minimo) {
+			msgAlto = `El alto mínimo para "${ventana.tipo}" es ${minimo} cm`;
+			} else if (ventana.alto > maximo) {
+			msgAlto = `El alto máximo para "${ventana.tipo}" es ${maximo} cm`;
+			} else {
+			msgAlto = ''; 
+			}
+		}
+
 	});
 
 	/*function calculateTotal() {
@@ -168,6 +200,7 @@
 
 	<!-- Dimensiones Alto y Ancho -->
 	<td class="px-1 py-1">
+		<div class="relative">
 		<input
 			type="number"
 			bind:value={ventana.alto}
@@ -182,6 +215,17 @@
 			}}
 			class="p-2 border rounded-md w-full"
 			placeholder="0" />
+			<!-- Tooltip si hay msgAlto -->
+			<!-- Mensaje Amarillo -->
+			{#if msgAlto}
+				<div
+					class="absolute top-1/2 left-full -translate-y-1/2 ml-2
+						   bg-amber-500 text-white text-xs rounded px-2 py-1 w-max z-10 shadow"
+				>
+					{msgAlto}
+				</div>
+			{/if}
+		</div>
 	</td>
 
 	<td class="px-1 pr-2 py-1">
