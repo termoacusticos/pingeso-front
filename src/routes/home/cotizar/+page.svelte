@@ -104,7 +104,6 @@
 	function visualizarCotizacion() {
 		successModal = !successModal;
 		window.open(get(url));
-		resetStores();
 	}
 
 	function cerrarErrorModal() {
