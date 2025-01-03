@@ -1,9 +1,7 @@
 import { getPerfilesTipo, getQuincalleriasTipo, getTipoById } from '$lib/repositories/tipo';
-import { Err } from 'neverthrow';
 import type { VentanaModel } from '$lib/types';
 import { getCristalById } from '$lib/repositories/cristal';
 import { getMaterialById } from '$lib/repositories/material';
-import { get } from 'node:http';
 
 export async function calcularCostoVentana(ventana: VentanaModel) {
 	const tipo = await getTipoById(ventana.id_tipo);
@@ -17,7 +15,7 @@ export async function calcularCostoVentana(ventana: VentanaModel) {
 	let costoTotal = 0;
 	let costoUnitario = 0;
 
-	if (tipo.Material.nombre_material === 'ALUMINIO') {
+	if (tipo.Material.nombre_material === 'ALUMINIO PREMIUM' || tipo.Material.nombre_material === 'ALUMINIO ESTÁNDAR') {
 		const perfiles = await getPerfilesTipo(ventana.id_tipo);
 		const quincallerias = await getQuincalleriasTipo(ventana.id_tipo);
 		const cristal = await getCristalById(ventana.id_cristal);
@@ -178,7 +176,6 @@ export async function calcularCostoVentana(ventana: VentanaModel) {
 
 	const gananciaFinal = ventana.ganancia ?? tipo.ganancia ?? 0;
 	costoTotal = costoTotal * (1 + gananciaFinal / 100);
-	//costoTotal = costoTotal + costoTotal * ((tipo.ganancia ?? 0) / 100);
 	costoUnitario = costoTotal / ventana.cantidad;
 
 	ventana.precio_total = costoTotal;

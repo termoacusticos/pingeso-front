@@ -3,14 +3,14 @@ import type { Usuario } from '@prisma/client';
 import type { ConstantData, JWTBody, PresupuestoModel } from '$lib/types';
 
 export const load: PageServerLoad = async ({ fetch }) => {
-	await fetch('/api/login', {
+	/*await fetch('/api/login', {
 		method: 'GET'
 	}).then((response) => {
 		// if (response.ok) {
 		// 	redirect(301, '/home');
 		// }
 		return response.json<JWTBody>();
-	});
+	});*/
 
 	const user: Usuario = {
 		id_usuario: 0,
