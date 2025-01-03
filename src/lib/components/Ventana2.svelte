@@ -53,6 +53,9 @@
 			// Filtra solo los tipos que tengan el mismo id_material
 			tiposFiltrados = data.tipos.filter((t) => t.id_material === materialSeleccionado.id_material);
 		}
+
+		ventana.tipo = '';
+		ventana.ganancia = 0;
 	});
 
 	tipoOptions.subscribe((value) => {
@@ -213,8 +216,7 @@
 			<!-- Mensaje Amarillo -->
 			{#if msgAlto}
 				<div
-					class="absolute top-1/2 left-full -translate-y-1/2 ml-2
-						   bg-amber-500 text-white text-xs rounded px-2 py-1 w-max z-10 shadow">
+					class="absolute -bottom-13 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-xs rounded px-2 py-1 w-max z-10 shadow-md">
 					{msgAlto}
 				</div>
 			{/if}

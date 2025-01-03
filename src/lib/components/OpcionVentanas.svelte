@@ -115,8 +115,8 @@
 							bind:showDropdown={showColorDropdown} />
 					</th>
 					<th class="px-1 py-2 min-w-20">Cantidad</th>
-					<th class="px-1 py-2 min-w-20">Alto</th>
 					<th class="px-1 py-2 min-w-20">Ancho</th>
+					<th class="px-1 py-2 min-w-20">Alto</th>
 					<th class="px-1 py-2 min-w-20">Ganancia</th>
 					<th class="px-1 py-2 w-32 min-w-32">Valor Unitario</th>
 					<th class="px-1 py-2 w-32 min-w-32">Valor Total</th>
