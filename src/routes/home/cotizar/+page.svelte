@@ -52,6 +52,7 @@
 	let mostrarAgregarOpcion = $state(false);
 	let materialModal = $state('');
 	let colorModal = $state('');
+	
 	let cliente: ClienteUI = $state({
 		nombre: '',
 		rut_cliente: '',
@@ -103,7 +104,6 @@
 	function visualizarCotizacion() {
 		successModal = !successModal;
 		window.open(get(url));
-		resetStores();
 	}
 
 	function cerrarErrorModal() {

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PresupuestoModel } from '$lib/types';
-	import { presupuesto, url } from '$lib/store';
+	import { materialOptions, presupuesto, url } from '$lib/store';
 	import { goto } from '$app/navigation';
 	import { generatePDF } from '$lib/services/pdf_generator';
 	import { get } from 'svelte/store';
@@ -157,17 +157,19 @@
 		<thead class="bg-gray-200 text-gray-700">
 			<tr>
 				<th class="py-3 px-4 text-left">Cliente</th>
-				<th class="py-3 px-4 text-left"> Dirección </th>
+				<!--<th class="py-3 px-4 text-left"> Direccion </th>
 				<th class="py-3 px-4 text-left cursor-pointer" onclick={() => sortByRUT()}>
 					RUT
 					<span class="ml-1">{rutSortDirection === 'asc' ? '▲' : '▼'}</span>
-				</th>
+				</th>-->
+				<th class="py-3 px-4 text-left">Material</th>
 				<th class="py-3 px-4 text-left cursor-pointer" onclick={() => sortByDate()}>
 					Fecha
 					<span class="ml-1">{fechaSortDirection === 'asc' ? '▲' : '▼'}</span>
 				</th>
-				<th>Despacho</th>
-				<th>Instalación</th>
+				<th class="py-3 px-4 text-left">Monto</th>
+				<!--<th>Despacho</th>
+				<th>Instalación</th>-->
 				<th class="py-3 px-4 text-left">Acciones</th>
 			</tr>
 		</thead>
@@ -175,11 +177,13 @@
 			{#each paginatedCotizaciones as cotizacion}
 				<tr class="border-b border-gray-200 hover:bg-gray-100">
 					<td class="py-3 px-4 truncate">{cotizacion.Cliente?.nombre}</td>
-					<td class="py-3 px-4">{cotizacion.Cliente?.direccion}</td>
-					<td class="py-3 px-4">{cotizacion.Cliente?.rut_cliente}</td>
+					<td class="py-3 px-4">Material</td>
+					<!--<td class="py-3 px-4">{cotizacion.Cliente?.direccion}</td>
+					<td class="py-3 px-4">{cotizacion.Cliente?.rut_cliente}</td> -->
 					<td class="py-3 px-4">{new Date(cotizacion.fecha).toLocaleDateString()}</td>
-					<td class="py-3 px-4">{formatoChileno(cotizacion.valor_despacho)}</td>
-					<td class="py-3 px-4">{formatoChileno(cotizacion.valor_instalacion)}</td>
+					<!--<td class="py-3 px-4">{formatoChileno(cotizacion.valor_despacho)}</td>
+					<td class="py-3 px-4">{formatoChileno(cotizacion.valor_instalacion)}</td>-->
+					<td class="py-3 px-4">Monto</td>
 					<td class="py-3 px-4">
 						<button
 							class="w-full flex flex-col overflow-hidden text-right"
