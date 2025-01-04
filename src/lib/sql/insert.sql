@@ -146,9 +146,9 @@ INSERT INTO Color (nombre_color) VALUES
 ('Roble dorado'),
 ('Negro');
 
-INSERT INTO Material (nombre_material) VALUES
-("ALUMINIO"),
-("PVC");
+INSERT INTO Material (nombre_material, texto_calidad, texto_termopanel) VALUES
+("ALUMINIO", "ALTA", "WARMEDGE"),
+("PVC", "ALTA", "WARMEDGE");
 
 INSERT INTO Tipo (descripcion_tipo, id_material, formula_ancho, formula_alto, cantidad_cristal, porcentaje_quinc, largo_perfil, minimo, maximo, ganancia) VALUES
 ("VENTANA CORREDERA CHICA", 1, "(X/2)-65", "Y-124", "2*Z", NULL, NULL, 0, 1700, 85),

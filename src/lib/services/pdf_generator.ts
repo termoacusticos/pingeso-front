@@ -1,6 +1,15 @@
 import type { ConstantData, OpcionModel, PresupuestoModel } from '$lib/types';
 import type { Color, Cristal, Material, Tipo } from '@prisma/client';
-import { PDFDocument, PDFFont, PDFPage, PageSizes, StandardFonts, rgb } from 'pdf-lib';
+import {
+	PDFDocument,
+	PDFFont,
+	PDFPage,
+	PageSizes,
+	StandardFonts,
+	rgb,
+	layoutMultilineText,
+	TextAlignment
+} from 'pdf-lib';
 
 //#region constantes
 let materiales: Material[];
@@ -16,7 +25,7 @@ const checkbox_1 =
 let pdfDoc: PDFDocument;
 let page: PDFPage;
 
-let fontSize = 11;
+let fontSize = 9;
 let font: PDFFont;
 let boldFont: PDFFont;
 
@@ -29,13 +38,12 @@ let marginLeft: number = 20;
 let currentX: number;
 let currentY: number;
 
-let verticalGap: number = 15;
+let verticalGap: number = 11;
 
 // Dimensiones de las columnas
 const headersTabla = [
 	'MATERIAL',
 	'TIPO',
-	'ITEM',
 	'COLOR',
 	'CRISTAL',
 	'ANCHO',
@@ -44,8 +52,8 @@ const headersTabla = [
 	'PRECIO U',
 	'TOTAL'
 ];
-let columnWidths = [0, 40, 15, -10, 20, -20, -20, -30, -15, 0].map((element, idx, arr) => {
-	return element + 555 / arr.length;
+let columnWidths = [25, 75, -10, 0, -20, -20, -30, -15, 0].map((element, idx, arr) => {
+	return element + 530 / arr.length;
 });
 const rowHeight = 13; // Altura de cada fila
 const rowGap = 9;
@@ -106,9 +114,9 @@ function drawOptionHeaderRow(
 	row: string[],
 	rowSize: number,
 	colSize: number,
-	optionMargin: number
+	optionMargin: number,
+	fontSize: number
 ) {
-	let svgSize = 12.5;
 	currentX = marginLeft + optionMargin;
 	for (let index = 0; index < row.length; index++) {
 		const text = row[index];
@@ -119,22 +127,18 @@ function drawOptionHeaderRow(
 			font: boldFont
 		});
 		currentX += rowSize;
-		if (index != 0) {
-			page.drawSvgPath(index == 1 ? checkbox_1 : checkbox_0, {
-				x: currentX - svgSize,
-				y: currentY + svgSize,
-				scale: 0.675,
-				color: index == 1 ? rgb(0, 1, 0) : rgb(0, 0, 0)
-			});
-			currentX += svgSize;
-		}
 	}
 	currentY -= colSize;
 }
 
 //#region tabla
-function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacion: number) {
-	const tableFontSize = fontSize - 3;
+function drawTable(
+	opcion: OpcionModel,
+	valor_despacho: number,
+	valor_instalacion: number,
+	marginFooter: number
+) {
+	const tableFontSize = fontSize - 1;
 
 	currentX = marginLeft;
 
@@ -153,7 +157,7 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 		const cellX = currentX + 5;
 		const columnWidth = columnWidths[index];
 
-		if (index > 7) {
+		if (index > 6) {
 			const textWidth = font.widthOfTextAtSize(header, tableFontSize);
 			page.drawText(header, {
 				x: currentX + columnWidth - textWidth + 10, // Ajuste para alinearlo al borde derecho
@@ -208,14 +212,13 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 		const row = [
 			material,
 			tipo,
-			ventana.item,
 			color,
 			cristal,
 			ventana.ancho.toString(),
 			ventana.alto.toString(),
 			ventana.cantidad.toString(),
-			ventana.precio_unitario.toLocaleString('en-US').split(',')[0],
-			ventana.precio_total.toLocaleString('en-US').split(',')[0]
+			ventana.precio_unitario.toLocaleString('en-US').split('.')[0],
+			ventana.precio_total.toLocaleString('en-US').split('.')[0]
 		];
 
 		row.forEach((cell, index) => {
@@ -223,7 +226,7 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 			const columnWidth = columnWidths[index];
 
 			// Alinear texto a la derecha para "PRECIO U" y "TOTAL"
-			if (index > 7) {
+			if (index > 6) {
 				const textWidth = font.widthOfTextAtSize(cell, tableFontSize);
 				page.drawText(cell, {
 					x: currentX + columnWidth - textWidth + 10, // Ajuste para alinearlo al borde derecho
@@ -264,10 +267,13 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 	];
 
 	footerText.forEach((text, index) => {
+		const textWidth = font.widthOfTextAtSize(text, tableFontSize);
+		const extraWidth = font.widthOfTextAtSize('000000000000000', tableFontSize);
+
 		page.drawRectangle({
-			x: marginLeft,
+			x: width - marginLeft - extraWidth * 2.5,
 			y: currentY - rowHeight,
-			width: width - marginLeft * 2,
+			width: extraWidth * 2.5,
 			height: rowHeight,
 			color: rgb(0.9, 0.9, 0.5), // Color amarillo claro
 			borderColor: rgb(0, 0, 0),
@@ -275,15 +281,16 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 		});
 
 		page.drawText(text, {
-			x: marginLeft + 5,
+			x: width - marginLeft - textWidth - extraWidth,
 			y: currentY - rowGap,
 			size: tableFontSize,
 			font: font,
 			color: rgb(0, 0, 0)
 		});
 
-		const value = footerValues[index].toLocaleString('en-US').split(',')[0];
+		const value = footerValues[index].toLocaleString('en-US').split('.')[0];
 		const valueWidth = font.widthOfTextAtSize(value, tableFontSize);
+
 		page.drawText(value, {
 			x: currentX - valueWidth + 10, // Ajuste para alinearlo al borde derecho
 			y: currentY - rowGap,
@@ -301,7 +308,8 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 export const generatePDF = async (
 	presupuesto: PresupuestoModel,
 	header: { logos: string[]; h2: string[] },
-	constantes: ConstantData
+	constantes: ConstantData,
+	texto_libre: string
 ) => {
 	colores = constantes.colores;
 	cristales = constantes.cristales;
@@ -401,7 +409,7 @@ export const generatePDF = async (
 		const opcion = presupuesto.Opciones[opcionIndex];
 
 		let optRowSize = boldFont.widthOfTextAtSize('AAAAAAAAAA', fontSize + 2);
-		let optColSize = boldFont.heightAtSize(fontSize + 3);
+		let optColSize = boldFont.heightAtSize(fontSize);
 
 		let opcionHeight = opcion.Ventanas.length * rowHeight;
 		opcionHeight += (footerText.length + 1) * rowHeight;
@@ -412,29 +420,59 @@ export const generatePDF = async (
 			currentY = height - marginTop;
 		}
 
-		page.drawText('OPCIÓN ' + opcionIndex, {
+		page.drawText('OPCIÓN ' + (opcionIndex + 1), {
 			x: marginLeft,
 			y: currentY,
-			size: fontSize + 2,
+			size: fontSize,
 			font: boldFont
 		});
-		let optionMargin = boldFont.widthOfTextAtSize('OPCIÓN X  ', fontSize + 2);
+		let optionMargin = boldFont.widthOfTextAtSize('OPCIÓN X  ', fontSize);
 
-		const upperRow = ['CALIDAD:', 'ALTA', 'MEDIA'];
-		const lowerRow = ['TERMOPANEL:', 'WARMEDGE', 'TRADICIONAL'];
+		const currentMat = materiales.find(
+			(elem) => elem.id_material == opcion.Ventanas[0].id_material
+		);
+
+		const upperRow = [
+			'CALIDAD:',
+			currentMat?.texto_calidad ?? '',
+			'TERMOPANEL:',
+			currentMat?.texto_termopanel ?? ''
+		];
 
 		currentX = marginLeft + optionMargin;
-		drawOptionHeaderRow(upperRow, optRowSize, optColSize, optionMargin);
+		drawOptionHeaderRow(upperRow, optRowSize, optColSize, optionMargin, fontSize);
 
-		currentX = marginLeft + optionMargin;
-		drawOptionHeaderRow(lowerRow, optRowSize, optColSize, optionMargin);
 		currentY += verticalGap / 2;
 
-		drawTable(opcion, presupuesto.valor_despacho, presupuesto.valor_instalacion);
+		drawTable(opcion, presupuesto.valor_despacho, presupuesto.valor_instalacion, 150);
+		currentY -= verticalGap;
 	}
 
 	await drawImageRow(header.logos, 80);
 
+	const multiText = layoutMultilineText(texto_libre, {
+		alignment: TextAlignment.Left,
+		bounds: { width: width - marginLeft * 2, height: 10000, x: 10, y: 10 },
+		font: font,
+		fontSize: fontSize
+	});
+	const textHeight = font.heightAtSize(fontSize);
+
+	currentY -= verticalGap;
+	for (let i = 0; i < multiText.lines.length; i++) {
+		if (currentY - textHeight < 0) {
+			page = pdfDoc.addPage(PageSizes.A4);
+			currentY = height - marginTop;
+		}
+		page.drawText(`${multiText.lines[i].text}`, {
+			x: marginLeft,
+			y: currentY,
+			size: fontSize,
+			font: font
+		});
+		// move position down
+		currentY -= textHeight * 1.15;
+	}
 	//#region guardarPDF
 	const pdfBytes = await pdfDoc.save();
 	const blob = new Blob([pdfBytes], { type: 'application/pdf' });

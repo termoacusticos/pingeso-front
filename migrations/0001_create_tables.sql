@@ -100,7 +100,9 @@ CREATE TABLE "Tipo" (
 -- CreateTable
 CREATE TABLE "Material" (
     "id_material" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "nombre_material" TEXT NOT NULL
+    "nombre_material" TEXT NOT NULL,
+    "texto_calidad" TEXT NOT NULL,
+    "texto_termopanel" TEXT NOT NULL
 );
 
 -- CreateTable
