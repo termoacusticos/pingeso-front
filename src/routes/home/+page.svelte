@@ -26,6 +26,10 @@
 </script>
 
 <div class="min-h-screen lg:w-[60%] mx-auto p-8 bg-gray-100 animate-fade-up">
+	<div class="flex flex-row items-center mb-5">
+		<div class="iconify mdi--keyboard-arrow-right size-5 bg-slate-400"></div>
+		<span class=" text-slate-400">Home</span>
+	</div>
 	<!-- Sección de estadísticas generales -->
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
 		<div class="bg-white p-4 rounded shadow text-center">
