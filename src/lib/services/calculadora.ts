@@ -15,7 +15,7 @@ export async function calcularCostoVentana(ventana: VentanaModel) {
 	let costoTotal = 0;
 	let costoUnitario = 0;
 
-	if (tipo.Material.nombre_material === 'ALUMINIO PREMIUM' || tipo.Material.nombre_material === 'ALUMINIO ESTÁNDAR') {
+	if (tipo.Material.nombre_material === 'ALUMINIO PREMIUM XELENTIA' || tipo.Material.nombre_material === 'ALUMINIO ESTÁNDAR BÁSICO') {
 		const perfiles = await getPerfilesTipo(ventana.id_tipo);
 		const quincallerias = await getQuincalleriasTipo(ventana.id_tipo);
 		const cristal = await getCristalById(ventana.id_cristal);
@@ -104,7 +104,7 @@ export async function calcularCostoVentana(ventana: VentanaModel) {
 		const m2 = (anchoCristal / 1000) * (altoCristal / 1000) * cantidadCristal;
 		const costoCristal = m2 * cristal.precio_cristal;
 		costoTotal += costoCristal;
-	} else if (tipo.Material.nombre_material === 'PVC') {
+	} else if (tipo.Material.nombre_material === 'PVC EUROPEO') {
 		const perfiles = await getPerfilesTipo(ventana.id_tipo);
 		const cristal = await getCristalById(ventana.id_cristal);
 

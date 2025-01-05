@@ -196,6 +196,22 @@
 	</td>
 
 	<!-- Dimensiones Alto y Ancho -->
+	<td class="px-1 pr-2 py-1">
+		<input
+			type="number"
+			bind:value={ventana.ancho}
+			oninput={() => {
+				anchoOptions.update((current) => {
+					const updated = [...current]; // Crear una copia del arreglo actual
+					if (ventana.ancho !== undefined) {
+						updated[id] = ventana.ancho;
+					}
+					return updated;
+				});
+			}}
+			class="p-2 border rounded-md w-full"
+			placeholder="0" />
+	</td>
 	<td class="px-1 py-1">
 		<div class="relative">
 			<input
@@ -221,23 +237,6 @@
 				</div>
 			{/if}
 		</div>
-	</td>
-
-	<td class="px-1 pr-2 py-1">
-		<input
-			type="number"
-			bind:value={ventana.ancho}
-			oninput={() => {
-				anchoOptions.update((current) => {
-					const updated = [...current]; // Crear una copia del arreglo actual
-					if (ventana.ancho !== undefined) {
-						updated[id] = ventana.ancho;
-					}
-					return updated;
-				});
-			}}
-			class="p-2 border rounded-md w-full"
-			placeholder="0" />
 	</td>
 
 	<!-- Ganancia -->

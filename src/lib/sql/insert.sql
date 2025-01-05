@@ -147,43 +147,51 @@ INSERT INTO Color (nombre_color) VALUES
 ('Negro');
 
 INSERT INTO Material (nombre_material, texto_calidad, texto_termopanel) VALUES
-("ALUMINIO PREMIUM", "ALTA", "WARMEDGE"),
-("PVC", "ALTA", "WARMEDGE");
-("ALUMINIO ESTÁNDAR", "ALTA", "WARMEDGE");
+("ALUMINIO PREMIUM XELENTIA", "ALTA", "WARMEDGE"),
+("PVC EUROPEO", "ALTA", "WARMEDGE"),
+("ALUMINIO ESTÁNDAR BÁSICO", "ALTA", "WARMEDGE");
 
 INSERT INTO Tipo (descripcion_tipo, id_material, formula_ancho, formula_alto, cantidad_cristal, porcentaje_quinc, largo_perfil, minimo, maximo, ganancia) VALUES
-("VENTANA CORREDERA CHICA", 1, "(X/2)-65", "Y-124", "2*Z", NULL, NULL, 0, 1700, 85),
-("VENTANA CORREDERA GRANDE", 1, "(X/2)-65", "Y-124", "2*Z", NULL, NULL, 1700, 2400, 85),
-("PAÑO FIJO", 1, "X-64", "Y-64", "Z", NULL, NULL, NULL, NULL, 85),
-("VENTANA PROYECTANTE/ABATIR", 1, "X-134", "Y-134", "Z", NULL, NULL, NULL, NULL, 85),
-("PUERTA ABATIR", 1, "X-230", "Y-193", "Z", NULL, NULL , NULL, NULL, 85),
-("MARCO FIJO", 2, "X-90", "Y-90", "Z", 10, 5.8, NULL, NULL, 55),
-("PUERTA ABATIR EXTERIOR", 2, "(X-58)-173", "(Y-32)-173", "Z", 19, 5.8, NULL, NULL, 55),
-("ABATIR INTERIOR", 2, "X-183", "Y-183", "Z", 8, 5.8, NULL, NULL, 55),
-("CORREDERA CHICA", 2, "(X/2)-129.5", "Y-214", "2*Z", 16, 5.8, NULL, NULL, 40),
-("CORREDERA GRANDE", 2, "(X/2)-156.5", "Y-250", "2*Z", 10, 5.8, NULL, NULL, 55),
-("VENTANA CORREDERA CHICA", 3, "(X/2)-65", "Y-124", "2*Z", NULL, NULL, 0, 1700, 75),
-("VENTANA CORREDERA GRANDE", 3, "(X/2)-65", "Y-124", "2*Z", NULL, NULL, 1700, 2400, 75),
-("PAÑO FIJO", 3, "X-64", "Y-64", "Z", NULL, NULL, NULL, NULL, 75),
-("VENTANA PROYECTANTE/ABATIR", 3, "X-134", "Y-134", "Z", NULL, NULL, NULL, NULL, 75),
-("PUERTA ABATIR", 3, "X-230", "Y-193", "Z", NULL, NULL , NULL, NULL, 75);
+--ALUMINIO PREMIUM XELENTIA--
+("VENTANA CORREDERA CHICA CLASE A", 1, "(X/2)-65", "Y-124", "2*Z", NULL, NULL, 0, 1700, 85),
+("VENTANA CORREDERA GRANDE CLASE A", 1, "(X/2)-65", "Y-124", "2*Z", NULL, NULL, 1700, 2400, 85),
+("VENTANA PAÑO FIJO CLASE A", 1, "X-64", "Y-64", "Z", NULL, NULL, NULL, NULL, 85),
+("VENTANA PROYECTANTE CLASE A", 1, "X-134", "Y-134", "Z", NULL, NULL, NULL, NULL, 85),
+("VENTANA ABATIR CLASE A", 1, "X-134", "Y-134", "Z", NULL, NULL, NULL, NULL, 85),
+("PUERTA ABATIR CLASE A", 1, "X-230", "Y-193", "Z", NULL, NULL , NULL, NULL, 85),
+--PVC EUROPEO--
+("VENTANA MARCO FIJO CLASE A", 2, "X-90", "Y-90", "Z", 10, 5.8, NULL, NULL, 55),
+("PUERTA ABATIR CLASE A", 2, "(X-58)-173", "(Y-32)-173", "Z", 19, 5.8, NULL, NULL, 55),
+("VENTANA ABATIR CLASE A", 2, "X-183", "Y-183", "Z", 8, 5.8, NULL, NULL, 55),
+("VENTANA CORREDERA CHICA CLASE A", 2, "(X/2)-129.5", "Y-214", "2*Z", 16, 5.8, NULL, 1700, 40),
+("VENTANA CORREDERA GRANDE CLASE A", 2, "(X/2)-156.5", "Y-250", "2*Z", 10, 5.8, 1700, 2400, 55),
+--ALUMINIO ESTÁNDAR BÁSICO--
+("VENTANA CORREDERA CHICA CLASE B", 3, "(X/2)-65", "Y-124", "2*Z", NULL, NULL, 0, 1700, 75),
+("VENTANA CORREDERA GRANDE CLASE B", 3, "(X/2)-65", "Y-124", "2*Z", NULL, NULL, 1700, 2400, 75),
+("VENTANA PAÑO FIJO CLASE B", 3, "X-64", "Y-64", "Z", NULL, NULL, NULL, NULL, 75),
+("VENTANA PROYECTANTE CLASE B", 3, "X-134", "Y-134", "Z", NULL, NULL, NULL, NULL, 75),
+("VENTANA ABATIR CLASE B", 3, "X-134", "Y-134", "Z", NULL, NULL, NULL, NULL, 75),
+("PUERTA ABATIR CLASE B", 3, "X-230", "Y-193", "Z", NULL, NULL , NULL, NULL, 75);
 
 INSERT INTO TipoPerfil (id_tipo, id_perfil) VALUES
 (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),
 (2,1),(2,2),(2,3),(2,4),(2,7),(2,8),
 (3,9),(3,10),(3,11),(3,12),
 (4,9),(4,10),(4,13),(4,14),(4,15),(4,16),
-(5,17),(5,18),(5,19),(5,20),(5,21),(5,22),(5,23),
-(6,24),(6,25),(6,26),(6,27),(6,28),(6,29),
-(7,30),(7,25),(7,31),(7,32),(7,33),(7,34),(7,35),(7,36),(7,37),(7,38),
-(8,24),(8,25),(8,26),(8,27),(8,39),(8,40),(8,41),(8,42),(8,43),(8,44),
-(9,45),(9,46),(9,47),(9,48),(9,49),(9,50),(9,51),(9,52),(9,53),(9,54),(9,55),(9,56),
-(10,45),(10,46),(10,57),(10,58),(10,59),(10,60),(10,61),(10,62),(10,63),(10,64),(10,65),(10,56),
-(11,1),(11,2),(11,3),(11,4),(11,5),(11,6),
-(12,1),(12,2),(12,3),(12,4),(12,7),(12,8),
-(13,9),(13,10),(13,11),(13,12),
-(14,9),(14,10),(14,13),(14,14),(14,15),(14,16),
-(15,17),(15,18),(15,19),(15,20),(15,21),(15,22),(15,23);
+(5,9),(5,10),(5,13),(5,14),(5,15),(5,16),
+(6,17),(6,18),(6,19),(6,20),(6,21),(6,22),(6,23),
+(7,24),(7,25),(7,26),(7,27),(7,28),(7,29),
+(8,30),(8,25),(8,31),(8,32),(8,33),(8,34),(8,35),(8,36),(8,37),(8,38),
+(9,24),(9,25),(9,26),(9,27),(9,39),(9,40),(9,41),(9,42),(9,43),(9,44),
+(10,45),(10,46),(10,47),(10,48),(10,49),(10,50),(10,51),(10,52),(10,53),(10,54),(10,55),(10,56),
+(11,45),(11,46),(11,57),(11,58),(11,59),(11,60),(11,61),(11,62),(11,63),(11,64),(11,65),(11,56),
+(12,1),(12,2),(12,3),(12,4),(12,5),(12,6),
+(13,1),(13,2),(13,3),(13,4),(13,7),(13,8),
+(14,9),(14,10),(14,11),(14,12),
+(15,9),(15,10),(15,13),(15,14),(15,15),(15,16),
+(16,9),(16,10),(16,13),(16,14),(16,15),(16,16),
+(17,17),(17,18),(17,19),(17,20),(17,21),(17,22),(17,23);
+
 
 INSERT INTO TipoQuincalleria (id_tipo, id_quincalleria) VALUES
 (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15),
