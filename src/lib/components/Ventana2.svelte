@@ -53,9 +53,6 @@
 			// Filtra solo los tipos que tengan el mismo id_material
 			tiposFiltrados = data.tipos.filter((t) => t.id_material === materialSeleccionado.id_material);
 		}
-
-		ventana.tipo = '';
-		ventana.ganancia = 0;
 	});
 
 	tipoOptions.subscribe((value) => {

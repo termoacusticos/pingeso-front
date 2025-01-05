@@ -135,7 +135,7 @@
 				{/each}
 				<tr>
 					<td colspan="10" class="px-4 py-2 text-right font-bold"
-						>Total: ${sumaTotal.toLocaleString().split('.')[0]}</td>
+						>Total: ${(sumaTotal.toLocaleString().split('.')[0])}</td>
 				</tr>
 			</tbody>
 		</table>

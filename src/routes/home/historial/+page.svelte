@@ -196,18 +196,29 @@
 					<td class="py-3 px-4">{formatoChileno(cotizacion.valor_instalacion)}</td>-->
 					<td class="py-3 px-4">{formatoChileno(calcularTotalOpcion(cotizacion.Opciones[0]))}</td>
 					<td class="py-3 px-4">
-						<button
-							class="w-full flex flex-col overflow-hidden text-right"
-							aria-label="pdf"
-							onclick={async () => {
-								presupuesto.set(cotizacion);
-								const urlLocal = await generatePDF(cotizacion, header, constantData,"asd");
-								url.set(urlLocal);
-								window.open(get(url));
-							}}>
-							<span class="size-8 iconify mdi--pdf-box bg-red-600 hover:bg-red-500 transition-all"
-							></span>
-						</button>
+						<div class="flex gap-2">
+							<button
+								class="flex flex-col overflow-hidden text-left"
+								aria-label="Editar"
+								onclick={() => {
+									presupuesto.set(cotizacion);
+									goto(`/home/cotizar`);
+								}}>
+								<span class="size-8 iconify mdi--pencil-box bg-blue-600 hover:bg-blue-500 transition-all"></span>
+							</button>
+							<button
+								class="flex flex-col overflow-hidden text-right"
+								aria-label="pdf"
+								onclick={async () => {
+									presupuesto.set(cotizacion);
+									const urlLocal = await generatePDF(cotizacion, header, constantData,"asd");
+									url.set(urlLocal);
+									window.open(get(url));
+								}}>
+								<span class="size-8 iconify mdi--pdf-box bg-red-600 hover:bg-red-500 transition-all"
+								></span>
+							</button>
+						</div>
 					</td>
 				</tr>
 			{/each}
