@@ -158,7 +158,7 @@
 						<!-- Mostrar total y total con ganancia -->
 						<span>Total: {formatoChileno(sumaTotal)}</span>
 						<span class="ml-4 text-green-600">
-							Total con Ganancia: ${sumaTotalConGanancia.toLocaleString().split('.')[0]}
+							Total con Ganancia: {formatoChileno(sumaTotalConGanancia)}
 						</span>
 					</td>
 				</tr>
