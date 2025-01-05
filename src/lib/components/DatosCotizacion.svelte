@@ -1,5 +1,8 @@
 <script lang="ts">
 	import type { ClienteUI, DatosAdicionales } from '$lib/types';
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
 
 	interface Props {
 		cliente: ClienteUI;
@@ -7,6 +10,10 @@
 	}
 
 	let { cliente = $bindable(), datos_adicionales = $bindable() }: Props = $props();
+
+	function aplicarGananciaGlobal() {
+		dispatch('aplicarGananciaGlobal', datos_adicionales.ganancia_global);
+	}
 </script>
 
 <div class="flex flex-row w-full space-x-5 justify-between">
@@ -57,10 +64,12 @@
 			placeholder="Costo de Instalación"
 			class="px-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 			bind:value={datos_adicionales.costo_instalacion} />
-		<input
-			type="number"
-			placeholder="Ganancia Global (%)"
-			class="px-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-			bind:value={datos_adicionales.ganancia_global} />
+			<div class="flex gap-3 items-center">
+				<input
+					type="number"
+					placeholder="Ganancia Global (%)"
+					class="px-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+					bind:value={datos_adicionales.ganancia_global} />
+			</div>
 	</div>
 </div>

@@ -281,6 +281,32 @@
 		ventana.precio_total = data.resultado.costoTotal;
 	}
 
+	function aplicarGananciaGlobal(gananciaGlobal: number) {
+		if (gananciaGlobal) {
+			opciones = opciones.map((opcion) => ({
+				...opcion,
+				ventanas: opcion.ventanas.map((ventana) => {
+					const nuevoPrecioTotal =
+						ventana.precio_unitario * ventana.cantidad * (1 + gananciaGlobal / 100);
+					return {
+						...ventana,
+						precio_total: nuevoPrecioTotal
+					};
+				})
+			}));
+		}
+	}
+
+	// Función para calcular el total con ganancia
+	function calcularTotalConGanancia(opcion: { material?: string; color?: string; ventanas: any; }, gananciaGlobal: number | undefined) {
+		if (!gananciaGlobal) return 0;
+		return opcion.ventanas.reduce(
+			(total: number, ventana: { precio_unitario: number; cantidad: number; }) =>
+				total + ventana.precio_unitario * ventana.cantidad * (1 + gananciaGlobal / 100),
+			0
+		);
+	}
+
 	$effect(() => {
 		for (const opcion of opciones) {
 			for (const ventana of opcion.ventanas) {
@@ -303,7 +329,7 @@
 		<div class="iconify mdi--keyboard-arrow-right size-5"></div>
 		<span class=" text-slate-400">Cotizar</span>
 	</div>
-	<DatosCotizacion bind:cliente bind:datos_adicionales={datosAdicionales} />
+	<DatosCotizacion bind:cliente bind:datos_adicionales={datosAdicionales} on:aplicarGananciaGlobal={(event) => aplicarGananciaGlobal(event.detail)}  />
 	<!-- Ventanas -->
 	<div class="space-y-6 w-full">
 		{#each opciones as opcion, opcionIndex}
@@ -341,7 +367,20 @@
 				bind:opcion={opciones[opcionIndex]}
 				index={opcionIndex}
 				{eliminarOpcion}
-				{mostrar_eliminar_opcion} />
+				{mostrar_eliminar_opcion} 
+				ganancia_global={datosAdicionales.ganancia_global}
+				/>
+				<!-- Totales de la opción 
+		<div class="flex justify-end mt-2 text-lg">
+			<p class="font-semibold">Total:</p>
+			<p class="ml-2">
+				${opcion.ventanas.reduce((total, ventana) => total + ventana.precio_total, 0).toLocaleString()}
+			</p>
+			<p class="ml-6 font-semibold text-green-600">Total con Ganancia:</p>
+			<p class="ml-2 text-green-600">
+				${calcularTotalConGanancia(opcion, datosAdicionales.ganancia_global).toLocaleString()}
+			</p>
+		</div>-->
 		{/each}
 
 		<!-- Botón para agregar nueva ventana -->

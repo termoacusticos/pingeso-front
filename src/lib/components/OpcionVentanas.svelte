@@ -19,6 +19,7 @@
 		eliminarOpcion: (index: number) => void;
 		agregarVentana: any;
 		eliminarVentana: any;
+		ganancia_global?: number; // Añadir ganancia_global
 	}
 
 	let {
@@ -28,7 +29,8 @@
 		mostrar_eliminar_opcion,
 		eliminarOpcion,
 		agregarVentana,
-		eliminarVentana
+		eliminarVentana,
+		ganancia_global = 0 // Valor por defecto
 	}: Props = $props();
 
 	let showMaterialDropdown = $state(false);
@@ -46,6 +48,15 @@
 			0
 		)
 	);
+
+	let sumaTotalConGanancia = $derived(
+        opcion.ventanas.reduce(
+            (acc, ventana) =>
+                acc + ventana.precio_unitario * ventana.cantidad * (1 + ganancia_global / 100),
+            0
+        )
+    );
+
 
 	let mostrar_eliminar = $derived(opcion.ventanas.length > 1);
 
@@ -134,8 +145,13 @@
 						{eliminarVentana} />
 				{/each}
 				<tr>
-					<td colspan="10" class="px-4 py-2 text-right font-bold"
-						>Total: ${(sumaTotal.toLocaleString().split('.')[0])}</td>
+					<td colspan="10" class="px-4 py-2 text-right font-bold">
+						<!-- Mostrar total y total con ganancia -->
+						<span>Total: ${(sumaTotal.toLocaleString().split('.')[0])}</span>
+						<span class="ml-4 text-green-600">
+							Total con Ganancia: ${sumaTotalConGanancia.toLocaleString().split('.')[0]}
+						</span>
+					</td>
 				</tr>
 			</tbody>
 		</table>
