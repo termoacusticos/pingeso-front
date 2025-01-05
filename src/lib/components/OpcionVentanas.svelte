@@ -42,7 +42,7 @@
 
 	let sumaTotal = $derived(
 		opcion.ventanas.reduce(
-			(acc, ventana) => acc + ventana.precio_total * (1 + (ventana.ganancia ?? 0) / 100),
+			(acc, ventana) => acc + ventana.precio_total,
 			0
 		)
 	);
@@ -135,7 +135,7 @@
 				{/each}
 				<tr>
 					<td colspan="10" class="px-4 py-2 text-right font-bold"
-						>Total: ${sumaTotal.toLocaleString().split(',')[0]}</td>
+						>Total: ${sumaTotal.toLocaleString().split('.')[0]}</td>
 				</tr>
 			</tbody>
 		</table>
