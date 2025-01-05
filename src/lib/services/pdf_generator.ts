@@ -95,6 +95,14 @@ async function drawImageRow(images: string[], imageAreaHeight: number) {
 	currentY = imageYPosition - verticalGap;
 }
 
+function formatoChileno(valor: number) {
+	const truncado = Math.trunc(valor); // Trunca el número
+	return new Intl.NumberFormat('es-CL', {
+		currency: 'CLP',
+		minimumFractionDigits: 0
+	}).format(truncado);
+}
+
 function drawLeftText(textArray: string[], options: { linkOn3rd: boolean } = { linkOn3rd: false }) {
 	for (let index = 0; index < textArray.length; index++) {
 		const text = textArray[index];
@@ -217,8 +225,8 @@ function drawTable(
 			ventana.ancho.toString(),
 			ventana.alto.toString(),
 			ventana.cantidad.toString(),
-			ventana.precio_unitario.toLocaleString('en-US').split('.')[0],
-			ventana.precio_total.toLocaleString('en-US').split('.')[0]
+			formatoChileno(ventana.precio_unitario*(1 + ventana.ganancia/100)),
+			formatoChileno(ventana.precio_total*(1 + ventana.ganancia/100))
 		];
 
 		row.forEach((cell, index) => {
@@ -259,7 +267,7 @@ function drawTable(
 	});
 
 	//#region footer
-	const totalIvaIncluido = opcion.Ventanas.reduce((sum, ventana) => sum + ventana.precio_total, 0);
+	const totalIvaIncluido = opcion.Ventanas.reduce((sum, ventana) => sum + ventana.precio_total*(1+ventana.ganancia/100), 0);
 	const footerValues = [
 		valor_despacho,
 		valor_instalacion,

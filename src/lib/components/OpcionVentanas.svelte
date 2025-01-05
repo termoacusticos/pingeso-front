@@ -60,6 +60,15 @@
 
 	let mostrar_eliminar = $derived(opcion.ventanas.length > 1);
 
+	function formatoChileno(valor: number) {
+		const truncado = Math.trunc(valor); // Trunca el número
+		return new Intl.NumberFormat('es-CL', {
+			style: 'currency',
+			currency: 'CLP',
+			minimumFractionDigits: 0
+		}).format(truncado);
+	}
+
 	/*
 	function eliminarVentana(index: number) {
 		// Eliminar la ventana de la lista principal
@@ -147,7 +156,7 @@
 				<tr>
 					<td colspan="10" class="px-4 py-2 text-right font-bold">
 						<!-- Mostrar total y total con ganancia -->
-						<span>Total: ${(sumaTotal.toLocaleString().split('.')[0])}</span>
+						<span>Total: {formatoChileno(sumaTotal)}</span>
 						<span class="ml-4 text-green-600">
 							Total con Ganancia: ${sumaTotalConGanancia.toLocaleString().split('.')[0]}
 						</span>

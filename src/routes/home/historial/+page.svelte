@@ -43,11 +43,12 @@
 	}
 
 	function formatoChileno(valor: number) {
+		const truncado = Math.trunc(valor); // Trunca el número
 		return new Intl.NumberFormat('es-CL', {
 			style: 'currency',
 			currency: 'CLP',
 			minimumFractionDigits: 0
-		}).format(valor);
+		}).format(truncado);
 	}
 
 	function sortByDate() {
@@ -144,7 +145,7 @@
 </script>
 
 <div
-	class="min-h-screen w-full flex flex-col p-8 bg-gray-100 gap-5 xl:w-[60%] lg:w-[50%] md:w-[70%] mx-auto overflow-scroll">
+	class="min-h-screen w-full flex flex-col p-8 bg-gray-100 gap-5 2xl:w-[80%] xl:w-full lg:w-[50%] md:w-[70%] mx-auto overflow-scroll">
 	<div class="flex flex-row items-center">
 		<button
 			onclick={() => {
@@ -173,30 +174,42 @@
 					RUT
 					<span class="ml-1">{rutSortDirection === 'asc' ? '▲' : '▼'}</span>
 				</th>-->
-				<th class="py-3 px-4 text-left">Material</th>
+				<th class="py-3 px-4 text-left min-w-48 w-52">Materiales</th>
 				<th class="py-3 px-4 text-left cursor-pointer" onclick={() => sortByDate()}>
 					Fecha
 					<span class="ml-1">{fechaSortDirection === 'asc' ? '▲' : '▼'}</span>
 				</th>
-				<th class="py-3 px-4 text-left">Total Opcion 1</th>
+				<th class="py-3 px-4 text-left">Valor presupuesto</th>
 				<!--<th>Despacho</th>
 				<th>Instalación</th>-->
-				<th class="py-3 px-4 text-left">Acciones</th>
+				<th class="py-3 px-6 text-right min-w-28 w-32">Acciones</th>
 			</tr>
 		</thead>
 		<tbody>
 			{#each paginatedCotizaciones as cotizacion}
 				<tr class="border-b border-gray-200 hover:bg-gray-100">
 					<td class="py-3 px-4 truncate">{cotizacion.Cliente?.nombre}</td>
-					<td class="py-3 px-4">{getNombreMaterial(cotizacion.Opciones[0].Ventanas[0].id_material)}</td>
+					<td class="py-3 px-4 ">
+						<div class=" w-80 truncate overflow-hidden whitespace-nowrap">
+							{#each cotizacion.Opciones as opcion, index}
+									{getNombreMaterial(opcion.Ventanas[0].id_material)}{#if index < cotizacion.Opciones.length - 1}, {/if}
+							{/each}
+						</div>
+					</td>
 					<!--<td class="py-3 px-4">{cotizacion.Cliente?.direccion}</td>
 					<td class="py-3 px-4">{cotizacion.Cliente?.rut_cliente}</td> -->
 					<td class="py-3 px-4">{new Date(cotizacion.fecha).toLocaleDateString()}</td>
 					<!--<td class="py-3 px-4">{formatoChileno(cotizacion.valor_despacho)}</td>
 					<td class="py-3 px-4">{formatoChileno(cotizacion.valor_instalacion)}</td>-->
-					<td class="py-3 px-4">{formatoChileno(calcularTotalOpcion(cotizacion.Opciones[0]))}</td>
+					<td class="py-3 px-4 text-left">
+						<div class=" space-x-3">
+							{#each cotizacion.Opciones as opcion, index}
+								<b>{index+1}:</b> {formatoChileno(calcularTotalOpcion(opcion))}{#if index < cotizacion.Opciones.length - 1}, {/if}
+							{/each}
+						</div>
+					</td>
 					<td class="py-3 px-4">
-						<div class="flex gap-2">
+						<div class="flex gap-2 justify-end">
 							<button
 								class="flex flex-col overflow-hidden text-left"
 								aria-label="Editar"
