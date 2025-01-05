@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PresupuestoModel } from '$lib/types';
+	import type { PresupuestoModel, OpcionModel } from '$lib/types';
 	import { materialOptions, presupuesto, url } from '$lib/store';
 	import { goto } from '$app/navigation';
 	import { generatePDF } from '$lib/services/pdf_generator';
@@ -30,6 +30,17 @@
 	let idSortDirection = $state('desc');
 
 	let cotizaciones: PresupuestoModel[] = $state(data.presupuestos);
+
+	function getNombreMaterial(id_material: number) {
+		const material = constantData.materiales.find((m: any) => m.id_material === id_material);
+		return material ? material.nombre_material : 'Material no encontrado';
+	}
+
+	function calcularTotalOpcion(opcion: OpcionModel) {
+		return opcion.Ventanas.reduce((total, ventana) => {
+			return total + (ventana.precio_total * (1 + ventana.ganancia / 100));
+		}, 0);
+	}
 
 	function formatoChileno(valor: number) {
 		return new Intl.NumberFormat('es-CL', {
@@ -149,7 +160,7 @@
 	<input
 		type="text"
 		bind:value={searchQuery}
-		placeholder="Buscar nombre de cliente o RUT..."
+		placeholder="Buscar nombre de cliente..."
 		class="w-full p-3 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring focus:ring-indigo-200" />
 
 	<!-- Tabla de cotizaciones -->
@@ -167,7 +178,7 @@
 					Fecha
 					<span class="ml-1">{fechaSortDirection === 'asc' ? '▲' : '▼'}</span>
 				</th>
-				<th class="py-3 px-4 text-left">Monto</th>
+				<th class="py-3 px-4 text-left">Total Opcion 1</th>
 				<!--<th>Despacho</th>
 				<th>Instalación</th>-->
 				<th class="py-3 px-4 text-left">Acciones</th>
@@ -177,20 +188,20 @@
 			{#each paginatedCotizaciones as cotizacion}
 				<tr class="border-b border-gray-200 hover:bg-gray-100">
 					<td class="py-3 px-4 truncate">{cotizacion.Cliente?.nombre}</td>
-					<td class="py-3 px-4">Material</td>
+					<td class="py-3 px-4">{getNombreMaterial(cotizacion.Opciones[0].Ventanas[0].id_material)}</td>
 					<!--<td class="py-3 px-4">{cotizacion.Cliente?.direccion}</td>
 					<td class="py-3 px-4">{cotizacion.Cliente?.rut_cliente}</td> -->
 					<td class="py-3 px-4">{new Date(cotizacion.fecha).toLocaleDateString()}</td>
 					<!--<td class="py-3 px-4">{formatoChileno(cotizacion.valor_despacho)}</td>
 					<td class="py-3 px-4">{formatoChileno(cotizacion.valor_instalacion)}</td>-->
-					<td class="py-3 px-4">Monto</td>
+					<td class="py-3 px-4">{formatoChileno(calcularTotalOpcion(cotizacion.Opciones[0]))}</td>
 					<td class="py-3 px-4">
 						<button
 							class="w-full flex flex-col overflow-hidden text-right"
 							aria-label="pdf"
 							onclick={async () => {
 								presupuesto.set(cotizacion);
-								const urlLocal = await generatePDF(cotizacion, header, constantData);
+								const urlLocal = await generatePDF(cotizacion, header, constantData,"asd");
 								url.set(urlLocal);
 								window.open(get(url));
 							}}>
