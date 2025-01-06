@@ -149,16 +149,16 @@
 						{data}
 						bind:ventana={opcion.ventanas[id]}
 						{id}
+						bind:ganancia_global={ganancia_global}
 						option_index={index}
 						{mostrar_eliminar}
 						{eliminarVentana} />
 				{/each}
 				<tr>
-					<td colspan="10" class="px-4 py-2 text-right font-bold">
+					<td colspan="11" class="px-4 py-2 text-right font-bold">
 						<!-- Mostrar total y total con ganancia -->
-						<span>Total: {formatoChileno(sumaTotal)}</span>
-						<span class="ml-4 text-green-600">
-							Total con Ganancia: {formatoChileno(sumaTotalConGanancia)}
+						<span class="">
+							Total: {formatoChileno(sumaTotalConGanancia)}
 						</span>
 					</td>
 				</tr>

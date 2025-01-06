@@ -55,6 +55,7 @@ type PresupuestoModel = {
 	texto_libre: string;
 	Cliente: Cliente;
 	Opciones: OpcionModel[];
+	ganancia_global: number;
 };
 
 type DatosAdicionales = {

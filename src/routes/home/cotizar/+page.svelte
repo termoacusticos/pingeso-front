@@ -187,8 +187,8 @@
 				item: ventana.item,
 				alto: ventana.alto ?? 0,
 				ancho: ventana.ancho ?? 0,
-				precio_unitario: ventana.precio_unitario,
-				precio_total: ventana.precio_total,
+				precio_unitario: ventana.precio_unitario*(1+ (datosAdicionales.ganancia_global??0) /100),
+				precio_total: ventana.precio_total*(1+ (datosAdicionales.ganancia_global??0) /100),
 				ganancia: ventana.ganancia ?? 0
 			};
 		});
@@ -216,6 +216,7 @@
 					email: cliente.email,
 					telefono: cliente.telefono
 				},
+				ganancia_global: datosAdicionales.ganancia_global ?? 0,
 				Opciones: opcionesModel
 			};
 			fetch('/api/presupuesto', {

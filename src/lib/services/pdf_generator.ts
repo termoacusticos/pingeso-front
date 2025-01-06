@@ -225,8 +225,8 @@ function drawTable(
 			ventana.ancho.toString(),
 			ventana.alto.toString(),
 			ventana.cantidad.toString(),
-			formatoChileno(ventana.precio_unitario*(1 + ventana.ganancia/100)),
-			formatoChileno(ventana.precio_total*(1 + ventana.ganancia/100))
+			formatoChileno(ventana.precio_unitario),
+			formatoChileno(ventana.precio_total)
 		];
 
 		row.forEach((cell, index) => {
@@ -267,7 +267,7 @@ function drawTable(
 	});
 
 	//#region footer
-	const totalIvaIncluido = opcion.Ventanas.reduce((sum, ventana) => sum + ventana.precio_total*(1+ventana.ganancia/100), 0);
+	const totalIvaIncluido = opcion.Ventanas.reduce((sum, ventana) => sum + ventana.precio_total, 0);
 	const footerValues = [
 		valor_despacho,
 		valor_instalacion,

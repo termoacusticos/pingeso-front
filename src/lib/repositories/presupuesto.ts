@@ -40,6 +40,7 @@ export const savePresupuesto = async (presupuesto: PresupuestoModel, id_usuario:
 				fecha: new Date().toISOString(),
 				id_usuario: id_usuario,
 				rut_cliente: presupuesto.Cliente.rut_cliente,
+				ganancia_global: presupuesto.ganancia_global,
 				Opciones: {
 					create: presupuesto.Opciones.map((opcion) => {
 						return {

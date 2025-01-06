@@ -15,6 +15,7 @@
 	interface Props {
 		data: ConstantData;
 		ventana: VentanaUI;
+		ganancia_global: number;
 		id: number;
 		option_index: number;
 		mostrar_eliminar: boolean;
@@ -25,6 +26,7 @@
 		data,
 		ventana = $bindable(),
 		id,
+		ganancia_global = $bindable(),
 		option_index,
 		mostrar_eliminar,
 		eliminarVentana
@@ -266,14 +268,14 @@
 	<!-- Precio Unitario -->
 	<td class="px-1 py-1">
 		<p class="p-2 rounded-md w-full bg-white border">
-			{formatoChileno(ventana.precio_unitario)}
+			{formatoChileno(ventana.precio_unitario*(1 + ganancia_global/100))}
 		</p>
 	</td>
 
 	<!-- Precio Total -->
 	<td class="px-1 py-1">
 		<p class="p-2 rounded-md w-full bg-white border">
-			{formatoChileno(ventana.precio_total)}
+			{formatoChileno(ventana.precio_total*(1 + ganancia_global/100))}
 		</p>
 	</td>
 

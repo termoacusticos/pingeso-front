@@ -38,7 +38,7 @@
 
 	function calcularTotalOpcion(opcion: OpcionModel) {
 		return opcion.Ventanas.reduce((total, ventana) => {
-			return total + ventana.precio_total * (1 + ventana.ganancia / 100);
+			return total + ventana.precio_total;
 		}, 0);
 	}
 
