@@ -52,6 +52,7 @@ model Presupuesto {
   rut_cliente       String
   valor_despacho    Int
   valor_instalacion Int
+  texto_libre       String
 
   Usuario  Usuario  @relation(fields: [id_usuario], references: [id_usuario])
   Cliente  Cliente  @relation(fields: [rut_cliente], references: [rut_cliente])

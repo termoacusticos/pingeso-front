@@ -1,13 +1,13 @@
 <script lang="ts">
 	import EditorMateriales from '$lib/components/EditorMateriales.svelte';
-	import type { Color, Cristal, Material, Tipo } from '@prisma/client';
+	import type { ImageGroup } from '$lib/types';
+	import type { Color, Cristal, Imagen, Material, Tipo } from '@prisma/client';
 
 	interface Props {
 		data: any;
 	}
 
 	let { data }: Props = $props();
-	const constantData = data; // horrible pero necesito usar data dentro de un fetch
 
 	let constantSelected = $state('');
 	let constantes = ['Materiales', 'Cristales', 'Tipos', 'Imágenes', 'Colores'];
@@ -31,6 +31,8 @@
 	let tipos: Tipo[] = data.tipos;
 	let cristales: Cristal[] = data.cristales;
 	let colores: Color[] = data.colores;
+	let imagenes: ImageGroup[] = $state(data.imagenes);
+	let imagenNueva: Imagen = $state({ bytes: '', id_imagen: 0, img_group: 1 });
 
 	function formatoChileno(valor: number) {
 		return new Intl.NumberFormat('es-CL', {
@@ -75,6 +77,53 @@
 			.catch((error) => {
 				console.error('Error durante la solicitud:', error);
 			});
+	}
+
+	const handleImageUpload = async (event: Event) => {
+		const files = (event.target as HTMLInputElement)?.files;
+		if (files) {
+			for (const file of Array.from(files)) {
+				const reader = new FileReader();
+				reader.onload = (e) => {
+					if (e.target?.result) {
+						imagenNueva.bytes = e.target.result.toString();
+					}
+				};
+				reader.readAsDataURL(file);
+			}
+		}
+	};
+
+	async function handleImagePost(img_group: number) {
+		imagenNueva.img_group = img_group;
+		console.log(imagenNueva);
+
+		await fetch('/api/imagenes', {
+			method: 'POST',
+			body: JSON.stringify(imagenNueva)
+		}).then((response) => {
+			return response.json();
+		});
+		imagenNueva.bytes = '';
+		imagenes = await fetch('/api/imagenes', {
+			method: 'GET'
+		}).then((response) => {
+			return response.json();
+		});
+	}
+
+	async function handleImageDelete(idx: number, imgIdx: number) {
+		await fetch('/api/imagenes', {
+			method: 'DELETE',
+			body: JSON.stringify({ id_imagen: imagenes[idx].imagenes[imgIdx].id_imagen })
+		}).then((response) => {
+			return response.json();
+		});
+		imagenes = await fetch('/api/imagenes', {
+			method: 'GET'
+		}).then((response) => {
+			return response.json();
+		});
 	}
 </script>
 
@@ -298,5 +347,38 @@
 			onselect={() => {}}
 			class="w-full bg-teal-600 hover:bg-teal-500 transition-all text-white rounded-lg font-bold">
 			Agregar Color</button>
+	{/if}
+
+	{#if constantSelected == 'Imágenes'}
+		<!-- Renderizar imágenes cargadas -->
+		{#each imagenes as grupo, idx}
+			<h1>Imágenes cabezal {idx + 1}:</h1>
+			<div class="grid grid-rows-2">
+				<div class="grid grid-cols-3 gap-4">
+					{#each grupo.imagenes as img, imgIdx}
+						<div>
+							<button
+								onclick={() => {
+									handleImageDelete(idx, imgIdx);
+								}}>X</button>
+							<img src={img.bytes} alt={`Imagen cabezal ${idx + 1}-${imgIdx}`} />
+						</div>
+					{/each}
+				</div>
+				<div class="flex flex-col items-center gap-2 my-8 border">
+					<h1 class="text-xl font-semibold">Agregar imagen nueva</h1>
+					<input
+						type="file"
+						accept="image/*"
+						onchange={async (e) => {
+							await handleImageUpload(e);
+							setTimeout(async () => {
+								await handleImagePost(idx + 1);
+							}, 1000);
+						}}
+						class="border border-gray-300 px-4 py-2 rounded focus:outline-none" />
+				</div>
+			</div>
+		{/each}
 	{/if}
 </div>

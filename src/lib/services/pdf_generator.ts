@@ -308,8 +308,7 @@ function drawTable(
 export const generatePDF = async (
 	presupuesto: PresupuestoModel,
 	header: { logos: string[]; h2: string[] },
-	constantes: ConstantData,
-	texto_libre: string
+	constantes: ConstantData
 ) => {
 	colores = constantes.colores;
 	cristales = constantes.cristales;
@@ -450,7 +449,7 @@ export const generatePDF = async (
 
 	await drawImageRow(header.logos, 80);
 
-	const multiText = layoutMultilineText(texto_libre, {
+	const multiText = layoutMultilineText(presupuesto.texto_libre, {
 		alignment: TextAlignment.Left,
 		bounds: { width: width - marginLeft * 2, height: 10000, x: 10, y: 10 },
 		font: font,

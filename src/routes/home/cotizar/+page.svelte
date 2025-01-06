@@ -52,7 +52,8 @@
 	let mostrarAgregarOpcion = $state(false);
 	let materialModal = $state('');
 	let colorModal = $state('');
-	
+	let texto_libre = $state('');
+
 	let cliente: ClienteUI = $state({
 		nombre: '',
 		rut_cliente: '',
@@ -207,6 +208,7 @@
 				fecha: '',
 				valor_despacho: datosAdicionales.costo_despacho ?? 0,
 				valor_instalacion: datosAdicionales.costo_instalacion ?? 0,
+				texto_libre: texto_libre,
 				Cliente: {
 					nombre: cliente.nombre,
 					rut_cliente: cliente.rut_cliente,
@@ -232,7 +234,7 @@
 				.then(async (data) => {
 					presupuesto.set(cotizacion);
 					successModal = true;
-					const urlLocal = await generatePDF(cotizacion, header, constantData,"asd");
+					const urlLocal = await generatePDF(cotizacion, header, constantData);
 					url.set(urlLocal);
 					console.log('Respuesta del servidor:', data);
 				})
@@ -343,6 +345,15 @@
 				{eliminarOpcion}
 				{mostrar_eliminar_opcion} />
 		{/each}
+
+		<div class="bg-white shadow rounded-lg w-full p-5 flex flex-col gap-5">
+			<label for="texto_libre" class="text-xl font-medium">Notas adicionales</label>
+			<textarea
+				name="texto_libre"
+				bind:value={texto_libre}
+				placeholder="Introducir texto de pie de página"
+				class="w-full min-h-20 resize-none border rounded-lg p-1"></textarea>
+		</div>
 
 		<!-- Botón para agregar nueva ventana -->
 		<div class="flex flex-row w-full justify-center gap-10">

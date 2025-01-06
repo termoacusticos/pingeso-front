@@ -1,4 +1,13 @@
-import type { Material, Prisma, Tipo, Ventana, Color, Cristal, Cliente } from '@prisma/client';
+import type {
+	Material,
+	Prisma,
+	Tipo,
+	Ventana,
+	Color,
+	Cristal,
+	Cliente,
+	Imagen
+} from '@prisma/client';
 
 type ConstantData = {
 	materiales: Material[];
@@ -43,6 +52,7 @@ type PresupuestoModel = {
 	fecha: string;
 	valor_despacho: number;
 	valor_instalacion: number;
+	texto_libre: string;
 	Cliente: Cliente;
 	Opciones: OpcionModel[];
 };
@@ -94,4 +104,9 @@ type JWTBody = {
 	is_admin: number;
 	email: string;
 	exp: number;
+};
+
+type ImageGroup = {
+	img_group: number;
+	imagenes: Imagen[];
 };

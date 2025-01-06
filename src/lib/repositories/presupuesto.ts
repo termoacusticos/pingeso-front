@@ -35,6 +35,7 @@ export const savePresupuesto = async (presupuesto: PresupuestoModel, id_usuario:
 			data: {
 				valor_despacho: presupuesto.valor_despacho,
 				valor_instalacion: presupuesto.valor_instalacion,
+				texto_libre: presupuesto.texto_libre,
 				id_presupuesto: undefined,
 				fecha: new Date().toISOString(),
 				id_usuario: id_usuario,

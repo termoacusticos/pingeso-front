@@ -38,7 +38,7 @@
 
 	function calcularTotalOpcion(opcion: OpcionModel) {
 		return opcion.Ventanas.reduce((total, ventana) => {
-			return total + (ventana.precio_total * (1 + ventana.ganancia / 100));
+			return total + ventana.precio_total * (1 + ventana.ganancia / 100);
 		}, 0);
 	}
 
@@ -188,7 +188,8 @@
 			{#each paginatedCotizaciones as cotizacion}
 				<tr class="border-b border-gray-200 hover:bg-gray-100">
 					<td class="py-3 px-4 truncate">{cotizacion.Cliente?.nombre}</td>
-					<td class="py-3 px-4">{getNombreMaterial(cotizacion.Opciones[0].Ventanas[0].id_material)}</td>
+					<td class="py-3 px-4"
+						>{getNombreMaterial(cotizacion.Opciones[0].Ventanas[0].id_material)}</td>
 					<!--<td class="py-3 px-4">{cotizacion.Cliente?.direccion}</td>
 					<td class="py-3 px-4">{cotizacion.Cliente?.rut_cliente}</td> -->
 					<td class="py-3 px-4">{new Date(cotizacion.fecha).toLocaleDateString()}</td>
@@ -204,14 +205,16 @@
 									presupuesto.set(cotizacion);
 									goto(`/home/cotizar`);
 								}}>
-								<span class="size-8 iconify mdi--pencil-box bg-blue-600 hover:bg-blue-500 transition-all"></span>
+								<span
+									class="size-8 iconify mdi--pencil-box bg-blue-600 hover:bg-blue-500 transition-all"
+								></span>
 							</button>
 							<button
 								class="flex flex-col overflow-hidden text-right"
 								aria-label="pdf"
 								onclick={async () => {
 									presupuesto.set(cotizacion);
-									const urlLocal = await generatePDF(cotizacion, header, constantData,"asd");
+									const urlLocal = await generatePDF(cotizacion, header, constantData);
 									url.set(urlLocal);
 									window.open(get(url));
 								}}>
