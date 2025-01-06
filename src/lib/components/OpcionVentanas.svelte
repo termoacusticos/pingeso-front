@@ -19,6 +19,7 @@
 		eliminarOpcion: (index: number) => void;
 		agregarVentana: any;
 		eliminarVentana: any;
+		ganancia_global?: number; // Añadir ganancia_global
 	}
 
 	let {
@@ -28,7 +29,8 @@
 		mostrar_eliminar_opcion,
 		eliminarOpcion,
 		agregarVentana,
-		eliminarVentana
+		eliminarVentana,
+		ganancia_global = 0 // Valor por defecto
 	}: Props = $props();
 
 	let showMaterialDropdown = $state(false);
@@ -47,7 +49,25 @@
 		)
 	);
 
+	let sumaTotalConGanancia = $derived(
+        opcion.ventanas.reduce(
+            (acc, ventana) =>
+                acc + ventana.precio_unitario * ventana.cantidad * (1 + ganancia_global / 100),
+            0
+        )
+    );
+
+
 	let mostrar_eliminar = $derived(opcion.ventanas.length > 1);
+
+	function formatoChileno(valor: number) {
+		const truncado = Math.trunc(valor); // Trunca el número
+		return new Intl.NumberFormat('es-CL', {
+			style: 'currency',
+			currency: 'CLP',
+			minimumFractionDigits: 0
+		}).format(truncado);
+	}
 
 	/*
 	function eliminarVentana(index: number) {
@@ -134,8 +154,13 @@
 						{eliminarVentana} />
 				{/each}
 				<tr>
-					<td colspan="10" class="px-4 py-2 text-right font-bold"
-						>Total: ${(sumaTotal.toLocaleString().split('.')[0])}</td>
+					<td colspan="10" class="px-4 py-2 text-right font-bold">
+						<!-- Mostrar total y total con ganancia -->
+						<span>Total: {formatoChileno(sumaTotal)}</span>
+						<span class="ml-4 text-green-600">
+							Total con Ganancia: {formatoChileno(sumaTotalConGanancia)}
+						</span>
+					</td>
 				</tr>
 			</tbody>
 		</table>

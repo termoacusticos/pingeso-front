@@ -110,6 +110,15 @@
 		}
 	});
 
+	function formatoChileno(valor: number) {
+		const truncado = Math.trunc(valor); // Trunca el número
+		return new Intl.NumberFormat('es-CL', {
+			style: 'currency',
+			currency: 'CLP',
+			minimumFractionDigits: 0
+		}).format(truncado);
+	}
+
 	/*function calculateTotal() {
 		ventana.precio_total = ventana.cantidad * ventana.precio_unitario;
 	}
@@ -124,7 +133,7 @@
 
 	<!-- Material Selector -->
 	<td class="px-1 py-1">
-		<p class="p-2 rounded-md w-full bg-white border">{ventana.material}</p>
+		<p class="p-2 rounded-md w-44 bg-white border truncate overflow-hidden">{ventana.material}</p>
 	</td>
 
 	<!-- Tipo Selector -->
@@ -257,14 +266,14 @@
 	<!-- Precio Unitario -->
 	<td class="px-1 py-1">
 		<p class="p-2 rounded-md w-full bg-white border">
-			{ventana.precio_unitario.toLocaleString().split(',')[0]}
+			{formatoChileno(ventana.precio_unitario)}
 		</p>
 	</td>
 
 	<!-- Precio Total -->
 	<td class="px-1 py-1">
 		<p class="p-2 rounded-md w-full bg-white border">
-			{ventana.precio_total.toLocaleString().split(',')[0]}
+			{formatoChileno(ventana.precio_total)}
 		</p>
 	</td>
 
