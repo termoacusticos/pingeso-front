@@ -208,7 +208,7 @@
 	function editCristal() {
 		let bodyReq = {
 			id: cristalSelected.id_cristal,
-			cristal: cristalSelected
+			cristalData: cristalSelected
 		};
 
 		fetch('/api/cristal', {
