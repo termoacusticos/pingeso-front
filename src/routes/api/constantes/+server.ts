@@ -18,6 +18,8 @@ export const GET: RequestHandler = async ({ platform, cookies }) => {
 		materiales: constantes[0],
 		colores: constantes[1],
 		cristales: constantes[2],
-		tipos: constantes[3]
+		tipos: constantes[3],
+		perfiles: constantes[4],
+		quincallerias: constantes[5]
 	});
 };

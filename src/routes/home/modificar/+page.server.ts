@@ -19,6 +19,8 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 		colores: constantes.colores,
 		cristales: constantes.cristales,
 		tipos: constantes.tipos,
+		perfiles: constantes.perfiles,
+		quincallerias: constantes.quincallerias,
 		imagenes
 	};
 };

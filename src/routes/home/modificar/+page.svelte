@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ImageGroup } from '$lib/types';
-	import type { Color, Cristal, Imagen, Material, Tipo } from '@prisma/client';
+	import type { Color, Cristal, Imagen, Material, Perfil, Quincalleria, Tipo } from '@prisma/client';
 	import { error } from '@sveltejs/kit';
 
 	interface Props {
@@ -10,7 +10,7 @@
 	let { data }: Props = $props();
 
 	let constantSelected = $state('');
-	let constantes = ['Materiales', 'Cristales', 'Tipos', 'Imágenes', 'Colores'];
+	let constantes = ['Materiales', 'Cristales', 'Tipos', 'Imágenes', 'Colores', 'Perfiles', 'Quincallerías'];
 
 	let successModal = $state(false);
 	let errorMessage = $state('');
@@ -20,6 +20,7 @@
 	let addCristalModal = $state(false);
 	let editColorModal = $state(false);
 	let addColorModal = $state(false);
+
 	let materialSelected: Material = $state({
 		id_material: 0,
 		nombre_material: '',
@@ -61,12 +62,14 @@
 		nombre_color: ''
 	});
 
-	let materiales: Material[] = data.materiales;
+	let materiales: Material[] = $state(data.materiales);
 	let tipos: Tipo[] = $state(data.tipos);
 	let cristales: Cristal[] = $state(data.cristales);
-	let colores: Color[] = data.colores;
+	let colores: Color[] = $state(data.colores);
 	let imagenes: ImageGroup[] = $state(data.imagenes);
 	let imagenNueva: Imagen = $state({ bytes: '', id_imagen: 0, img_group: 1 });
+	let perfiles: Perfil[] = $state(data.perfiles);
+	let quincallerias: Quincalleria[] = $state(data.quincallerias);
 
 	function formatoChileno(valor: number) {
 		return new Intl.NumberFormat('es-CL', {
@@ -208,7 +211,7 @@
 	function editCristal() {
 		let bodyReq = {
 			id: cristalSelected.id_cristal,
-			cristal: cristalSelected
+			cristalData: cristalSelected
 		};
 
 		fetch('/api/cristal', {
@@ -250,7 +253,7 @@
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify(newCristal)
+			body: JSON.stringify({cristalData: newCristal})
 		})
 			.then((response) => {
 				if (!response.ok) {
@@ -963,4 +966,60 @@
 			</div>
 		{/each}
 	{/if}
+
+	<!--Tabla perfiles-->
+	{#if constantSelected == 'Perfiles'}
+		<table class="table-auto w-full rounded-lg bg-white shadow">
+			<thead class="w-full bg-gray-200 text-gray-700">
+				<tr>
+					<th class="py-3 px-4 text-left">ID</th>
+					<th class="py-3 px-4 text-left">Código Perfil</th>
+					<th class="py-3 px-4 text-left">Dimensión</th>
+					<th class="py-3 px-4 text-left">Cantidad</th>
+					<th class="py-3 px-4 text-left">Kg/ml</th>
+					<th class="py-3 px-4 text-left">Precio</th>
+				</tr>
+			</thead>
+			<tbody class="w-full">
+				{#each perfiles as perfil}
+					<tr
+						onselect={() => {}}
+						class=" hover:bg-gray-100">
+						<td class="py-2 px-4 text-left">{perfil.id_perfil}</td>
+						<td class="py-2 px-4 text-left">{perfil.codigo_per}</td>
+						<td class="py-2 px-4 text-left">{perfil.formula_dim}</td>
+						<td class="py-2 px-4 text-left">{perfil.formula_cant}</td>
+						<td class="py-2 px-4 text-left">{perfil.kg_ml_per}</td>
+						<td class="py-2 px-4 text-left">{formatoChileno(perfil.valor)}</td>
+					</tr>
+				{/each}
+			</tbody>
+		</table>
+	{/if}
+	<!--Tabla quincallerias-->
+	{#if constantSelected == 'Quincallerías'}
+		<table class="table-auto w-full rounded-lg bg-white shadow">
+			<thead class="w-full bg-gray-200 text-gray-700">
+				<tr>
+					<th class="py-3 px-4 text-left">ID</th>
+					<th class="py-3 px-4 text-left">Descripción</th>
+					<th class="py-3 px-4 text-left">Fórmula</th>
+					<th class="py-3 px-4 text-left">Precio</th>
+				</tr>
+			</thead>
+			<tbody class="w-full">
+				{#each quincallerias as quincalleria}
+					<tr
+						onselect={() => {}}
+						class=" hover:bg-gray-100">
+						<td class="py-2 px-4 text-left">{quincalleria.id_quincalleria}</td>
+						<td class="py-2 px-4 text-left">{quincalleria.desc_quin}</td>
+						<td class="py-2 px-4 text-left">{quincalleria.formula_quin}</td>
+						<td class="py-2 px-4 text-left">{formatoChileno(quincalleria.precio_quin)}</td>
+					</tr>
+				{/each}
+			</tbody>
+		</table>
+	{/if}
+
 </div>

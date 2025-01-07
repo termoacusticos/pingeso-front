@@ -6,7 +6,8 @@ import type {
 	Color,
 	Cristal,
 	Cliente,
-	Imagen
+	Imagen,
+	Perfil
 } from '@prisma/client';
 
 type ConstantData = {
@@ -14,6 +15,8 @@ type ConstantData = {
 	colores: Color[];
 	cristales: Cristal[];
 	tipos: Tipo[];
+	perfiles: Perfil[];
+	quincallerias: Quincalleria[];
 };
 
 type ClienteUI = {
