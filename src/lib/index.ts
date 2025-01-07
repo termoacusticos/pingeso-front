@@ -8,18 +8,16 @@ const TOKEN_SECRET = new TextEncoder().encode(JWT_SECRET);
 
 export let prisma: PrismaClient;
 
-declare global {
-	var __prisma: PrismaClient | undefined;
-}
+var __prisma: PrismaClient | undefined;
 
 export const getDB = (platform: Readonly<App.Platform> | undefined) => {
 	if (!platform) return err('falló la conexión con la db');
-	if (!global.__prisma) {
+	if (!__prisma) {
 		const adapter = new PrismaD1(platform.env.DB);
 		prisma = new PrismaClient({ adapter });
-		if (process.env.NODE_ENV === 'development') global.__prisma = prisma;
+		if (process.env.NODE_ENV === 'development') __prisma = prisma;
 	} else {
-		prisma = global.__prisma;
+		prisma = __prisma;
 	}
 	return ok(prisma);
 };
