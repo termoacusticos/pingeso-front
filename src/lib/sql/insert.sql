@@ -138,13 +138,13 @@ INSERT INTO Cristal (desc_cristal, precio_cristal) VALUES
 ('10 mm', 38000);
 
 INSERT INTO Color (nombre_color) VALUES
-('Nogal'),
-('Titanio'),
-('Mate'),
-('Blanco'),
-('Antracita'),
-('Roble dorado'),
-('Negro');
+('NOGAL'),
+('TITANIO'),
+('MATE'),
+('BLANCO'),
+('ANTRACITA'),
+('ROBLE DORADO'),
+('NEGRO');
 
 INSERT INTO Material (nombre_material, texto_calidad, texto_termopanel) VALUES
 ("ALUMINIO PREMIUM XELENTIA", "ALTA", "WARMEDGE"),
