@@ -36,14 +36,17 @@
 
 			// const { token } = (await response.json()) as { token: string };
 			// localStorage.setItem('authToken', token);
-			goto('/home'); // Redirige al usuario a la página principal
+			goto('/home/historial'); // Redirige al usuario a la página principal
 		} catch (err) {
 			error = 'Hubo un problema con la solicitud.';
 		}
 	}
 </script>
 
-<div class="flex flex-col w-full h-full gap-4 my-10 justify-center bg-teal-700 animate-fade-up">
+<div class="flex flex-row w-full h-screen gap-4 justify-center bg-teal-700">
+	<img class="w-full object-cover h-screen" src="/termopaneles.png" alt="Termoacústicos logo" />
+
+<div class="flex flex-col w-full h-screen gap-4 my-10 justify-center bg-teal-700 animate-fade-up">
 	<img class=" object-contain h-20" src="/logo_termo.png" alt="Termoacústicos logo" />
 	<p class="w-full text-center text-white font-light text-xl">Bienvenido!</p>
 	<div class="flex flex-col mx-auto gap-7 bg-white justify-center items-center p-7 rounded-lg">
@@ -76,4 +79,5 @@
 			<p class="error">{error}</p>
 		{/if}
 	</div>
+</div>
 </div>

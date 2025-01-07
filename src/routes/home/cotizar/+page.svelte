@@ -103,8 +103,9 @@
 	}
 
 	function visualizarCotizacion() {
-		successModal = !successModal;
+		location.assign('/home/cotizar');
 		window.open(get(url));
+		resetStores();
 	}
 
 	function cerrarErrorModal() {

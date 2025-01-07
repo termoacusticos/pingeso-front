@@ -25,7 +25,7 @@
 	console.log($materiales);
 </script>
 
-<div class="min-h-screen lg:w-[60%] mx-auto p-8 bg-gray-100">
+<div class="min-h-screen 2xl:w-[80%] xl:w-full lg:w-[50%] md:w-[70%] mx-auto p-8 bg-gray-100">
 	<div class="flex flex-row items-center mb-5">
 		<div class="iconify mdi--keyboard-arrow-right size-5 bg-slate-400"></div>
 		<span class=" text-slate-400">Home</span>

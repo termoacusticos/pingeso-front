@@ -190,9 +190,9 @@
 				<tr class="border-b border-gray-200 hover:bg-gray-100">
 					<td class="py-3 px-4 truncate">{cotizacion.Cliente?.nombre}</td>
 					<td class="py-3 px-4 ">
-						<div class=" w-80 truncate overflow-hidden whitespace-nowrap">
+						<div class="w-80 truncate overflow-hidden whitespace-nowrap space-x-3">
 							{#each cotizacion.Opciones as opcion, index}
-									{getNombreMaterial(opcion.Ventanas[0].id_material)}{#if index < cotizacion.Opciones.length - 1}, {/if}
+								{getNombreMaterial(opcion.Ventanas[0].id_material)}{#if index < cotizacion.Opciones.length - 1}, {/if}
 							{/each}
 						</div>
 					</td>
