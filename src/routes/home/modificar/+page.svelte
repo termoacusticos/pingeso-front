@@ -26,6 +26,7 @@
 		texto_calidad: '',
 		texto_termopanel: ''
 	});
+
 	let tipoSelected: Tipo = $state({
 		id_tipo: 0,
 		descripcion_tipo: '',
@@ -210,7 +211,7 @@
 			cristal: cristalSelected
 		};
 
-		fetch('/api/tipo', {
+		fetch('/api/cristal', {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json'
@@ -224,7 +225,7 @@
 				return response.json();
 			})
 			.then(async (data) => {
-				editTipoModal = false;
+				editCristalModal = false;
 				successModal = true;
 				console.log('Respuesta del servidor:', data);
 			})
@@ -555,7 +556,7 @@
 								</td>
 								<td class="border">
 									<input
-										type="text"
+										type="number"
 										bind:value={cristalSelected.precio_cristal}
 										placeholder="Precio"
 										class="w-full" />
