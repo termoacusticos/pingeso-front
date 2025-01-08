@@ -2,6 +2,7 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { getDB, validateJWT } from '$lib';
 import { deleteMaterial, updateMaterial } from '$lib/repositories/material';
+import type { Material } from '@prisma/client';
 
 export const DELETE: RequestHandler = async ({ request, platform, cookies }) => {
 	const connection = getDB(platform);
@@ -32,9 +33,9 @@ export const PUT: RequestHandler = async ({ request, platform, cookies }) => {
 	const validationResult = await validateJWT(token);
 	if (validationResult.isErr()) return json({ error: 'Token inválido.' }, { status: 401 });
 
-	const { id_material, ...data } = await request.json<{id_material: number}>();
+	const { id, materialData } = await request.json<{id: number; materialData: Material}>();
 
-	const result = await updateMaterial(id_material, data);
+	const result = await updateMaterial(id, materialData);
 
 	if (result.isErr()) {
 		return json({ error: 'Error al actualizar el material.' }, { status: 500 });

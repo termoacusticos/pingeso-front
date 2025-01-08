@@ -20,6 +20,8 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		materiales: constantes.materiales,
 		colores: constantes.colores,
 		cristales: constantes.cristales,
-		tipos: constantes.tipos
+		tipos: constantes.tipos,
+		perfiles: constantes.perfiles,
+		quincallerias: constantes.quincallerias
 	};
 };

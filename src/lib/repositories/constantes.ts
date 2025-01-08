@@ -5,5 +5,7 @@ export const getAllConstantes = () => {
 	const colores = prisma.color.findMany();
 	const cristales = prisma.cristal.findMany();
 	const tipos = prisma.tipo.findMany();
-	return Promise.all([materiales, colores, cristales, tipos]);
+	const perfiles = prisma.perfil.findMany();
+	const quincallerias = prisma.quincalleria.findMany();
+	return Promise.all([materiales, colores, cristales, tipos, perfiles, quincallerias]);
 };
