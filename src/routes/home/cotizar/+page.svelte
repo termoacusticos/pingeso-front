@@ -98,14 +98,14 @@
 	$inspect('cliente: ', cliente);
 
 	function cerrarSuccessModal() {
-		location.assign('/home/cotizar');
 		resetStores();
+		location.assign('/home/cotizar');
 	}
 
 	function visualizarCotizacion() {
-		location.assign('/home/cotizar');
-		window.open(get(url));
+		window.open($url);
 		resetStores();
+		location.assign('/home/cotizar');
 	}
 
 	function cerrarErrorModal() {
@@ -188,8 +188,9 @@
 				item: ventana.item,
 				alto: ventana.alto ?? 0,
 				ancho: ventana.ancho ?? 0,
-				precio_unitario: ventana.precio_unitario*(1+ (datosAdicionales.ganancia_global??0) /100),
-				precio_total: ventana.precio_total*(1+ (datosAdicionales.ganancia_global??0) /100),
+				precio_unitario:
+					ventana.precio_unitario * (1 + (datosAdicionales.ganancia_global ?? 0) / 100),
+				precio_total: ventana.precio_total * (1 + (datosAdicionales.ganancia_global ?? 0) / 100),
 				ganancia: ventana.ganancia ?? 0
 			};
 		});
@@ -302,10 +303,13 @@
 	}
 
 	// Función para calcular el total con ganancia
-	function calcularTotalConGanancia(opcion: { material?: string; color?: string; ventanas: any; }, gananciaGlobal: number | undefined) {
+	function calcularTotalConGanancia(
+		opcion: { material?: string; color?: string; ventanas: any },
+		gananciaGlobal: number | undefined
+	) {
 		if (!gananciaGlobal) return 0;
 		return opcion.ventanas.reduce(
-			(total: number, ventana: { precio_unitario: number; cantidad: number; }) =>
+			(total: number, ventana: { precio_unitario: number; cantidad: number }) =>
 				total + ventana.precio_unitario * ventana.cantidad * (1 + gananciaGlobal / 100),
 			0
 		);
@@ -333,7 +337,10 @@
 		<div class="iconify mdi--keyboard-arrow-right size-5"></div>
 		<span class=" text-slate-400">Cotizar</span>
 	</div>
-	<DatosCotizacion bind:cliente bind:datos_adicionales={datosAdicionales} on:aplicarGananciaGlobal={(event) => aplicarGananciaGlobal(event.detail)}  />
+	<DatosCotizacion
+		bind:cliente
+		bind:datos_adicionales={datosAdicionales}
+		on:aplicarGananciaGlobal={(event) => aplicarGananciaGlobal(event.detail)} />
 	<!-- Ventanas -->
 	<div class="space-y-6 w-full">
 		{#each opciones as opcion, opcionIndex}
@@ -371,10 +378,9 @@
 				bind:opcion={opciones[opcionIndex]}
 				index={opcionIndex}
 				{eliminarOpcion}
-				{mostrar_eliminar_opcion} 
-				ganancia_global={datosAdicionales.ganancia_global}
-				/>
-				<!-- Totales de la opción 
+				{mostrar_eliminar_opcion}
+				ganancia_global={datosAdicionales.ganancia_global} />
+			<!-- Totales de la opción 
 		<div class="flex justify-end mt-2 text-lg">
 			<p class="font-semibold">Total:</p>
 			<p class="ml-2">

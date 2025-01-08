@@ -60,7 +60,7 @@ export const savePresupuesto = async (presupuesto: PresupuestoModel, id_usuario:
 
 export const deletePresupuesto = async (id: number) => {
 	return prisma.presupuesto
-		.deleteMany()
+		.delete({ where: { id_presupuesto: id } })
 		.then((response) => ok(response))
 		.catch((error) => err(error));
 };

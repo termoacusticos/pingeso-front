@@ -2,6 +2,7 @@ import { getPerfilesTipo, getQuincalleriasTipo, getTipoById } from '$lib/reposit
 import type { VentanaModel } from '$lib/types';
 import { getCristalById } from '$lib/repositories/cristal';
 import { getMaterialById } from '$lib/repositories/material';
+import { evaluate } from 'mathjs';
 
 export async function calcularCostoVentana(ventana: VentanaModel) {
 	const tipo = await getTipoById(ventana.id_tipo);
@@ -15,7 +16,10 @@ export async function calcularCostoVentana(ventana: VentanaModel) {
 	let costoTotal = 0;
 	let costoUnitario = 0;
 
-	if (tipo.Material.nombre_material === 'ALUMINIO PREMIUM XELENTIA' || tipo.Material.nombre_material === 'ALUMINIO ESTÁNDAR BÁSICO') {
+	if (
+		tipo.Material.nombre_material === 'ALUMINIO PREMIUM XELENTIA' ||
+		tipo.Material.nombre_material === 'ALUMINIO ESTÁNDAR BÁSICO'
+	) {
 		const perfiles = await getPerfilesTipo(ventana.id_tipo);
 		const quincallerias = await getQuincalleriasTipo(ventana.id_tipo);
 		const cristal = await getCristalById(ventana.id_cristal);
@@ -191,5 +195,5 @@ function evalFormula(formula: string, parametros: Record<string, number>) {
 		formulaEvaluada = formulaEvaluada.replace(regex, valor.toString());
 	}
 
-	return eval(formulaEvaluada);
+	return evaluate(formulaEvaluada);
 }

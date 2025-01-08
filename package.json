@@ -50,6 +50,7 @@
 	"dependencies": {
 		"@prisma/adapter-d1": "^6.0.1",
 		"@prisma/client": "^6.1.0",
+		"mathjs": "^14.0.1",
 		"pdf-lib": "^1.17.1"
 	}
 }
