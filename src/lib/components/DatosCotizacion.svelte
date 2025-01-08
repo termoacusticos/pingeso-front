@@ -64,12 +64,12 @@
 			placeholder="Costo de Instalación"
 			class="px-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 			bind:value={datos_adicionales.costo_instalacion} />
-			<div class="flex gap-3 items-center">
-				<input
-					type="number"
-					placeholder="Ganancia Global (%)"
-					class="px-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-					bind:value={datos_adicionales.ganancia_global} />
-			</div>
+		<div class="flex gap-3 items-center">
+			<input
+				type="number"
+				placeholder="Ganancia Global (%)"
+				class="px-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+				bind:value={datos_adicionales.ganancia_global} />
+		</div>
 	</div>
 </div>

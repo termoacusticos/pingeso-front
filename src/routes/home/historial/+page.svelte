@@ -113,12 +113,10 @@
 
 	// Calcular el índice de las cotizaciones para la página actual
 	let paginatedCotizaciones = $derived.by(() => {
-		console.log((currentPage - 1) * pageSize, currentPage * pageSize);
-		console.log(filteredCotizaciones[0]);
+		// console.log(inspect(filteredCotizaciones, true, null));
 
 		return filteredCotizaciones.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 	});
-	$inspect(cotizaciones);
 
 	// Número total de páginas
 	let totalPages = $derived(Math.ceil(filteredCotizaciones.length / pageSize));
@@ -189,10 +187,11 @@
 			{#each paginatedCotizaciones as cotizacion}
 				<tr class="border-b border-gray-200 hover:bg-gray-100">
 					<td class="py-3 px-4 truncate">{cotizacion.Cliente?.nombre}</td>
-					<td class="py-3 px-4 ">
+					<td class="py-3 px-4">
 						<div class="w-80 truncate overflow-hidden whitespace-nowrap space-x-3">
 							{#each cotizacion.Opciones as opcion, index}
-								{getNombreMaterial(opcion.Ventanas[0].id_material)}{#if index < cotizacion.Opciones.length - 1}, {/if}
+								{getNombreMaterial(opcion.Ventanas[0].id_material)}
+								{index < cotizacion.Opciones.length - 1 ? ',' : ''}
 							{/each}
 						</div>
 					</td>
@@ -204,7 +203,11 @@
 					<td class="py-3 px-4 text-left">
 						<div class=" space-x-3">
 							{#each cotizacion.Opciones as opcion, index}
-								<b>{index+1}:</b> {formatoChileno(calcularTotalOpcion(opcion))}{#if index < cotizacion.Opciones.length - 1}, {/if}
+								<b>{index + 1}:</b>
+								{formatoChileno(
+									calcularTotalOpcion(opcion)
+								)}{#if index < cotizacion.Opciones.length - 1},
+								{/if}
 							{/each}
 						</div>
 					</td>

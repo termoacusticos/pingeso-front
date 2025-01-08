@@ -20,21 +20,28 @@ export const GET: RequestHandler = async ({ platform, cookies }) => {
 		return json({ error: 'Error al buscar imagenes.' }, { status: 500 });
 	}
 
-	let imagenes = imagenesResult.value.reduce((acc, image) => {
-		// Busca si ya existe un grupo con el img_group actual
-		let group = acc.find((g) => g.img_group === image.img_group);
+	let imagenes = imagenesResult.value.reduce(
+		(acc, image) => {
+			// Busca si ya existe un grupo con el img_group actual
+			let group = acc.find((g) => g.img_group === image.img_group);
 
-		// Si no existe, lo crea y lo añade al acumulador
-		if (!group) {
-			group = { img_group: image.img_group, imagenes: [] };
-			acc.push(group);
-		}
+			// Si no existe, lo crea y lo añade al acumulador
+			if (!group) {
+				group = { img_group: image.img_group, imagenes: [] };
+				acc.push(group);
+			}
 
-		// Agrega la imagen al grupo correspondiente
-		group.imagenes.push(image);
+			// Agrega la imagen al grupo correspondiente
+			group.imagenes.push(image);
 
-		return acc;
-	}, [{ img_group: 1, imagenes: [] }, { img_group: 2, imagenes: [] }, { img_group: 3, imagenes: [] }] as ImageGroup[]);
+			return acc;
+		},
+		[
+			{ img_group: 1, imagenes: [] },
+			{ img_group: 2, imagenes: [] },
+			{ img_group: 3, imagenes: [] }
+		] as ImageGroup[]
+	);
 
 	return json(imagenes);
 };

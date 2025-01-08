@@ -1,7 +1,14 @@
 <script lang="ts">
 	import type { ImageGroup } from '$lib/types';
-	import type { Color, Cristal, Imagen, Material, Perfil, Quincalleria, Tipo } from '@prisma/client';
-	import { error } from '@sveltejs/kit';
+	import type {
+		Color,
+		Cristal,
+		Imagen,
+		Material,
+		Perfil,
+		Quincalleria,
+		Tipo
+	} from '@prisma/client';
 
 	interface Props {
 		data: any;
@@ -10,7 +17,15 @@
 	let { data }: Props = $props();
 
 	let constantSelected = $state('');
-	let constantes = ['Materiales', 'Cristales', 'Tipos', 'Imágenes', 'Colores', 'Perfiles', 'Quincallerías'];
+	let constantes = [
+		'Materiales',
+		'Cristales',
+		'Tipos',
+		'Imágenes',
+		'Colores',
+		'Perfiles',
+		'Quincallerías'
+	];
 
 	let successModal = $state(false);
 	let errorMessage = $state('');
@@ -70,7 +85,7 @@
 		formula_cant: '',
 		kg_ml_per: -1,
 		valor: -1
-	})
+	});
 
 	let materiales: Material[] = $state(data.materiales);
 	let tipos: Tipo[] = $state(data.tipos);
@@ -272,7 +287,7 @@
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({cristalData: newCristal})
+			body: JSON.stringify({ cristalData: newCristal })
 		})
 			.then((response) => {
 				if (!response.ok) {
@@ -333,7 +348,7 @@
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({colorData: newColor})
+			body: JSON.stringify({ colorData: newColor })
 		})
 			.then((response) => {
 				if (!response.ok) {
@@ -959,8 +974,7 @@
 				<!-- Form container -->
 				<div class="flex flex-col gap-4">
 					<div class="flex flex-col gap-2">
-						<label for="desc_cristal" class="font-medium text-gray-700"
-							>Nombre del color</label>
+						<label for="desc_cristal" class="font-medium text-gray-700">Nombre del color</label>
 						<input
 							type="text"
 							id="desc_cristal"
@@ -1034,7 +1048,9 @@
 			<tbody class="w-full">
 				{#each perfiles as perfil}
 					<tr
-						onclick={() => {openEditPerfilModal(perfil)}}
+						onclick={() => {
+							openEditPerfilModal(perfil);
+						}}
 						class=" hover:bg-gray-100">
 						<td class="py-1 px-2 text-left">{perfil.id_perfil}</td>
 						<td class="py-1 px-2 text-left">{perfil.codigo_per}</td>
@@ -1136,9 +1152,7 @@
 			</thead>
 			<tbody class="w-full">
 				{#each quincallerias as quincalleria}
-					<tr
-						onselect={() => {}}
-						class=" hover:bg-gray-100">
+					<tr onselect={() => {}} class=" hover:bg-gray-100">
 						<td class="py-2 px-4 text-left">{quincalleria.id_quincalleria}</td>
 						<td class="py-2 px-4 text-left">{quincalleria.desc_quin}</td>
 						<td class="py-2 px-4 text-left">{quincalleria.formula_quin}</td>
@@ -1148,5 +1162,4 @@
 			</tbody>
 		</table>
 	{/if}
-
 </div>

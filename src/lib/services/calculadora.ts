@@ -9,7 +9,6 @@ export async function calcularCostoVentana(ventana: VentanaModel) {
 	if (!tipo) {
 		throw new Error('No se encontró el tipo de ventana');
 	}
-	console.log(tipo);
 
 	const material = await getMaterialById(tipo.id_material);
 

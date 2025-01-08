@@ -42,21 +42,15 @@
 	let materialesNombre: string[] = $state(materiales.map((material) => material.nombre_material));
 	let coloresNombre: string[] = $state(colores.map((color) => color.nombre_color));
 
-	let sumaTotal = $derived(
+	let sumaTotal = $derived(opcion.ventanas.reduce((acc, ventana) => acc + ventana.precio_total, 0));
+
+	let sumaTotalConGanancia = $derived(
 		opcion.ventanas.reduce(
-			(acc, ventana) => acc + ventana.precio_total,
+			(acc, ventana) =>
+				acc + ventana.precio_unitario * ventana.cantidad * (1 + ganancia_global / 100),
 			0
 		)
 	);
-
-	let sumaTotalConGanancia = $derived(
-        opcion.ventanas.reduce(
-            (acc, ventana) =>
-                acc + ventana.precio_unitario * ventana.cantidad * (1 + ganancia_global / 100),
-            0
-        )
-    );
-
 
 	let mostrar_eliminar = $derived(opcion.ventanas.length > 1);
 
@@ -149,7 +143,7 @@
 						{data}
 						bind:ventana={opcion.ventanas[id]}
 						{id}
-						bind:ganancia_global={ganancia_global}
+						bind:ganancia_global
 						option_index={index}
 						{mostrar_eliminar}
 						{eliminarVentana} />

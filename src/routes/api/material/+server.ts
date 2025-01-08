@@ -33,7 +33,7 @@ export const PUT: RequestHandler = async ({ request, platform, cookies }) => {
 	const validationResult = await validateJWT(token);
 	if (validationResult.isErr()) return json({ error: 'Token inválido.' }, { status: 401 });
 
-	const { id, materialData } = await request.json<{id: number; materialData: Material}>();
+	const { id, materialData } = await request.json<{ id: number; materialData: Material }>();
 
 	const result = await updateMaterial(id, materialData);
 

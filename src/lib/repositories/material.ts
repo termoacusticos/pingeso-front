@@ -22,4 +22,4 @@ export const updateMaterial = async (id: number, data: any) => {
 		})
 		.then((response) => ok(response))
 		.catch((error) => err(error));
-}
+};

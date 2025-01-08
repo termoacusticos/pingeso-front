@@ -46,38 +46,38 @@
 <div class="flex flex-row w-full h-screen gap-4 justify-center bg-teal-700">
 	<img class="w-full object-cover h-screen" src="/termopaneles.png" alt="Termoacústicos logo" />
 
-<div class="flex flex-col w-full h-screen gap-4 my-10 justify-center bg-teal-700 animate-fade-up">
-	<img class=" object-contain h-20" src="/logo_termo.png" alt="Termoacústicos logo" />
-	<p class="w-full text-center text-white font-light text-xl">Bienvenido!</p>
-	<div class="flex flex-col mx-auto gap-7 bg-white justify-center items-center p-7 rounded-lg">
-		<p class=" font-bold text-xl">Sistema de Cotización</p>
-		<form class="flex flex-col gap-2" onsubmit={handleSubmit}>
-			<div>
-				<label class=" text-slate-600 text-sm" for="usuario">Usuario</label>
-				<input
-					class="appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-					bind:value={usuario}
-					id="usuario"
-					type="text"
-					placeholder="Usuario" />
-			</div>
-			<div>
-				<label class=" text-slate-600 text-sm" for="password">Contraseña</label>
-				<input
-					class="appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-					bind:value={password}
-					id="password"
-					type="password"
-					placeholder="Contraseña" />
-			</div>
-			<button
-				type="submit"
-				class="w-full h-full bg-amber-500 hover:bg-amber-400 rounded-lg py-2 px-3 text-white font-bold mt-2"
-				>Ingresar</button>
-		</form>
-		{#if error}
-			<p class="error">{error}</p>
-		{/if}
+	<div class="flex flex-col w-full h-screen gap-4 my-10 justify-center bg-teal-700 animate-fade-up">
+		<img class=" object-contain h-20" src="/logo_termo.png" alt="Termoacústicos logo" />
+		<p class="w-full text-center text-white font-light text-xl">Bienvenido!</p>
+		<div class="flex flex-col mx-auto gap-7 bg-white justify-center items-center p-7 rounded-lg">
+			<p class=" font-bold text-xl">Sistema de Cotización</p>
+			<form class="flex flex-col gap-2" onsubmit={handleSubmit}>
+				<div>
+					<label class=" text-slate-600 text-sm" for="usuario">Usuario</label>
+					<input
+						class="appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+						bind:value={usuario}
+						id="usuario"
+						type="text"
+						placeholder="Usuario" />
+				</div>
+				<div>
+					<label class=" text-slate-600 text-sm" for="password">Contraseña</label>
+					<input
+						class="appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+						bind:value={password}
+						id="password"
+						type="password"
+						placeholder="Contraseña" />
+				</div>
+				<button
+					type="submit"
+					class="w-full h-full bg-amber-500 hover:bg-amber-400 rounded-lg py-2 px-3 text-white font-bold mt-2"
+					>Ingresar</button>
+			</form>
+			{#if error}
+				<p class="error">{error}</p>
+			{/if}
+		</div>
 	</div>
-</div>
 </div>

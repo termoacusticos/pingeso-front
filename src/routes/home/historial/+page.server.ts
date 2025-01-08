@@ -7,7 +7,6 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	}).then((response) => {
 		return response.json();
 	});
-	console.log(presupuestos);
 
 	const constantes: ConstantData = await fetch('/api/constantes', {
 		method: 'GET'
