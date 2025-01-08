@@ -17,6 +17,7 @@
 	let editMaterialModal = $state(false);
 	let editTipoModal = $state(false);
 	let editCristalModal = $state(false);
+	let editPerfilModal = $state(false);
 	let addCristalModal = $state(false);
 	let editColorModal = $state(false);
 	let addColorModal = $state(false);
@@ -61,6 +62,15 @@
 		id_color: -1,
 		nombre_color: ''
 	});
+
+	let perfilSelected: Perfil = $state({
+		id_perfil: -1,
+		codigo_per: -1,
+		formula_dim: '',
+		formula_cant: '',
+		kg_ml_per: -1,
+		valor: -1
+	})
 
 	let materiales: Material[] = $state(data.materiales);
 	let tipos: Tipo[] = $state(data.tipos);
@@ -148,6 +158,15 @@
 
 	function cerrarSuccessModal() {
 		successModal = false;
+	}
+
+	function openEditPerfilModal(perfil: Perfil) {
+		editPerfilModal = true;
+		perfilSelected = perfil;
+	}
+
+	function closeEditPerfilModal() {
+		editPerfilModal = false;
 	}
 
 	function editMaterial() {
@@ -335,6 +354,35 @@
 			});
 	}
 
+	function editPerfil() {
+		let bodyReq = {
+			id: perfilSelected.id_perfil,
+			perfilData: perfilSelected
+		};
+
+		fetch('/api/perfil', {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(bodyReq)
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
+				}
+				return response.json();
+			})
+			.then(async (data) => {
+				editPerfilModal = false;
+				successModal = true;
+				console.log('Respuesta del servidor:', data);
+			})
+			.catch((error) => {
+				console.error('Error durante la solicitud:', error);
+			});
+	}
+
 	const handleImageUpload = async (event: Event) => {
 		const files = (event.target as HTMLInputElement)?.files;
 		if (files) {
@@ -408,10 +456,10 @@
 		<table class="table-auto w-full rounded-lg bg-white shadow">
 			<thead class="w-full bg-gray-200 text-gray-700">
 				<tr>
-					<th class="py-3 px-4 text-left">ID</th>
-					<th class="py-3 px-4 text-left">Nombre Material</th>
-					<th class="py-3 px-4 text-left">Calidad</th>
-					<th class="py-3 px-4 text-left">Termopanel</th>
+					<th class="py-2 px-2 text-left">ID</th>
+					<th class="py-2 px-2 text-left">Nombre Material</th>
+					<th class="py-2 px-2 text-left">Calidad</th>
+					<th class="py-2 px-2 text-left">Termopanel</th>
 				</tr>
 			</thead>
 			<tbody class="w-full">
@@ -421,10 +469,10 @@
 							openEditMaterialModal(material);
 						}}
 						class=" hover:bg-gray-100">
-						<td class="py-2 px-4 text-left">{material.id_material}</td>
-						<td class="py-2 px-4 text-left">{material.nombre_material}</td>
-						<td class="py-2 px-4 text-left">{material.texto_calidad}</td>
-						<td class="py-2 px-4 text-left">{material.texto_termopanel}</td>
+						<td class="py-1 px-2 text-left">{material.id_material}</td>
+						<td class="py-1 px-2 text-left">{material.nombre_material}</td>
+						<td class="py-1 px-2 text-left">{material.texto_calidad}</td>
+						<td class="py-1 px-2 text-left">{material.texto_termopanel}</td>
 					</tr>
 				{/each}
 			</tbody>
@@ -498,9 +546,9 @@
 		<table class="table-auto w-full rounded-lg bg-white shadow">
 			<thead class="w-full bg-gray-200 text-gray-700 text-left">
 				<tr>
-					<th class="py-3 px-4 text-left">ID</th>
-					<th class="py-3 px-4 text-left">Descripción Cristal</th>
-					<th class="py-3 px-4 text-left">Precio</th>
+					<th class="py-2 px-2 text-left">ID</th>
+					<th class="py-2 px-2 text-left">Descripción Cristal</th>
+					<th class="py-2 px-2 text-left">Precio</th>
 				</tr>
 			</thead>
 			<tbody class="w-full">
@@ -510,9 +558,9 @@
 							openEditCristalModal(cristal);
 						}}
 						class=" hover:bg-gray-100">
-						<td class="py-2 px-4 text-left">{cristal.id_cristal}</td>
-						<td class="py-2 px-4 text-left">{cristal.desc_cristal}</td>
-						<td class="py-2 px-4 text-left">{formatoChileno(cristal.precio_cristal)}</td>
+						<td class="py-1 px-2 text-left">{cristal.id_cristal}</td>
+						<td class="py-1 px-2 text-left">{cristal.desc_cristal}</td>
+						<td class="py-1 px-2 text-left">{formatoChileno(cristal.precio_cristal)}</td>
 					</tr>
 				{/each}
 			</tbody>
@@ -639,17 +687,17 @@
 		<table class="table-auto w-full rounded-lg bg-white shadow">
 			<thead class="w-full bg-gray-200 text-gray-700">
 				<tr>
-					<th class="px-2 py-3 text-left">ID</th>
-					<th class="px-1 py-2 text-left">Descripción</th>
-					<th class="px-1 py-2 text-left">Material</th>
-					<th class="px-1 py-2 text-left">Ancho</th>
-					<th class="px-1 py-2 text-left">Alto</th>
-					<th class="px-1 py-2 text-left">Cantidad cristal</th>
-					<th class="px-1 py-2 text-left">% Quincallería</th>
-					<th class="px-1 py-2 text-left">Largo perfil</th>
-					<th class="px-1 py-2 text-left">Mínimo</th>
-					<th class="px-1 py-2 text-left">Máximo</th>
-					<th class="px-1 py-2 text-left">Ganancia</th>
+					<th class="px-2 py-2 text-left">ID</th>
+					<th class="px-2 py-2 text-left">Descripción</th>
+					<th class="px-2 py-2 text-left">Material</th>
+					<th class="px-2 py-2 text-left">Ancho</th>
+					<th class="px-2 py-2 text-left">Alto</th>
+					<th class="px-2 py-2 text-left">Cantidad cristal</th>
+					<th class="px-2 py-2 text-left">% Quincallería</th>
+					<th class="px-2 py-2 text-left">Largo perfil</th>
+					<th class="px-2 py-2 text-left">Mínimo</th>
+					<th class="px-2 py-2 text-left">Máximo</th>
+					<th class="px-2 py-2 text-left">Ganancia</th>
 				</tr>
 			</thead>
 			<tbody class="w-full">
@@ -659,17 +707,17 @@
 							openEditTipoModal(tipo);
 						}}
 						class=" hover:bg-gray-100">
-						<td class="px-1 py-1">{tipo.id_tipo}</td>
-						<td class="px-1 py-1">{tipo.descripcion_tipo}</td>
-						<td class="px-1 py-1">{tipo.id_material}</td>
-						<td class="px-1 py-1">{tipo.formula_ancho}</td>
-						<td class="px-1 py-1">{tipo.formula_alto}</td>
-						<td class="px-1 py-1">{tipo.cantidad_cristal}</td>
-						<td class="px-1 py-1">{tipo.porcentaje_quinc}</td>
-						<td class="px-1 py-1">{tipo.largo_perfil}</td>
-						<td class="px-1 py-1">{tipo.minimo}</td>
-						<td class="px-1 py-1">{tipo.maximo}</td>
-						<td class="px-1 py-1">{tipo.ganancia}</td>
+						<td class="px-2 py-1">{tipo.id_tipo}</td>
+						<td class="px-2 py-1">{tipo.descripcion_tipo}</td>
+						<td class="px-2 py-1">{tipo.id_material}</td>
+						<td class="px-2 py-1">{tipo.formula_ancho}</td>
+						<td class="px-2 py-1">{tipo.formula_alto}</td>
+						<td class="px-2 py-1">{tipo.cantidad_cristal}</td>
+						<td class="px-2 py-1">{tipo.porcentaje_quinc}</td>
+						<td class="px-2 py-1">{tipo.largo_perfil}</td>
+						<td class="px-2 py-1">{tipo.minimo}</td>
+						<td class="px-2 py-1">{tipo.maximo}</td>
+						<td class="px-2 py-1">{tipo.ganancia}</td>
 					</tr>
 				{/each}
 			</tbody>
@@ -819,8 +867,8 @@
 		<table class="table-auto w-full rounded-lg bg-white shadow">
 			<thead class="w-full bg-gray-200 text-gray-700">
 				<tr>
-					<th class="py-3 px-4 text-left">ID</th>
-					<th class="py-3 px-4 text-left">Nombre Color</th>
+					<th class="py-2 px-2 text-left">ID</th>
+					<th class="py-2 px-2 text-left">Nombre Color</th>
 				</tr>
 			</thead>
 			<tbody class="w-full">
@@ -830,8 +878,8 @@
 							openEditColorModal(color);
 						}}
 						class=" hover:bg-gray-100">
-						<td class="py-2 px-4 text-left">{color.id_color}</td>
-						<td class="py-2 px-4 text-left">{color.nombre_color}</td>
+						<td class="py-1 px-2 text-left">{color.id_color}</td>
+						<td class="py-1 px-2 text-left">{color.nombre_color}</td>
 					</tr>
 				{/each}
 			</tbody>
@@ -975,30 +1023,106 @@
 		<table class="table-auto w-full rounded-lg bg-white shadow">
 			<thead class="w-full bg-gray-200 text-gray-700">
 				<tr>
-					<th class="py-3 px-4 text-left">ID</th>
-					<th class="py-3 px-4 text-left">Código Perfil</th>
-					<th class="py-3 px-4 text-left">Dimensión</th>
-					<th class="py-3 px-4 text-left">Cantidad</th>
-					<th class="py-3 px-4 text-left">Kg/ml</th>
-					<th class="py-3 px-4 text-left">Precio</th>
+					<th class="py-2 px-2 text-left">ID</th>
+					<th class="py-2 px-2 text-left">Código Perfil</th>
+					<th class="py-2 px-2 text-left">Dimensión</th>
+					<th class="py-2 px-2 text-left">Cantidad</th>
+					<th class="py-2 px-2 text-left">Kg/ml</th>
+					<th class="py-2 px-2 text-left">Precio</th>
 				</tr>
 			</thead>
 			<tbody class="w-full">
 				{#each perfiles as perfil}
 					<tr
-						onselect={() => {}}
+						onclick={() => {openEditPerfilModal(perfil)}}
 						class=" hover:bg-gray-100">
-						<td class="py-2 px-4 text-left">{perfil.id_perfil}</td>
-						<td class="py-2 px-4 text-left">{perfil.codigo_per}</td>
-						<td class="py-2 px-4 text-left">{perfil.formula_dim}</td>
-						<td class="py-2 px-4 text-left">{perfil.formula_cant}</td>
-						<td class="py-2 px-4 text-left">{perfil.kg_ml_per}</td>
-						<td class="py-2 px-4 text-left">{formatoChileno(perfil.valor)}</td>
+						<td class="py-1 px-2 text-left">{perfil.id_perfil}</td>
+						<td class="py-1 px-2 text-left">{perfil.codigo_per}</td>
+						<td class="py-1 px-2 text-left">{perfil.formula_dim}</td>
+						<td class="py-1 px-2 text-left">{perfil.formula_cant}</td>
+						<td class="py-1 px-2 text-left">{perfil.kg_ml_per}</td>
+						<td class="py-1 px-2 text-left">{formatoChileno(perfil.valor)}</td>
 					</tr>
 				{/each}
 			</tbody>
 		</table>
 	{/if}
+
+	<!-- editPerfil Modal -->
+	{#if editPerfilModal}
+		<div class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+			<div class="relative bg-white rounded-lg shadow-xl p-8 w-full max-w-[80%]">
+				<!-- Close button -->
+				<div class="flex justify-end">
+					<button
+						onclick={closeEditPerfilModal}
+						class="text-gray-500 hover:text-gray-800 font-bold text-lg iconify mdi--close size-6"
+						aria-label="X">
+					</button>
+				</div>
+
+				<p class="w-full text-xl text-center font-bold">Modificar Perfil</p>
+
+				<!-- Table container with horizontal scroll -->
+				<div class="overflow-x-auto mt-4">
+					<table class="table-fixed w-full border-collapse border border-gray-300">
+						<thead class="bg-gray-200 text-gray-700 w-full">
+							<tr>
+								<th class="px-1 py-2 border w-16">ID</th>
+								<th class="border w-48">Código Perfil</th>
+								<th class="border w-48">Dimensiones</th>
+								<th class="border w-48">Cantidad</th>
+								<th class="border w-48">Kg/ml</th>
+								<th class="border w-48">Valorl</th>
+							</tr>
+						</thead>
+						<tbody class="w-full">
+							<tr>
+								<td class="border px-1 py-2">{perfilSelected.id_perfil}</td>
+								<td class="border px-1 py-2">{perfilSelected.codigo_per}</td>
+								<td class="border">
+									<input
+										type="text"
+										bind:value={perfilSelected.formula_dim}
+										placeholder="Dimesiones"
+										class="w-full" />
+								</td>
+								<td class="border">
+									<input
+										type="text"
+										bind:value={perfilSelected.formula_cant}
+										placeholder="Cantidad"
+										class="w-full" />
+								</td>
+								<td class="border">
+									<input
+										type="text"
+										bind:value={perfilSelected.kg_ml_per}
+										placeholder="Kg/ml"
+										class="w-full" />
+								</td>
+								<td class="border">
+									<input
+										type="text"
+										bind:value={perfilSelected.valor}
+										placeholder="Valor"
+										class="w-full" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<!-- Save changes button -->
+				<button
+					onclick={editPerfil}
+					class="w-full bg-teal-600 text-white font-bold py-2 px-4 rounded hover:bg-teal-500 mt-4">
+					Guardar cambios
+				</button>
+			</div>
+		</div>
+	{/if}
+
 	<!--Tabla quincallerias-->
 	{#if constantSelected == 'Quincallerías'}
 		<table class="table-auto w-full rounded-lg bg-white shadow">
