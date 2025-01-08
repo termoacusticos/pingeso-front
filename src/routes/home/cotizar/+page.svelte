@@ -120,7 +120,11 @@
 		let nuevas_ventanas = opciones[0].ventanas.map((ventana) => ({
 			...ventana,
 			material: materialModal,
-			color: colorModal
+			color: colorModal,
+			tipo: '',
+			ganancia: undefined,
+			precio_unitario: 0,
+			precio_total: 0
 		}));
 		console.log(nuevas_ventanas);
 
