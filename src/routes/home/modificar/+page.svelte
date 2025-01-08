@@ -153,7 +153,7 @@
 	function editMaterial() {
 		let bodyReq = {
 			id: materialSelected.id_material,
-			material: materialSelected
+			materialData: materialSelected
 		};
 
 		fetch('/api/material', {
@@ -277,7 +277,7 @@
 	function editColor() {
 		let bodyReq = {
 			id: colorSelected.id_color,
-			color: colorSelected
+			colorData: colorSelected
 		};
 
 		fetch('/api/color', {
@@ -304,17 +304,17 @@
 	}
 
 	function addColor() {
-		let bodyReq = {
-			id: colorSelected.id_color,
-			color: colorSelected
-		};
+		if (!newColor.nombre_color.trim()) {
+			errorMessage = 'El nombre del color es requerido';
+			return;
+		}
 
 		fetch('/api/color', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify(bodyReq)
+			body: JSON.stringify({colorData: newColor})
 		})
 			.then((response) => {
 				if (!response.ok) {
@@ -323,11 +323,14 @@
 				return response.json();
 			})
 			.then(async (data) => {
-				editColorModal = false;
+				// Update the colors list with the new data
+				colores = [...colores, data as Color];
+				addColorModal = false;
 				successModal = true;
-				console.log('Respuesta del servidor:', data);
+				console.log('Color agregado:', data);
 			})
 			.catch((error) => {
+				errorMessage = 'Error al agregar el color. Por favor intente nuevamente.';
 				console.error('Error durante la solicitud:', error);
 			});
 	}
