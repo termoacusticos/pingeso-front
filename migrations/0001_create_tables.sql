@@ -37,6 +37,7 @@ CREATE TABLE "Presupuesto" (
     "id_usuario" INTEGER NOT NULL,
     "fecha" DATETIME NOT NULL,
     "rut_cliente" TEXT NOT NULL,
+    "nombre_cliente" TEXT NOT NULL,
     "valor_despacho" INTEGER NOT NULL,
     "valor_instalacion" INTEGER NOT NULL,
     "texto_libre" TEXT NOT NULL,
@@ -143,10 +144,7 @@ CREATE TABLE "Imagen" (
 
 -- CreateTable
 CREATE TABLE "constantes" (
-    "id_constantes" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "height_group1" INTEGER NOT NULL,
-    "height_group2" INTEGER NOT NULL,
-    "height_group3" INTEGER NOT NULL
+    "id_constantes" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
 );
 
 -- CreateIndex
