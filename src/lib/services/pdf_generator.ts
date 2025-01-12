@@ -372,7 +372,7 @@ export const generatePDF = async (
 	await drawImageRow(imagenesGroup2);
 
 	const clienteTexts = [
-		'SEÑOR(A): ' + presupuesto.Cliente?.nombre,
+		'SEÑOR(A): ' + presupuesto.nombre_cliente,
 		'A CONTINUACIÓN ENTREGAMOS PROPUESTA PARA SU PROYECTO:'
 	];
 	drawLeftText(clienteTexts);

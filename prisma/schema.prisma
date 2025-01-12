@@ -50,6 +50,7 @@ model Presupuesto {
   id_usuario        Int
   fecha             DateTime
   rut_cliente       String
+  nombre_cliente    String
   valor_despacho    Int
   valor_instalacion Int
   texto_libre       String

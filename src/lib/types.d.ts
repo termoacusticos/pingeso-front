@@ -11,6 +11,7 @@ import type {
 } from '@prisma/client';
 
 type ConstantData = {
+	imagenes:ImageGroup[];
 	materiales: Material[];
 	colores: Color[];
 	cristales: Cristal[];
@@ -57,6 +58,7 @@ type PresupuestoModel = {
 	valor_instalacion: number;
 	texto_libre: string;
 	Cliente: Cliente;
+	nombre_cliente: string;
 	Opciones: OpcionModel[];
 	ganancia_global: number;
 };

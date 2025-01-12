@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import DatosCotizacion from '$lib/components/DatosCotizacion.svelte';
 	import OpcionVentanas from '$lib/components/OpcionVentanas.svelte';
 	import { generatePDF } from '$lib/services/pdf_generator';
@@ -27,7 +26,6 @@
 		VentanaUI
 	} from '$lib/types';
 	import type { Color, Cristal, Material, Tipo } from '@prisma/client';
-	import { get } from 'svelte/store';
 
 	const { data }: { data: ConstantData } = $props();
 	const constantData = data; // horrible pero necesito usar data dentro de un fetch
@@ -35,12 +33,7 @@
 	let successModal = $state(false);
 	let errorModal = $state(false);
 
-	// Reemplazar después por cte de la db
-	let header = {
-		logos: ['/ejemplo.png'],
-		h2: ['/favicon.png', '/barras.png']
-	};
-
+	let imagenes = data.imagenes;
 	let materiales: Material[] = data.materiales;
 	let colores: Color[] = data.colores;
 	let tipos: Tipo[] = data.tipos;
@@ -215,6 +208,7 @@
 				valor_despacho: datosAdicionales.costo_despacho ?? 0,
 				valor_instalacion: datosAdicionales.costo_instalacion ?? 0,
 				texto_libre: texto_libre,
+				nombre_cliente: cliente.nombre,
 				Cliente: {
 					nombre: cliente.nombre,
 					rut_cliente: cliente.rut_cliente,
@@ -241,7 +235,7 @@
 				.then(async (data) => {
 					presupuesto.set(cotizacion);
 					successModal = true;
-					const urlLocal = await generatePDF(cotizacion, header, constantData);
+					const urlLocal = await generatePDF(cotizacion, imagenes, constantData);
 					url.set(urlLocal);
 					console.log('Respuesta del servidor:', data);
 				})
