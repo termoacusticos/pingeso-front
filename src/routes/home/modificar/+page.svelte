@@ -415,7 +415,7 @@
 			});
 	}
 
-	function editQuincalleria(){
+	function editQuincalleria() {
 		let bodyReq = {
 			id: quincalleriaSelected.id_quincalleria,
 			quincalleriaData: quincalleriaSelected
@@ -471,6 +471,7 @@
 		}).then((response) => {
 			return response.json();
 		});
+		console.log(imagenNueva);
 		imagenNueva.bytes = '';
 		imagenes = await fetch('/api/imagenes', {
 			method: 'GET'
@@ -1200,7 +1201,11 @@
 			</thead>
 			<tbody class="w-full">
 				{#each quincallerias as quincalleria}
-					<tr onclick={() => {openEditQuincalleriaModal(quincalleria)}} class=" hover:bg-gray-100">
+					<tr
+						onclick={() => {
+							openEditQuincalleriaModal(quincalleria);
+						}}
+						class=" hover:bg-gray-100">
 						<td class="py-2 px-4 text-left">{quincalleria.id_quincalleria}</td>
 						<td class="py-2 px-4 text-left">{quincalleria.desc_quin}</td>
 						<td class="py-2 px-4 text-left">{quincalleria.formula_quin}</td>
