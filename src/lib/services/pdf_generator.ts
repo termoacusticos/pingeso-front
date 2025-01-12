@@ -1,4 +1,4 @@
-import type { ConstantData, OpcionModel, PresupuestoModel } from '$lib/types';
+import type { ConstantData, ImageGroup, OpcionModel, PresupuestoModel } from '$lib/types';
 import type { Color, Cristal, Material, Tipo } from '@prisma/client';
 import {
 	PDFDocument,
@@ -52,7 +52,7 @@ const headersTabla = [
 	'PRECIO U',
 	'TOTAL'
 ];
-let columnWidths = [25, 75, -10, 0, -20, -20, -30, -15, 0].map((element, idx, arr) => {
+let columnWidths = [25, 75, -10, 0, -20, -20, -30, -15, 0].map((element, _, arr) => {
 	return element + 530 / arr.length;
 });
 const rowHeight = 13; // Altura de cada fila
@@ -60,31 +60,31 @@ const rowGap = 9;
 const footerText = ['TRANSPORTE', 'INSTALACIÓN', 'TOTAL IVA INCLUIDO'];
 
 //#region funciones
-async function embedImg(pdfDoc: PDFDocument, url: string) {
-	const image = await fetch(url).then((res) => res.arrayBuffer());
-	const embeded = await pdfDoc.embedPng(image); // Usa embedJpg si es JPG
-	return embeded;
-}
+async function drawImageRow(group: ImageGroup | undefined) {
+	if (group == undefined) return;
 
-async function drawImageRow(images: string[], imageAreaHeight: number) {
-	if (currentY - imageAreaHeight - verticalGap < 0) {
+	let images = group.imagenes;
+	let imgHeight = images[0].height;
+	if (images.length == 0) return;
+
+	if (currentY - -verticalGap < 0) {
 		page = pdfDoc.addPage(PageSizes.A4);
 		currentY = height - marginTop;
 	}
 
 	// Agregar imágenes programáticamente
-	const imageYPosition = currentY - imageAreaHeight; // Posición vertical del área para imágenes
+	const imageYPosition = currentY - imgHeight; // Posición vertical del área para imágenes
 	const imageWidth = (width - marginLeft * 2) / images.length - 10; // Espacio horizontal dividido entre imágenes
 	const imageXStart = marginLeft; // Margen inicial a la izquierda
 
 	for (let i = 0; i < images.length; i++) {
-		const url = images[i];
-		const embeddedImage = await embedImg(pdfDoc, url);
-		const scaledImage = embeddedImage.scaleToFit(imageWidth, imageAreaHeight);
+		const bytes = images[i].bytes;
+		const embeddedImage = await pdfDoc.embedPng(bytes);
+		const scaledImage = embeddedImage.scaleToFit(imageWidth, imgHeight);
 
 		const xOffset = imageXStart + i * (imageWidth + 10); // Espacio entre imágenes
 		const xCenterOffset = (imageWidth - scaledImage.width) / 2; // Centrado horizontal
-		const yCenterOffset = (imageAreaHeight - scaledImage.height) / 2; // Centrado vertical
+		const yCenterOffset = (imgHeight - scaledImage.height) / 2; // Centrado vertical
 		page.drawImage(embeddedImage, {
 			x: xOffset + xCenterOffset,
 			y: imageYPosition + yCenterOffset,
@@ -140,12 +140,7 @@ function drawOptionHeaderRow(
 }
 
 //#region tabla
-function drawTable(
-	opcion: OpcionModel,
-	valor_despacho: number,
-	valor_instalacion: number,
-	marginFooter: number
-) {
+function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacion: number) {
 	const tableFontSize = fontSize - 1;
 
 	currentX = marginLeft;
@@ -190,7 +185,7 @@ function drawTable(
 
 	//#region ventanas
 	// Dibujar filas de datos desde las opciones
-	opcion.Ventanas.forEach((ventana, index) => {
+	opcion.Ventanas.forEach((ventana) => {
 		currentX = marginLeft;
 
 		// Dibujar bordes de las filas
@@ -315,7 +310,7 @@ function drawTable(
 // Función para generar el PDF iterando sobre los elementos.
 export const generatePDF = async (
 	presupuesto: PresupuestoModel,
-	header: { logos: string[]; h2: string[] },
+	imagenes: ImageGroup[],
 	constantes: ConstantData
 ) => {
 	colores = constantes.colores;
@@ -323,7 +318,7 @@ export const generatePDF = async (
 	materiales = constantes.materiales;
 	tipos = constantes.tipos;
 	pdfDoc = await PDFDocument.create();
-
+	console.log(imagenes);
 	font = await pdfDoc.embedFont(StandardFonts.Helvetica);
 	boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
@@ -335,37 +330,8 @@ export const generatePDF = async (
 	currentX = marginLeft;
 
 	//#region header
-	const logo = await embedImg(pdfDoc, '/logo_negro.png');
-	const logoSize = logo.scale(0.5);
-	page.drawImage(logo, {
-		x: marginLeft,
-		y: currentY - logoSize.height,
-		width: logoSize.width,
-		height: logoSize.height
-	});
-	currentX += logoSize.width + 40;
-
-	const expertos = await embedImg(pdfDoc, '/elige_expertos.png');
-	const expertosSize = expertos.scale(0.5);
-	page.drawImage(expertos, {
-		x: currentX,
-		y: currentY - expertosSize.height,
-		width: expertosSize.width,
-		height: expertosSize.height
-	});
-	currentX += expertosSize.width + 40;
-
-	const barras = await embedImg(pdfDoc, '/barras.png');
-	const barrasSize = barras.scale(0.65);
-	page.drawImage(barras, {
-		x: currentX,
-		y: currentY - barrasSize.height,
-		width: barrasSize.width,
-		height: barrasSize.height
-	});
-	currentX += barrasSize.height;
-	currentY -= logoSize.height + verticalGap;
-
+	let imagenesHeader = imagenes.find((value) => value.img_group == 1);
+	await drawImageRow(imagenesHeader);
 	//#region textos
 	// Izquierda
 	const leftTexts = [
@@ -402,7 +368,8 @@ export const generatePDF = async (
 	drawLeftText(leftTexts, { linkOn3rd: true });
 
 	//#region imagenes1
-	await drawImageRow(header.logos, 100);
+	let imagenesGroup2 = imagenes.find((value) => value.img_group == 2);
+	await drawImageRow(imagenesGroup2);
 
 	const clienteTexts = [
 		'SEÑOR(A): ' + presupuesto.Cliente?.nombre,
@@ -451,11 +418,12 @@ export const generatePDF = async (
 
 		currentY += verticalGap / 2;
 
-		drawTable(opcion, presupuesto.valor_despacho, presupuesto.valor_instalacion, 150);
+		drawTable(opcion, presupuesto.valor_despacho, presupuesto.valor_instalacion);
 		currentY -= verticalGap;
 	}
 
-	await drawImageRow(header.logos, 80);
+	let imagenesGroup3 = imagenes.find((value) => value.img_group == 3);
+	await drawImageRow(imagenesGroup3);
 
 	const multiText = layoutMultilineText(presupuesto.texto_libre, {
 		alignment: TextAlignment.Left,

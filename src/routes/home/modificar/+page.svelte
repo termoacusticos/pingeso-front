@@ -92,7 +92,7 @@
 	let cristales: Cristal[] = $state(data.cristales);
 	let colores: Color[] = $state(data.colores);
 	let imagenes: ImageGroup[] = $state(data.imagenes);
-	let imagenNueva: Imagen = $state({ bytes: '', id_imagen: 0, img_group: 1 });
+	let imagenNueva: Imagen = $state({ bytes: '', id_imagen: 0, img_group: 1, height: 0 });
 	let perfiles: Perfil[] = $state(data.perfiles);
 	let quincallerias: Quincalleria[] = $state(data.quincallerias);
 
@@ -415,6 +415,8 @@
 
 	async function handleImagePost(img_group: number) {
 		imagenNueva.img_group = img_group;
+		// CAMBIAR POR INPUT
+		imagenNueva.height = 80;
 		console.log(imagenNueva);
 
 		await fetch('/api/imagenes', {

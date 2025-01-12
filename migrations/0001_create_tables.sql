@@ -137,13 +137,16 @@ CREATE TABLE "Color" (
 CREATE TABLE "Imagen" (
     "id_imagen" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "bytes" TEXT NOT NULL,
+    "height" INTEGER NOT NULL,
     "img_group" INTEGER NOT NULL
 );
 
 -- CreateTable
 CREATE TABLE "constantes" (
     "id_constantes" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "total_img_groups" INTEGER NOT NULL
+    "height_group1" INTEGER NOT NULL,
+    "height_group2" INTEGER NOT NULL,
+    "height_group3" INTEGER NOT NULL
 );
 
 -- CreateIndex

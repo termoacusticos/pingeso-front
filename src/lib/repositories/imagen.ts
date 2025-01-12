@@ -11,6 +11,13 @@ export const saveImagenes = async (img: Imagen) => {
 		.catch((error) => err(error));
 };
 
+export const updateImagenes = async (img_group: number, new_height: number) => {
+	return await prisma.imagen.updateMany({
+		where: { img_group: img_group },
+		data: { height: new_height }
+	});
+};
+
 export const getImagenes = async () => {
 	return await prisma.imagen
 		.findMany()

@@ -169,10 +169,10 @@ model Color {
 model Imagen {
   id_imagen Int    @id @default(autoincrement())
   bytes     String
+  height    Int
   img_group Int
 }
 
 model constantes {
   id_constantes    Int @id @default(autoincrement())
-  total_img_groups Int
 }

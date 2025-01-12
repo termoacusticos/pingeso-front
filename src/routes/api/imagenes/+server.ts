@@ -1,7 +1,12 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { getDB, validateJWT } from '$lib';
-import { deleteImagenes, getImagenes, saveImagenes } from '$lib/repositories/imagen';
+import {
+	deleteImagenes,
+	getImagenes,
+	saveImagenes,
+	updateImagenes
+} from '$lib/repositories/imagen';
 import type { Imagen } from '@prisma/client';
 import type { ImageGroup } from '$lib/types';
 
@@ -27,7 +32,7 @@ export const GET: RequestHandler = async ({ platform, cookies }) => {
 
 			// Si no existe, lo crea y lo añade al acumulador
 			if (!group) {
-				group = { img_group: image.img_group, imagenes: [] };
+				group = { img_group: image.img_group, imagenes: [], height: 0 };
 				acc.push(group);
 			}
 
@@ -37,9 +42,9 @@ export const GET: RequestHandler = async ({ platform, cookies }) => {
 			return acc;
 		},
 		[
-			{ img_group: 1, imagenes: [] },
-			{ img_group: 2, imagenes: [] },
-			{ img_group: 3, imagenes: [] }
+			{ img_group: 1, imagenes: [], height: 0 },
+			{ img_group: 2, imagenes: [], height: 0 },
+			{ img_group: 3, imagenes: [], height: 0 }
 		] as ImageGroup[]
 	);
 
@@ -58,6 +63,9 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	const imagen: Imagen = await request.json<Imagen>();
 
 	const result = await saveImagenes(imagen);
+
+	// Todas las imagenes se cambian de tamaño al de la última
+	await updateImagenes(imagen.img_group, imagen.height);
 
 	if (result.isErr()) {
 		return json({ error: 'Error al crear imagenes.' }, { status: 500 });

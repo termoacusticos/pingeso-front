@@ -13,12 +13,7 @@
 	const constantData = data; // horrible pero necesito usar data dentro de un fetch
 
 	// Reemplazar después por cte de la db
-	let header = {
-		logos: ['/ejemplo.png'],
-		h2: ['/favicon.png', '/barras.png']
-	};
-
-	// Parámetros de paginación
+	let images = data.imagenes; // Parámetros de paginación
 	let pageSize = 15; // Número de cotizaciones por página
 	let currentPage = $state(1); // Página actual (comienza en 1)
 
@@ -229,7 +224,7 @@
 								aria-label="pdf"
 								onclick={async () => {
 									presupuesto.set(cotizacion);
-									const urlLocal = await generatePDF(cotizacion, header, constantData);
+									const urlLocal = await generatePDF(cotizacion, images, constantData);
 									url.set(urlLocal);
 									window.open(get(url));
 								}}>

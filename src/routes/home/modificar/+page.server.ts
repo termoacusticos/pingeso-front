@@ -1,6 +1,6 @@
 import type { ConstantData, ImageGroup } from '$lib/types';
 import type { PageServerLoad } from './$types';
-import { inspect } from 'node:util';
+
 export const load: PageServerLoad = async ({ fetch, locals }) => {
 	const constantes: ConstantData = await fetch('/api/constantes', {
 		method: 'GET'
