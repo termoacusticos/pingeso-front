@@ -52,7 +52,7 @@ export const PUT: RequestHandler = async ({ request, platform, cookies }) => {
 	const validationResult = await validateJWT(token);
 	if (validationResult.isErr()) return json({ error: 'Token inválido.' }, { status: 401 });
 
-	const { id, perfilData }: { id: number; perfilData: Perfil } = await request.json();
+	const { id, perfilData } = await request.json<{ id: number; perfilData: Perfil }>();
 
 	const result = await updatePerfil(id, perfilData);
 
@@ -60,7 +60,7 @@ export const PUT: RequestHandler = async ({ request, platform, cookies }) => {
 		return json({ error: 'Error al actualizar el perfil.' }, { status: 500 });
 	}
 
-	return json(result.value);
+	return json({ message: 'Perfil actualizado correctamente.' });
 };
 
 // DELETE - Eliminar perfil

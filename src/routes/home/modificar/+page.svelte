@@ -36,6 +36,7 @@
 	let addCristalModal = $state(false);
 	let editColorModal = $state(false);
 	let addColorModal = $state(false);
+	let editQuincalleriaModal = $state(false);
 
 	let materialSelected: Material = $state({
 		id_material: 0,
@@ -85,6 +86,13 @@
 		formula_cant: '',
 		kg_ml_per: -1,
 		valor: -1
+	});
+
+	let quincalleriaSelected: Quincalleria = $state({
+		id_quincalleria: -1,
+		desc_quin: '',
+		formula_quin: '',
+		precio_quin: -1
 	});
 
 	let materiales: Material[] = $state(data.materiales);
@@ -182,6 +190,15 @@
 
 	function closeEditPerfilModal() {
 		editPerfilModal = false;
+	}
+
+	function openEditQuincalleriaModal(quincalleria: Quincalleria) {
+		editQuincalleriaModal = true;
+		quincalleriaSelected = quincalleria;
+	}
+
+	function closeEditQuincalleriaModal() {
+		editQuincalleriaModal = false;
 	}
 
 	function editMaterial() {
@@ -390,6 +407,35 @@
 			})
 			.then(async (data) => {
 				editPerfilModal = false;
+				successModal = true;
+				console.log('Respuesta del servidor:', data);
+			})
+			.catch((error) => {
+				console.error('Error durante la solicitud:', error);
+			});
+	}
+
+	function editQuincalleria(){
+		let bodyReq = {
+			id: quincalleriaSelected.id_quincalleria,
+			quincalleriaData: quincalleriaSelected
+		};
+
+		fetch('/api/quincalleria', {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(bodyReq)
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
+				}
+				return response.json();
+			})
+			.then(async (data) => {
+				editQuincalleriaModal = false;
 				successModal = true;
 				console.log('Respuesta del servidor:', data);
 			})
@@ -1091,7 +1137,7 @@
 								<th class="border w-48">Dimensiones</th>
 								<th class="border w-48">Cantidad</th>
 								<th class="border w-48">Kg/ml</th>
-								<th class="border w-48">Valorl</th>
+								<th class="border w-48">Precio</th>
 							</tr>
 						</thead>
 						<tbody class="w-full">
@@ -1114,16 +1160,16 @@
 								</td>
 								<td class="border">
 									<input
-										type="text"
+										type="number"
 										bind:value={perfilSelected.kg_ml_per}
 										placeholder="Kg/ml"
 										class="w-full" />
 								</td>
 								<td class="border">
 									<input
-										type="text"
+										type="number"
 										bind:value={perfilSelected.valor}
-										placeholder="Valor"
+										placeholder="Precio"
 										class="w-full" />
 								</td>
 							</tr>
@@ -1154,7 +1200,7 @@
 			</thead>
 			<tbody class="w-full">
 				{#each quincallerias as quincalleria}
-					<tr onselect={() => {}} class=" hover:bg-gray-100">
+					<tr onclick={() => {openEditQuincalleriaModal(quincalleria)}} class=" hover:bg-gray-100">
 						<td class="py-2 px-4 text-left">{quincalleria.id_quincalleria}</td>
 						<td class="py-2 px-4 text-left">{quincalleria.desc_quin}</td>
 						<td class="py-2 px-4 text-left">{quincalleria.formula_quin}</td>
@@ -1163,5 +1209,68 @@
 				{/each}
 			</tbody>
 		</table>
+	{/if}
+	{#if editQuincalleriaModal}
+		<div class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+			<div class="relative bg-white rounded-lg shadow-xl p-8 w-full max-w-[80%]">
+				<!-- Close button -->
+				<div class="flex justify-end">
+					<button
+						onclick={closeEditQuincalleriaModal}
+						class="text-gray-500 hover:text-gray-800 font-bold text-lg iconify mdi--close size-6"
+						aria-label="X">
+					</button>
+				</div>
+
+				<p class="w-full text-xl text-center font-bold">Modificar Quincallería</p>
+
+				<!-- Table container with horizontal scroll -->
+				<div class="overflow-x-auto mt-4">
+					<table class="table-fixed w-full border-collapse border border-gray-300">
+						<thead class="bg-gray-200 text-gray-700 w-full">
+							<tr>
+								<th class="px-1 py-2 border w-16">ID</th>
+								<th class="border w-48">Descripción</th>
+								<th class="border w-48">Fórmula</th>
+								<th class="border w-48">Precio</th>
+							</tr>
+						</thead>
+						<tbody class="w-full">
+							<tr>
+								<td class="border px-1 py-2">{quincalleriaSelected.id_quincalleria}</td>
+								<td class="border">
+									<input
+										type="text"
+										bind:value={quincalleriaSelected.desc_quin}
+										placeholder="Descripción"
+										class="w-full" />
+								</td>
+								<td class="border">
+									<input
+										type="text"
+										bind:value={quincalleriaSelected.formula_quin}
+										placeholder="Fórmula"
+										class="w-full" />
+								</td>
+								<td class="border">
+									<input
+										type="number"
+										bind:value={quincalleriaSelected.precio_quin}
+										placeholder="Precio"
+										class="w-full" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<!-- Save changes button -->
+				<button
+					onclick={editQuincalleria}
+					class="w-full bg-teal-600 text-white font-bold py-2 px-4 rounded hover:bg-teal-500 mt-4">
+					Guardar cambios
+				</button>
+			</div>
+		</div>
 	{/if}
 </div>

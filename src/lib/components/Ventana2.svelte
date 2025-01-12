@@ -149,11 +149,11 @@
 				if (ganancia !== null) {
 					ventana.ganancia = ganancia;
 				}
-				tipoOptions.update((current) => {
+				/*tipoOptions.update((current) => {
 					const updated = [...current]; // Crear una copia del arreglo actual
 					updated[id] = ventana.tipo;
 					return updated;
-				});
+				});*/
 			}}
 			class="p-2 rounded-md bg-white border w-44 truncate overflow-hidden whitespace-nowrap">
 			<option selected disabled value="">Selecciona un tipo</option>
