@@ -145,7 +145,7 @@
 		// Buscar el id del material, tipo, color y cristal en sus respectivas listas
 		const id_material =
 			materiales.find((m) => m.nombre_material === ventana.material)?.id_material ?? 0;
-		const id_tipo = tipos.find((t) => t.descripcion_tipo === ventana.tipo)?.id_tipo ?? 0;
+		const id_tipo = tipos.find((t) => t.descripcion_tipo === ventana.tipo && t.id_material === id_material)?.id_tipo ?? 0;
 		const id_color = colores.find((c) => c.nombre_color === ventana.color)?.id_color ?? 0;
 		const id_cristal = cristales.find((c) => c.desc_cristal === ventana.cristal)?.id_cristal ?? 0;
 
@@ -171,7 +171,7 @@
 			// Buscar el id del material, tipo, color y cristal en sus respectivas listas
 			const id_material =
 				materiales.find((m) => m.nombre_material === ventana.material)?.id_material ?? 0;
-			const id_tipo = tipos.find((t) => t.descripcion_tipo === ventana.tipo)?.id_tipo ?? 0;
+			const id_tipo = tipos.find((t) => t.descripcion_tipo === ventana.tipo && t.id_material === id_material)?.id_tipo ?? 0;
 			const id_color = colores.find((c) => c.nombre_color === ventana.color)?.id_color ?? 0;
 			const id_cristal = cristales.find((c) => c.desc_cristal === ventana.cristal)?.id_cristal ?? 0;
 

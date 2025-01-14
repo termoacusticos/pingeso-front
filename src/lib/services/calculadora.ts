@@ -10,14 +10,16 @@ export async function calcularCostoVentana(ventana: VentanaModel) {
 		throw new Error('No se encontró el tipo de ventana');
 	}
 
+	console.log(tipo);
+
 	const material = await getMaterialById(tipo.id_material);
 
 	let costoTotal = 0;
 	let costoUnitario = 0;
 
 	if (
-		tipo.Material.id_material === 1 ||
-		tipo.Material.id_material === 3
+		material?.id_material === 1 ||
+		material?.id_material === 3
 	) {
 		const perfiles = await getPerfilesTipo(ventana.id_tipo);
 		const quincallerias = await getQuincalleriasTipo(ventana.id_tipo);
@@ -107,7 +109,7 @@ export async function calcularCostoVentana(ventana: VentanaModel) {
 		const m2 = (anchoCristal / 1000) * (altoCristal / 1000) * cantidadCristal;
 		const costoCristal = m2 * cristal.precio_cristal;
 		costoTotal += costoCristal;
-	} else if (tipo.Material.id_material === 2) {
+	} else if (material?.id_material === 2) {
 		const perfiles = await getPerfilesTipo(ventana.id_tipo);
 		const cristal = await getCristalById(ventana.id_cristal);
 
