@@ -64,8 +64,8 @@ async function drawImageRow(group: ImageGroup | undefined) {
 	if (group == undefined) return;
 
 	let images = group.imagenes;
-	let imgHeight = images[0].height;
 	if (images.length == 0) return;
+	let imgHeight = images[0].height;
 
 	if (currentY - -verticalGap < 0) {
 		page = pdfDoc.addPage(PageSizes.A4);
