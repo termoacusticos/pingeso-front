@@ -14,7 +14,7 @@
 
 	// Reemplazar después por cte de la db
 	let images = data.imagenes; // Parámetros de paginación
-	let pageSize = 15; // Número de cotizaciones por página
+	let pageSize = 12; // Número de cotizaciones por página
 	let currentPage = $state(1); // Página actual (comienza en 1)
 
 	let searchQuery = $state(''); // Estado para almacenar el término de búsqueda
