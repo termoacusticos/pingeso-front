@@ -44,7 +44,7 @@
 </script>
 
 <div class="flex flex-row w-full h-screen gap-4 justify-center bg-teal-700">
-	<img class="w-full object-cover h-screen" src="/termopaneles.png" alt="Termoacústicos logo" />
+	<img class="w-1/2 object-cover h-screen" src="/termopaneles.png" alt="Termoacústicos logo" />
 
 	<div class="flex flex-col w-full h-screen gap-4 my-10 justify-center bg-teal-700 animate-fade-up">
 		<img class=" object-contain h-20" src="/logo_termo.png" alt="Termoacústicos logo" />

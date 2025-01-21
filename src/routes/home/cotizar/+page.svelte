@@ -200,6 +200,10 @@
 	}
 
 	function crearCotizacion() {
+		if (!validarOpciones(opciones)) {
+		alert('Por favor, complete todos los campos requeridos.');
+		return;
+	}
 		try {
 			let opcionesModel: OpcionModel[] = crearOpcionesModel(opciones);
 			let cotizacion: PresupuestoModel = {
@@ -322,6 +326,43 @@
 			}
 		}
 	});
+
+	// svelte-ignore non_reactive_update
+		let formIsValid = false;
+
+	// Reactive statement: each time `opciones` changes, we recalculate
+	$effect(() => {
+		formIsValid = validarOpciones(opciones);
+	});
+
+	// The validation functions
+	function validarVentana(ventana: VentanaUI): boolean {
+		if (!ventana.material || ventana.material.trim() === '') return false;
+		if (!ventana.tipo || ventana.tipo.trim() === '') return false;
+		if (!ventana.cristal || ventana.cristal.trim() === '') return false;
+		if (!ventana.color || ventana.color.trim() === '') return false;
+
+		if (!ventana.cantidad || ventana.cantidad <= 0) return false;
+		if (!ventana.ancho || ventana.ancho <= 0) return false;
+		if (!ventana.alto || ventana.alto <= 0) return false;
+
+		// Adjust logic depending on your requirement for local vs. global ganancia
+		if (ventana.ganancia === undefined || ventana.ganancia <= 0) return false;
+
+		return true;
+	}
+
+	function validarOpciones(opciones: OpcionUI[]): boolean {
+		for (const opcion of opciones) {
+			for (const ventana of opcion.ventanas) {
+				if (!validarVentana(ventana)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 </script>
 
 <div class="flex flex-col bg-gray-100 p-8 gap-5 xl:w-full 2xl:w-[80%] mx-auto">
