@@ -181,7 +181,7 @@
 		<tbody>
 			{#each paginatedCotizaciones as cotizacion}
 				<tr class="border-b border-gray-200 hover:bg-gray-100">
-					<td class="py-3 px-4 truncate">{cotizacion.Cliente?.nombre}</td>
+					<td class="py-3 px-4 truncate">{cotizacion.nombre_cliente}</td>
 					<td class="py-3 px-4">
 						<div class="w-80 truncate overflow-hidden whitespace-nowrap space-x-3">
 							{#each cotizacion.Opciones as opcion, index}
