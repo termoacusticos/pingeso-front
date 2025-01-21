@@ -41,19 +41,9 @@ let currentY: number;
 let verticalGap: number = 11;
 
 // Dimensiones de las columnas
-const headersTabla = [
-	'MATERIAL',
-	'TIPO',
-	'COLOR',
-	'CRISTAL',
-	'ANCHO',
-	'ALTO',
-	'CANT',
-	'PRECIO U',
-	'TOTAL'
-];
-let columnWidths = [25, 75, -10, 0, -20, -20, -30, -15, 0].map((element, _, arr) => {
-	return element + 530 / arr.length;
+const headersTabla = ['TIPO', 'COLOR', 'CRISTAL', 'ANCHO', 'ALTO', 'CANT', 'PRECIO U', 'TOTAL'];
+let columnWidths = [115, 10, 0, -35, -35, -40, -25, -10].map((element, _, arr) => {
+	return element + 550 / arr.length;
 });
 const rowHeight = 13; // Altura de cada fila
 const rowGap = 9;
@@ -125,7 +115,7 @@ function drawOptionHeaderRow(
 	optionMargin: number,
 	fontSize: number
 ) {
-	currentX = marginLeft + optionMargin;
+	// currentX = +optionMargin;
 	for (let index = 0; index < row.length; index++) {
 		const text = row[index];
 		page.drawText(text, {
@@ -160,7 +150,7 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 		const cellX = currentX + 5;
 		const columnWidth = columnWidths[index];
 
-		if (index > 6) {
+		if (index > headersTabla.length - 3) {
 			const textWidth = font.widthOfTextAtSize(header, tableFontSize);
 			page.drawText(header, {
 				x: currentX + columnWidth - textWidth + 10, // Ajuste para alinearlo al borde derecho
@@ -213,7 +203,6 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 		const colorEncontrado = colores.find((c) => c.id_color === ventana.id_color);
 		color = colorEncontrado ? colorEncontrado.nombre_color : 'Color no encontrado';
 		const row = [
-			material,
 			tipo,
 			color,
 			cristal,
@@ -227,9 +216,10 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 		row.forEach((cell, index) => {
 			const cellX = currentX + 5;
 			const columnWidth = columnWidths[index];
+			console.log(index, cellX, columnWidth, cell);
 
 			// Alinear texto a la derecha para "PRECIO U" y "TOTAL"
-			if (index > 6) {
+			if (index > headersTabla.length - 3) {
 				const textWidth = font.widthOfTextAtSize(cell, tableFontSize);
 				page.drawText(cell, {
 					x: currentX + columnWidth - textWidth + 10, // Ajuste para alinearlo al borde derecho
@@ -394,17 +384,24 @@ export const generatePDF = async (
 			currentY = height - marginTop;
 		}
 
+		const currentMat = materiales.find(
+			(elem) => elem.id_material == opcion.Ventanas[0].id_material
+		);
+
+		const optionMargin = boldFont.widthOfTextAtSize('OPCIÓN X  ', fontSize);
 		page.drawText('OPCIÓN ' + (opcionIndex + 1), {
 			x: marginLeft,
 			y: currentY,
 			size: fontSize,
 			font: boldFont
 		});
-		let optionMargin = boldFont.widthOfTextAtSize('OPCIÓN X  ', fontSize);
 
-		const currentMat = materiales.find(
-			(elem) => elem.id_material == opcion.Ventanas[0].id_material
-		);
+		currentX += optionMargin;
+
+		const materialText = currentMat?.nombre_material ?? 'Material no encontrado';
+		const materialSize = boldFont.widthOfTextAtSize(materialText + 'AA', fontSize);
+
+		page.drawText(materialText, { x: currentX, y: currentY, size: fontSize, font: boldFont });
 
 		const upperRow = [
 			'CALIDAD:',
@@ -413,7 +410,8 @@ export const generatePDF = async (
 			currentMat?.texto_termopanel ?? ''
 		];
 
-		currentX = marginLeft + optionMargin;
+		currentX = width - marginLeft - optRowSize * 4;
+
 		drawOptionHeaderRow(upperRow, optRowSize, optColSize, optionMargin, fontSize);
 
 		currentY += verticalGap / 2;
@@ -452,5 +450,6 @@ export const generatePDF = async (
 	const pdfBytes = await pdfDoc.save();
 	const blob = new Blob([pdfBytes], { type: 'application/pdf' });
 	const url = URL.createObjectURL(blob);
+	console.log('done');
 	return url;
 };
