@@ -952,6 +952,7 @@
 			onclick={() => {
 				openAddColorModal();
 			}}
+			aria-label="Agregar Color"
 			class="w-full bg-teal-600 hover:bg-teal-500 transition-all text-white rounded-lg font-bold">
 			Agregar Color</button>
 	{/if}
@@ -1049,37 +1050,66 @@
 	{/if}
 
 	{#if constantSelected == 'Imágenes'}
-		<!-- Renderizar imágenes cargadas -->
-		{#each imagenes as grupo, idx}
-			<h1>Imágenes cabezal {idx + 1}:</h1>
-			<div class="grid grid-rows-2">
-				<div class="grid grid-cols-3 gap-4">
-					{#each grupo.imagenes as img, imgIdx}
-						<div>
-							<button
-								onclick={() => {
-									handleImageDelete(idx, imgIdx);
-								}}>X</button>
-							<img src={img.bytes} alt={`Imagen cabezal ${idx + 1}-${imgIdx}`} />
-						</div>
-					{/each}
+		<div class="space-y-8">
+			{#each imagenes as grupo, idx}
+			<div class="bg-white rounded-lg shadow-md p-6">
+				<div class="flex items-center justify-between mb-4">
+				<h2 class="text-xl font-semibold text-gray-800">Imágenes cabezal {idx + 1}</h2>
 				</div>
-				<div class="flex flex-col items-center gap-2 my-8 border">
-					<h1 class="text-xl font-semibold">Agregar imagen nueva</h1>
+				
+				<!-- Grid de imágenes -->
+				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+				{#each grupo.imagenes as img, imgIdx}
+					<div class="relative group">
+					<div class="aspect-video w-full overflow-hidden rounded-lg bg-gray-100">
+						<img 
+						src={img.bytes} 
+						alt={`Imagen cabezal ${idx + 1}-${imgIdx}`}
+						class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+						/>
+					</div>
+					<button
+						onclick={() => handleImageDelete(idx, imgIdx)}
+						class="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white p-1 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+					>
+						<div class="iconify mdi--delete size-5"></div>
+					</button>
+					</div>
+				{/each}
+				</div>
+
+				<!-- Sección para agregar nueva imagen -->
+				<div class="border border-dashed border-gray-300 rounded-lg p-6 bg-gray-50">
+				<div class="flex flex-col items-center gap-4">
+					<div class="iconify mdi--cloud-upload text-gray-400 size-12"></div>
+					<h3 class="text-lg font-medium text-gray-700">Agregar imagen nueva</h3>
+					<p class="text-sm text-gray-500 text-center">
+					Arrastra y suelta una imagen aquí o haz clic para seleccionar
+					</p>
 					<input
-						type="file"
-						accept="image/*"
-						onchange={async (e) => {
-							await handleImageUpload(e);
-							setTimeout(async () => {
-								await handleImagePost(idx + 1);
-							}, 1000);
-						}}
-						class="border border-gray-300 px-4 py-2 rounded focus:outline-none" />
+					type="file"
+					accept="image/*"
+					onchange={async (e) => {
+						await handleImageUpload(e);
+						setTimeout(async () => {
+						await handleImagePost(idx + 1);
+						}, 1000);
+					}}
+					class="block w-full text-sm text-gray-500
+						file:mr-4 file:py-2 file:px-4
+						file:rounded-full file:border-0
+						file:text-sm file:font-semibold
+						file:bg-teal-50 file:text-teal-700
+						hover:file:bg-teal-100
+						cursor-pointer
+					"
+					/>
+				</div>
 				</div>
 			</div>
-		{/each}
-	{/if}
+			{/each}
+		</div>
+		{/if}
 
 	<!--Tabla perfiles-->
 	{#if constantSelected == 'Perfiles'}
