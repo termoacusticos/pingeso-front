@@ -8,10 +8,11 @@
 		cantidadOptions,
 		gananciaOptions
 	} from '$lib/store';
-	import type { ConstantData, OpcionUI } from '$lib/types';
+	import type { ConstantData, OpcionUI, VentanaModel, VentanaUI } from '$lib/types';
 	import type { Color, Cristal, Material, Tipo } from '@prisma/client';
 
 	interface Props {
+		convertirVentana: (ventana: VentanaUI) => VentanaModel;
 		data: ConstantData;
 		opcion: OpcionUI;
 		index: number;
@@ -23,6 +24,7 @@
 	}
 
 	let {
+		convertirVentana,
 		data,
 		opcion = $bindable(),
 		index,
@@ -140,6 +142,7 @@
 			<tbody>
 				{#each opcion.ventanas as ventana, id}
 					<Ventana2
+						{convertirVentana}
 						{data}
 						bind:ventana={opcion.ventanas[id]}
 						{id}

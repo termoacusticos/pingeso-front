@@ -216,7 +216,6 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 		row.forEach((cell, index) => {
 			const cellX = currentX + 5;
 			const columnWidth = columnWidths[index];
-			console.log(index, cellX, columnWidth, cell);
 
 			// Alinear texto a la derecha para "PRECIO U" y "TOTAL"
 			if (index > headersTabla.length - 3) {
@@ -387,6 +386,8 @@ export const generatePDF = async (
 		const currentMat = materiales.find(
 			(elem) => elem.id_material == opcion.Ventanas[0].id_material
 		);
+
+		currentX = marginLeft;
 
 		const optionMargin = boldFont.widthOfTextAtSize('OPCIÓN X  ', fontSize);
 		page.drawText('OPCIÓN ' + (opcionIndex + 1), {

@@ -9,10 +9,11 @@
 		cristalOptions,
 		gananciaOptions
 	} from '$lib/store';
-	import type { ConstantData, VentanaUI } from '$lib/types';
+	import type { ConstantData, VentanaModel, VentanaUI } from '$lib/types';
 	import type { Cristal, Tipo } from '@prisma/client';
 
 	interface Props {
+		convertirVentana: (ventana: VentanaUI) => VentanaModel;
 		data: ConstantData;
 		ventana: VentanaUI;
 		ganancia_global: number;
@@ -23,6 +24,7 @@
 	}
 
 	let {
+		convertirVentana,
 		data,
 		ventana = $bindable(),
 		id,
@@ -121,13 +123,32 @@
 		}).format(truncado);
 	}
 
+	async function handleCalcularCosto(ventana: VentanaUI) {
+		const response = await fetch('/api/calculadora', {
+			method: 'POST',
+			body: JSON.stringify(convertirVentana(ventana))
+		});
+		const data: {
+			resultado: {
+				costoTotal: number;
+				costoUnitario: number;
+			};
+		} = await response.json();
+		console.log(data);
+
+		ventana.precio_unitario = data.resultado.costoUnitario;
+		ventana.precio_total = data.resultado.costoTotal;
+	}
 	/*function calculateTotal() {
 		ventana.precio_total = ventana.cantidad * ventana.precio_unitario;
 	}
+	*/
 
 	$effect(() => {
-		ventana.precio_total = ventana.cantidad * ventana.precio_unitario;
-	});*/
+		if (ventana.alto !== undefined && ventana.ancho !== undefined) {
+			handleCalcularCosto(ventana);
+		}
+	});
 </script>
 
 <tr class=" border-b">
