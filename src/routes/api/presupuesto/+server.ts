@@ -50,7 +50,7 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	return json({ message: 'Presupuesto guardado correctamente', presupuesto: saveResult.value });
 };
 
-export const DELETE: RequestHandler = async ({ request, platform, cookies }) => {
+export const DELETE: RequestHandler = async ({ platform, cookies }) => {
 	const connResult = getDB(platform);
 	if (connResult.isErr()) {
 		return json({ error: connResult.error }, { status: 400 });

@@ -64,6 +64,7 @@
 		desc_cristal: '',
 		precio_cristal: 0
 	});
+
 	let newCristal: Cristal = $state({
 		id_cristal: -1,
 		desc_cristal: '',
@@ -74,6 +75,7 @@
 		id_color: 0,
 		nombre_color: ''
 	});
+
 	let newColor: Color = $state({
 		id_color: -1,
 		nombre_color: ''
@@ -459,10 +461,10 @@
 		}
 	};
 
-	async function handleImagePost(img_group: number) {
+	async function handleImagePost(img_group: number, height: number) {
 		imagenNueva.img_group = img_group;
 		// CAMBIAR POR INPUT
-		imagenNueva.height = 80;
+		imagenNueva.height = height;
 		console.log(imagenNueva);
 
 		await fetch('/api/imagenes', {
@@ -1052,64 +1054,62 @@
 	{#if constantSelected == 'Imágenes'}
 		<div class="space-y-8">
 			{#each imagenes as grupo, idx}
-			<div class="bg-white rounded-lg shadow-md p-6">
-				<div class="flex items-center justify-between mb-4">
-				<h2 class="text-xl font-semibold text-gray-800">Imágenes cabezal {idx + 1}</h2>
-				</div>
-				
-				<!-- Grid de imágenes -->
-				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-				{#each grupo.imagenes as img, imgIdx}
-					<div class="relative group">
-					<div class="aspect-video w-full overflow-hidden rounded-lg bg-gray-100">
-						<img 
-						src={img.bytes} 
-						alt={`Imagen cabezal ${idx + 1}-${imgIdx}`}
-						class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-						/>
+				<div class="bg-white rounded-lg shadow-md p-6">
+					<div class="flex items-center justify-between mb-4">
+						<h2 class="text-xl font-semibold text-gray-800">Imágenes cabezal {idx + 1}</h2>
 					</div>
-					<button
-						onclick={() => handleImageDelete(idx, imgIdx)}
-						class="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white p-1 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-					>
-						<div class="iconify mdi--delete size-5"></div>
-					</button>
-					</div>
-				{/each}
-				</div>
 
-				<!-- Sección para agregar nueva imagen -->
-				<div class="border border-dashed border-gray-300 rounded-lg p-6 bg-gray-50">
-				<div class="flex flex-col items-center gap-4">
-					<div class="iconify mdi--cloud-upload text-gray-400 size-12"></div>
-					<h3 class="text-lg font-medium text-gray-700">Agregar imagen nueva</h3>
-					<p class="text-sm text-gray-500 text-center">
-					Arrastra y suelta una imagen aquí o haz clic para seleccionar
-					</p>
-					<input
-					type="file"
-					accept="image/*"
-					onchange={async (e) => {
-						await handleImageUpload(e);
-						setTimeout(async () => {
-						await handleImagePost(idx + 1);
-						}, 1000);
-					}}
-					class="block w-full text-sm text-gray-500
+					<!-- Grid de imágenes -->
+					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+						{#each grupo.imagenes as img, imgIdx}
+							<div class="relative group">
+								<div class="aspect-video w-full overflow-hidden rounded-lg bg-gray-100">
+									<img
+										src={img.bytes}
+										alt={`Imagen cabezal ${idx + 1}-${imgIdx}`}
+										class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+								</div>
+								<button
+									aria-label="eliminar imagen"
+									onclick={() => handleImageDelete(idx, imgIdx)}
+									class="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white p-1 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+									<div class="iconify mdi--delete size-5"></div>
+								</button>
+							</div>
+						{/each}
+					</div>
+
+					<!-- Sección para agregar nueva imagen -->
+					<div class="border border-dashed border-gray-300 rounded-lg p-6 bg-gray-50">
+						<div class="flex flex-col items-center gap-4">
+							<div class="iconify mdi--cloud-upload text-gray-400 size-12"></div>
+							<h3 class="text-lg font-medium text-gray-700">Agregar imagen nueva</h3>
+							<p class="text-sm text-gray-500 text-center">
+								Arrastra y suelta una imagen aquí o haz clic para seleccionar
+							</p>
+							<input
+								type="file"
+								accept="image/*"
+								onchange={async (e) => {
+									await handleImageUpload(e);
+									setTimeout(async () => {
+										await handleImagePost(idx + 1, 80);
+									}, 1000);
+								}}
+								class="block w-full text-sm text-gray-500
 						file:mr-4 file:py-2 file:px-4
 						file:rounded-full file:border-0
 						file:text-sm file:font-semibold
 						file:bg-teal-50 file:text-teal-700
 						hover:file:bg-teal-100
 						cursor-pointer
-					"
-					/>
+					" />
+						</div>
+					</div>
 				</div>
-				</div>
-			</div>
 			{/each}
 		</div>
-		{/if}
+	{/if}
 
 	<!--Tabla perfiles-->
 	{#if constantSelected == 'Perfiles'}

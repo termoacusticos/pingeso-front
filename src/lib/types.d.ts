@@ -11,7 +11,7 @@ import type {
 } from '@prisma/client';
 
 type ConstantData = {
-	imagenes:ImageGroup[];
+	imagenes: ImageGroup[];
 	materiales: Material[];
 	colores: Color[];
 	cristales: Cristal[];
@@ -61,6 +61,7 @@ type PresupuestoModel = {
 	nombre_cliente: string;
 	Opciones: OpcionModel[];
 	ganancia_global: number;
+	estado: string;
 };
 
 type DatosAdicionales = {
@@ -115,4 +116,5 @@ type JWTBody = {
 type ImageGroup = {
 	img_group: number;
 	imagenes: Imagen[];
+	height: number;
 };

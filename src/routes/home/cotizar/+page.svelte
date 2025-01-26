@@ -145,7 +145,9 @@
 		// Buscar el id del material, tipo, color y cristal en sus respectivas listas
 		const id_material =
 			materiales.find((m) => m.nombre_material === ventana.material)?.id_material ?? 0;
-		const id_tipo = tipos.find((t) => t.descripcion_tipo === ventana.tipo && t.id_material === id_material)?.id_tipo ?? 0;
+		const id_tipo =
+			tipos.find((t) => t.descripcion_tipo === ventana.tipo && t.id_material === id_material)
+				?.id_tipo ?? 0;
 		const id_color = colores.find((c) => c.nombre_color === ventana.color)?.id_color ?? 0;
 		const id_cristal = cristales.find((c) => c.desc_cristal === ventana.cristal)?.id_cristal ?? 0;
 
@@ -171,7 +173,9 @@
 			// Buscar el id del material, tipo, color y cristal en sus respectivas listas
 			const id_material =
 				materiales.find((m) => m.nombre_material === ventana.material)?.id_material ?? 0;
-			const id_tipo = tipos.find((t) => t.descripcion_tipo === ventana.tipo && t.id_material === id_material)?.id_tipo ?? 0;
+			const id_tipo =
+				tipos.find((t) => t.descripcion_tipo === ventana.tipo && t.id_material === id_material)
+					?.id_tipo ?? 0;
 			const id_color = colores.find((c) => c.nombre_color === ventana.color)?.id_color ?? 0;
 			const id_cristal = cristales.find((c) => c.desc_cristal === ventana.cristal)?.id_cristal ?? 0;
 
@@ -201,9 +205,9 @@
 
 	function crearCotizacion() {
 		if (!validarOpciones(opciones)) {
-		alert('Por favor, complete todos los campos requeridos.');
-		return;
-	}
+			alert('Por favor, complete todos los campos requeridos.');
+			return;
+		}
 		try {
 			let opcionesModel: OpcionModel[] = crearOpcionesModel(opciones);
 			let cotizacion: PresupuestoModel = {
@@ -213,6 +217,7 @@
 				valor_instalacion: datosAdicionales.costo_instalacion ?? 0,
 				texto_libre: texto_libre,
 				nombre_cliente: cliente.nombre,
+				estado: 'Creado',
 				Cliente: {
 					nombre: cliente.nombre,
 					rut_cliente: cliente.rut_cliente,
@@ -316,8 +321,8 @@
 			0
 		);
 	}
-
-	$effect(() => {
+	/*
+	$effect (() => {
 		for (const opcion of opciones) {
 			for (const ventana of opcion.ventanas) {
 				if (ventana.alto !== undefined && ventana.ancho !== undefined) {
@@ -325,10 +330,10 @@
 				}
 			}
 		}
-	});
+	}); */
 
 	// svelte-ignore non_reactive_update
-		let formIsValid = false;
+	let formIsValid = false;
 
 	// Reactive statement: each time `opciones` changes, we recalculate
 	$effect(() => {
@@ -362,7 +367,6 @@
 		}
 		return true;
 	}
-
 </script>
 
 <div class="flex flex-col bg-gray-100 p-8 gap-5 xl:w-full 2xl:w-[80%] mx-auto">
@@ -384,6 +388,7 @@
 	<div class="space-y-6 w-full">
 		{#each opciones as opcion, opcionIndex}
 			<OpcionVentanas
+				{convertirVentana}
 				{data}
 				agregarVentana={() => {
 					for (const opc of opciones) {
