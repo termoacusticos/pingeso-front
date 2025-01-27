@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount, onDestroy } from 'svelte';
+
 	interface Props {
 		itemSelected: string;
 		columna: string;
@@ -15,6 +17,8 @@
 		onSelectItem
 	}: Props = $props();
 
+	let dropdownElement: HTMLElement | null = null;
+
 	function toggleDropdown() {
 		showDropdown = !showDropdown;
 	}
@@ -23,9 +27,25 @@
 		itemSelected = item;
 		showDropdown = !showDropdown;
 	}
+
+	function handleClickOutside(event: MouseEvent) {
+		if (dropdownElement && !dropdownElement.contains(event.target as Node)) {
+			showDropdown = false; // Cierra el dropdown si el clic está fuera del componente
+		}
+	}
+
+	// Agrega y elimina el evento de clic global
+	onMount(() => {
+		document.addEventListener('click', handleClickOutside);
+	});
+
+	onDestroy(() => {
+		document.removeEventListener('click', handleClickOutside);
+	});
 </script>
 
-<div class="relative h-fit my-auto flex flex-row sm:mx-0 bg-inherit rounded-lg z-20 w-full">
+<div class="relative h-fit my-auto flex flex-row sm:mx-0 bg-inherit rounded-lg z-20 w-full"
+		bind:this={dropdownElement}>
 	<button
 		class="flex flex-row h-fit my-auto items-center transition-all text-base hover:bg-opacity-45 bg-white bg-opacity-25 rounded-lg px-2 py-1"
 		onclick={toggleDropdown}>
