@@ -41,7 +41,7 @@ CREATE TABLE "Presupuesto" (
     "valor_despacho" INTEGER NOT NULL,
     "valor_instalacion" INTEGER NOT NULL,
     "texto_libre" TEXT NOT NULL,
-    "ganancia_global" INTEGER NOT NULL,
+i   "ganancia_global" INTEGER NOT NULL,
     CONSTRAINT "Presupuesto_id_usuario_fkey" FOREIGN KEY ("id_usuario") REFERENCES "Usuario" ("id_usuario") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Presupuesto_rut_cliente_fkey" FOREIGN KEY ("rut_cliente") REFERENCES "Cliente" ("rut_cliente") ON DELETE RESTRICT ON UPDATE CASCADE
 );

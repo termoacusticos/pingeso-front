@@ -388,7 +388,7 @@
 	<div class="space-y-6 w-full">
 		{#each opciones as opcion, opcionIndex}
 			<OpcionVentanas
-				{convertirVentana}
+				convertirVentana={convertirVentana}
 				{data}
 				agregarVentana={() => {
 					for (const opc of opciones) {
