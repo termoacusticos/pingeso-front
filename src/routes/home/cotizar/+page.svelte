@@ -90,15 +90,55 @@
 	$inspect('colorModal:', colorModal);
 	$inspect('cliente: ', cliente);
 
+	function resetFormValues() {
+		cliente = {
+			nombre: '',
+			rut_cliente: '',
+			direccion: '',
+			email: '',
+			telefono: ''
+		};
+
+		opciones = [
+			{
+				material: '',
+				color: '',
+				ventanas: [
+					{
+						material: '',
+						tipo: '',
+						cantidad: 1,
+						cristal: '',
+						color: '',
+						alto: undefined,
+						ancho: undefined,
+						precio_unitario: 0,
+						precio_total: 0,
+						ganancia: undefined,
+						item: ''
+					}
+				]
+			}
+		];
+
+		datosAdicionales = {
+			costo_despacho: undefined,
+			costo_instalacion: undefined,
+			ganancia_global: undefined
+		};
+	}
+
 	function cerrarSuccessModal() {
+		resetFormValues();
 		resetStores();
-		location.assign('/home/cotizar');
+		successModal = !successModal;
 	}
 
 	function visualizarCotizacion() {
 		window.open($url);
+		resetFormValues();
 		resetStores();
-		location.assign('/home/cotizar');
+		successModal = !successModal;
 	}
 
 	function cerrarErrorModal() {
@@ -119,7 +159,7 @@
 			precio_unitario: 0,
 			precio_total: 0
 		}));
-		console.log(nuevas_ventanas);
+		//console.log(nuevas_ventanas);
 
 		// Crear una nueva opción
 		const nuevaOpcion = {
@@ -203,7 +243,7 @@
 		}));
 	}
 
-	function crearCotizacion() {
+	async function crearCotizacion() {
 		if (!validarOpciones(opciones)) {
 			alert('Por favor, complete todos los campos requeridos.');
 			return;
@@ -228,7 +268,7 @@
 				ganancia_global: datosAdicionales.ganancia_global ?? 0,
 				Opciones: opcionesModel
 			};
-			fetch('/api/presupuesto', {
+			await fetch('/api/presupuesto', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -287,7 +327,7 @@
 				costoUnitario: number;
 			};
 		} = await response.json();
-		console.log(data);
+		//console.log(data);
 
 		ventana.precio_unitario = data.resultado.costoUnitario;
 		ventana.precio_total = data.resultado.costoTotal;
