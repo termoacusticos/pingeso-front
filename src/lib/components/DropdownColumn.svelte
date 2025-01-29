@@ -44,7 +44,8 @@
 	});
 </script>
 
-<div class="relative h-fit my-auto flex flex-row sm:mx-0 bg-inherit rounded-lg z-20 w-full"
+<div
+	class="relative h-fit my-auto flex flex-row sm:mx-0 bg-inherit rounded-lg z-20 w-full"
 	bind:this={dropdownElement}>
 	<button
 		class="flex flex-row h-fit my-auto items-center transition-all text-base hover:bg-opacity-45 bg-white bg-opacity-25 rounded-lg px-2 py-1"

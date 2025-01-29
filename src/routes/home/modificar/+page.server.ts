@@ -6,6 +6,7 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 	if (locals.session == null) {
 		redirect(308, '/');
 	}
+
 	const constantes: ConstantData = await fetch('/api/constantes', {
 		method: 'GET'
 	}).then((response) => {

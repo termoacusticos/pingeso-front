@@ -17,10 +17,7 @@ export async function calcularCostoVentana(ventana: VentanaModel) {
 	let costoTotal = 0;
 	let costoUnitario = 0;
 
-	if (
-		material?.id_material === 1 ||
-		material?.id_material === 3
-	) {
+	if (material?.id_material === 1 || material?.id_material === 3) {
 		const perfiles = await getPerfilesTipo(ventana.id_tipo);
 		const quincallerias = await getQuincalleriasTipo(ventana.id_tipo);
 		const cristal = await getCristalById(ventana.id_cristal);

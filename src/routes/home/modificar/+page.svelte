@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { ImageGroup } from '$lib/types';
+	import { generatePDF } from '$lib/services/pdf_generator';
+	import type { ImageGroup, PresupuestoModel } from '$lib/types';
 	import type {
 		Color,
 		Cristal,
@@ -494,6 +495,50 @@
 		}).then((response) => {
 			return response.json();
 		});
+	}
+
+	async function previewPDF() {
+		const previewPresupuesto: PresupuestoModel = {
+			Cliente: {
+				nombre: 'Cliente de prueba',
+				direccion: '',
+				email: '',
+				rut_cliente: '',
+				telefono: ''
+			},
+			estado: 'prueba',
+			fecha: new Date().toString(),
+			ganancia_global: 0,
+			id_usuario: 0,
+			nombre_cliente: 'Cliente de prueba',
+			Opciones: [
+				{
+					Ventanas: [
+						{
+							alto: 1000,
+							ancho: 1000,
+							cantidad: 1,
+							ganancia: 0,
+							id_color: 1,
+							id_cristal: 1,
+							id_material: 1,
+							id_tipo: 1,
+							item: '',
+							precio_total: 100000,
+							precio_unitario: 100000,
+							id_ventana: 0
+						}
+					],
+					id_opcion: 0
+				}
+			],
+			texto_libre: '',
+			valor_despacho: 10000,
+			valor_instalacion: 10000,
+			id_presupuesto: 0
+		};
+		const url = await generatePDF(previewPresupuesto, imagenes, data);
+		window.open(url);
 	}
 </script>
 
@@ -1053,6 +1098,7 @@
 
 	{#if constantSelected == 'Imágenes'}
 		<div class="space-y-8">
+			<button class="bg-white p-4 shadow-md" onclick={previewPDF}>Previsualizar PDF</button>
 			{#each imagenes as grupo, idx}
 				<div class="bg-white rounded-lg shadow-md p-6">
 					<div class="flex items-center justify-between mb-4">
