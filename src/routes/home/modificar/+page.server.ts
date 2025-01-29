@@ -3,7 +3,7 @@ import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, locals }) => {
-	if (locals.session == null) {
+	if (locals.session == null || !locals.session.is_admin) {
 		redirect(308, '/');
 	}
 

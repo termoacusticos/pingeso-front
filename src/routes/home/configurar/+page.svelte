@@ -35,22 +35,3 @@
 		window.open(url);
 	};
 </script>
-
-<div class="border border-black p-5 py-20 flex flex-col" id="PDF">
-	<button onclick={test}> gen </button>
-	<!-- Contenedor de botones -->
-	<div class="flex flex-col items-center gap-2 my-8">
-		<input
-			type="file"
-			multiple
-			accept="image/*"
-			onchange={handleImageUpload}
-			class="border border-gray-300 px-4 py-2 rounded focus:outline-none" />
-	</div>
-	<!-- Renderizar imágenes cargadas -->
-	<div class="grid grid-cols-3 gap-4">
-		{#each images as img}
-			<img src={img} alt="Cargada" class="w-full h-auto border border-gray-300" />
-		{/each}
-	</div>
-</div>
