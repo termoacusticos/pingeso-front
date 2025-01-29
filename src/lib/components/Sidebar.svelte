@@ -3,6 +3,8 @@
 	import SidebarController from '$lib/components/SidebarController.svelte';
 	import SidebarElement from '$lib/components/SidebarElement.svelte';
 
+	const { is_admin } = $props();
+
 	let isExpanded = $state(true);
 </script>
 
@@ -19,8 +21,14 @@
 	<SidebarElement {isExpanded} href="/home" buttonName="Inicio" icon="mdi--home" />
 	<SidebarElement {isExpanded} href="/home/cotizar" buttonName="Cotizar" icon="mdi--document" />
 	<SidebarElement {isExpanded} href="/home/historial" buttonName="Historial" icon="mdi--history" />
-	<SidebarElement {isExpanded} href="/home/modificar" buttonName="Modificar" icon="mdi--edit" />
-	<SidebarElement {isExpanded} href="/home/configurar" buttonName="Configuración" icon="mdi--cog" />
+	{#if is_admin}
+		<SidebarElement {isExpanded} href="/home/modificar" buttonName="Modificar" icon="mdi--edit" />
+		<SidebarElement
+			{isExpanded}
+			href="/home/configurar"
+			buttonName="Configuración"
+			icon="mdi--cog" />
+	{/if}
 	<SidebarElement
 		{isExpanded}
 		onclick={async () => {
