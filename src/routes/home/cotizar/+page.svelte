@@ -13,7 +13,14 @@
 		precioTotalOptions,
 		url,
 		presupuesto,
-		resetStores
+		resetStores,
+		editFromHistory,
+		materialOptions,
+
+		colorOptions
+
+
+
 	} from '$lib/store';
 	import type {
 		ClienteUI,
@@ -26,6 +33,8 @@
 		VentanaUI
 	} from '$lib/types';
 	import type { Color, Cristal, Material, Tipo } from '@prisma/client';
+	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
 
 	const { data }: { data: ConstantData } = $props();
 	const constantData = data; // horrible pero necesito usar data dentro de un fetch
@@ -41,6 +50,8 @@
 
 	let materialesNombre: string[] = $state(materiales.map((material) => material.nombre_material));
 	let coloresNombre: string[] = $state(colores.map((color) => color.nombre_color));
+
+	let editarPresupuesto = $editFromHistory;
 
 	let mostrarAgregarOpcion = $state(false);
 	let materialModal = $state('');
@@ -89,6 +100,94 @@
 	$inspect('materialModal:', materialModal);
 	$inspect('colorModal:', colorModal);
 	$inspect('cliente: ', cliente);
+
+	onMount(() => {
+		if (editarPresupuesto === 1) {
+			const presupuestoHistorial = $presupuesto;
+			actualizarStoresDesdePresupuesto(presupuestoHistorial);
+			editarPresupuesto = 0;
+			editFromHistory.set(0);
+			console.log(get(editFromHistory));
+		}
+	});
+
+	function actualizarStoresDesdePresupuesto(presupuestoCargado: PresupuestoModel | undefined) {
+		if (!presupuestoCargado || !presupuestoCargado.Opciones.length) return;
+
+		const primeraOpcion = presupuestoCargado.Opciones[0];
+
+		// Extraer las características de la cotización para editarlas
+		const listaMateriales = primeraOpcion.Ventanas.map(ventana => {
+			const material = materiales.find(m => m.id_material === ventana.id_material);
+			return material ? material.nombre_material : "Desconocido"; // Manejar el caso en que no se encuentre el material
+		});
+		const listaTipos = primeraOpcion.Ventanas.map(ventana => {
+			const tipo = tipos.find(t => t.id_tipo === ventana.id_tipo);
+			return tipo ? tipo.descripcion_tipo : "Desconocido"; // Manejar el caso en que no se encuentre el material
+		});
+		const listaColores = primeraOpcion.Ventanas.map(ventana => {
+			const color = colores.find(c => c.id_color === ventana.id_color);
+			return color ? color.nombre_color : "Desconocido"; // Manejar el caso en que no se encuentre el material
+		});
+		const listaCristal = primeraOpcion.Ventanas.map(ventana => {
+			const cristal = cristales.find(c => c.id_cristal === ventana.id_cristal);
+			return cristal ? cristal.desc_cristal : "Desconocido"; // Manejar el caso en que no se encuentre el material
+		});
+		const listaCantidad = primeraOpcion.Ventanas.map(ventana => {
+			return ventana.cantidad; // Manejar el caso en que no se encuentre el material
+		});
+		const listaAlto = primeraOpcion.Ventanas.map(ventana => {
+			return ventana.alto; // Manejar el caso en que no se encuentre el material
+		});
+		const listaAncho = primeraOpcion.Ventanas.map(ventana => {
+			return ventana.ancho; // Manejar el caso en que no se encuentre el material
+		});
+		const listaGanancia = primeraOpcion.Ventanas.map(ventana => {
+			return ventana.ganancia; // Manejar el caso en que no se encuentre el material
+		});
+		const listaPrecioUnitario = primeraOpcion.Ventanas.map(ventana => {
+			return ventana.precio_unitario; // Manejar el caso en que no se encuentre el material
+		});
+		const listaPrecioTotal = primeraOpcion.Ventanas.map(ventana => {
+			return ventana.precio_total; // Manejar el caso en que no se encuentre el material
+		});
+
+		cliente = presupuestoCargado.Cliente;
+		datosAdicionales.costo_despacho = presupuestoCargado.valor_despacho;
+		datosAdicionales.costo_instalacion = presupuestoCargado.valor_instalacion;
+		datosAdicionales.ganancia_global = presupuestoCargado.ganancia_global;
+		opciones = presupuestoCargado.Opciones.map((opcion, indexOpcion) => {
+			return {
+				material: listaMateriales[indexOpcion] || '',
+				color: listaColores[indexOpcion] || '',
+				ventanas: opcion.Ventanas.map((ventana, indexVentana) => ({
+					material: listaMateriales[indexVentana] || '',
+					tipo: listaTipos[indexVentana] || '',
+					cantidad: listaCantidad[indexVentana] || 1,
+					cristal: listaCristal[indexVentana] || '',
+					color: listaColores[indexVentana] || '',
+					alto: listaAlto[indexVentana] ?? 0,
+					ancho: listaAncho[indexVentana] ?? 0,
+					precio_unitario: listaPrecioUnitario[indexVentana] || 0,
+					precio_total: listaPrecioTotal[indexVentana] || 0,
+					ganancia: listaGanancia[indexVentana] ?? 0,
+					item: ''
+				}))
+			};
+		});
+
+		//materialOptions.set(listaMateriales);
+		//colorOptions.set(listaColores);
+		tipoOptions.set(listaTipos);
+		cristalOptions.set(listaCristal);
+		cantidadOptions.set(listaCantidad);
+		altoOptions.set(listaAlto);
+		anchoOptions.set(listaAncho);
+		gananciaOptions.set(listaGanancia);
+		precioUnitarioOptions.set(listaPrecioUnitario);
+		precioTotalOptions.set(listaPrecioTotal);
+
+	}
 
 	function resetFormValues() {
 		cliente = {

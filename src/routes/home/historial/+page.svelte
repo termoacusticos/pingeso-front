@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PresupuestoModel, OpcionModel } from '$lib/types';
-	import { materialOptions, presupuesto, url } from '$lib/store';
+	import { editFromHistory, presupuesto, url } from '$lib/store';
 	import { goto } from '$app/navigation';
 	import { generatePDF } from '$lib/services/pdf_generator';
 	import { get } from 'svelte/store';
@@ -269,6 +269,7 @@
 								class="flex flex-col overflow-hidden text-left"
 								aria-label="Editar"
 								onclick={() => {
+									editFromHistory.set(1);
 									presupuesto.set(cotizacion);
 									goto(`/home/cotizar`);
 								}}>
