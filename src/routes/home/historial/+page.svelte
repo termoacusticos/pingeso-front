@@ -18,7 +18,6 @@
 	let currentPage = $state(1); // Página actual (comienza en 1)
 
 	let searchQuery = $state(''); // Estado para almacenar el término de búsqueda
-	let estadoNuevo = $state('');
 
 	let fechaSortDirection = $state('desc');
 	let rutSortDirection = $state('desc');
@@ -252,8 +251,8 @@
 							</div>
 						</td>
 						<td class="py-3 px-4">
-							<select class="px-2 py-1 rounded" name="" id="" bind:value={estadoNuevo}
-							onchange={() => actualizarCotizacion(cotizacion.id_presupuesto??-1, estadoNuevo)}>
+							<select class="px-2 py-1 rounded" name="" id="" bind:value={cotizacion.estado}
+							onchange={() => actualizarCotizacion(cotizacion.id_presupuesto??-1, cotizacion.estado)}>
 								<option selected value="">{cotizacion.estado}</option>
 								<option value="Pendiente">Pendiente</option>
 								<option value="Finalizado">Finalizado</option>

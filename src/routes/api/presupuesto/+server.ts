@@ -50,6 +50,7 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	return json({ message: 'Presupuesto guardado correctamente', presupuesto: saveResult.value });
 };
 
+
 export const PUT: RequestHandler = async ({ request, platform, cookies }) => {
     const connResult = getDB(platform);
     if (connResult.isErr()) {
@@ -71,7 +72,7 @@ export const PUT: RequestHandler = async ({ request, platform, cookies }) => {
 
 	// Podría usarse si es que se quiere reasignar el id a un presupuesto
     //const id_usuario = validationResult.value.user_id;
-    const updateResult = await updatePresupuesto(presupuesto.id_presupuesto, presupuesto);
+    const updateResult = await editarEstado(presupuesto.id_presupuesto, presupuesto.estado);
 
     if (updateResult.isErr()) {
         return json({ error: updateResult.error }, { status: 500 });
@@ -98,21 +99,4 @@ export const DELETE: RequestHandler = async ({ platform, cookies, request }) => 
 	const resp = await deletePresupuesto(id);
 
 	return json({ resp });
-};
-
-export const PUT: RequestHandler = async ({ platform, cookies, request }) => {
-	const connResult = getDB(platform);
-	if (connResult.isErr()) {
-		return json({ error: connResult.error }, { status: 400 });
-	}
-
-	const token = cookies.get('authToken');
-	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });
-
-	const validationResult = await validateJWT(token);
-	if (validationResult.isErr()) return json({ error: 'Token inválido.' }, { status: 401 });
-
-	await deletePresupuesto(0);
-
-	return json({});
 };
