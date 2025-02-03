@@ -1,9 +1,8 @@
 import type { RequestHandler } from './$types';
 import { getDB, validateJWT } from '$lib';
 import { json } from '@sveltejs/kit';
-import { deletePresupuesto, savePresupuesto } from '$lib/repositories/presupuesto';
+import { deletePresupuesto, editarEstado, savePresupuesto } from '$lib/repositories/presupuesto';
 import { getAllPresupuestos } from '$lib/repositories/presupuesto';
-import type { Presupuesto } from '@prisma/client';
 import type { PresupuestoModel } from '$lib/types';
 
 export const GET: RequestHandler = async ({ platform, cookies }) => {
@@ -50,7 +49,7 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	return json({ message: 'Presupuesto guardado correctamente', presupuesto: saveResult.value });
 };
 
-export const DELETE: RequestHandler = async ({ platform, cookies }) => {
+export const DELETE: RequestHandler = async ({ platform, cookies, request }) => {
 	const connResult = getDB(platform);
 	if (connResult.isErr()) {
 		return json({ error: connResult.error }, { status: 400 });
@@ -62,7 +61,30 @@ export const DELETE: RequestHandler = async ({ platform, cookies }) => {
 	const validationResult = await validateJWT(token);
 	if (validationResult.isErr()) return json({ error: 'Token inválido.' }, { status: 401 });
 
-	await deletePresupuesto(0);
+	const { id } = await request.json<{ id: number }>();
 
-	return json({});
+	const resp = await deletePresupuesto(id);
+
+	return json({ resp });
+};
+
+export const PUT: RequestHandler = async ({ platform, cookies, request }) => {
+	const connResult = getDB(platform);
+	if (connResult.isErr()) {
+		return json({ error: connResult.error }, { status: 400 });
+	}
+
+	const token = cookies.get('authToken');
+	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });
+
+	const validationResult = await validateJWT(token);
+	if (validationResult.isErr()) return json({ error: 'Token inválido.' }, { status: 401 });
+
+	const { id, estado } = await request.json<{ id: number; estado: string }>();
+
+	const resp = await editarEstado(id, estado);
+
+	if (resp.isErr()) return json({ error: resp.error });
+
+	return json({ message: 'Estado editado correctamente' });
 };

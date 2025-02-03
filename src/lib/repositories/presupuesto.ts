@@ -65,3 +65,10 @@ export const deletePresupuesto = async (id: number) => {
 		.then((response) => ok(response))
 		.catch((error) => err(error));
 };
+
+export const editarEstado = async (id: number, estado: string) => {
+	return prisma.presupuesto
+		.update({ data: { estado }, where: { id_presupuesto: id } })
+		.then((response) => ok(response))
+		.catch((error) => err(error));
+};

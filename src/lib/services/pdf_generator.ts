@@ -2,8 +2,6 @@ import type { ConstantData, ImageGroup, OpcionModel, PresupuestoModel } from '$l
 import type { Color, Cristal, Material, Tipo } from '@prisma/client';
 import {
 	PDFDocument,
-	PDFFont,
-	PDFPage,
 	PageSizes,
 	StandardFonts,
 	rgb,

@@ -1,37 +1,30 @@
 <script lang="ts">
-	import { PageSizes, PDFDocument } from 'pdf-lib';
 	import type { PageData } from './$types';
+	import type { Usuario } from '@prisma/client';
 
-	let { data }: { data: PageData } = $props();
+	let correo: string = $state('');
+	let contraseña: string = $state('');
 
-	let images: string[] = $state([]);
-	$inspect(images);
-	const handleImageUpload = async (event: Event) => {
-		const files = (event.target as HTMLInputElement)?.files;
-		if (files) {
-			for (const file of Array.from(files)) {
-				const reader = new FileReader();
-				reader.onload = (e) => {
-					if (e.target?.result) {
-						images = [...images, e.target.result as string];
-					}
-				};
-				reader.readAsDataURL(file);
-			}
-		}
-	};
-
-	let test = async () => {
-		let pdfDoc = await PDFDocument.create();
-		console.log('img:', images);
-		console.log('img:', images[0]);
-
-		let page = pdfDoc.addPage(PageSizes.A4);
-		let img = await pdfDoc.embedPng(images[0]);
-		page.drawImage(img);
-		const pdfBytes = await pdfDoc.save();
-		const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-		const url = URL.createObjectURL(blob);
-		window.open(url);
-	};
+	async function handleCrear() {
+		const usuario: Usuario = { email: correo, id_usuario: 0, is_admin: 0, password: contraseña };
+		const resp = await fetch('/api/register', {
+			method: 'POST',
+			body: JSON.stringify(usuario)
+		}).then(async (resp) => {
+			return await resp.json();
+		});
+		console.log(resp);
+	}
 </script>
+
+<div class="w-1/2 items-center grid self-center gap-8 my-4">
+	<h2 class="text-xl text-center">Agregar usuario</h2>
+	<div class="grid grid-cols-2 w-full gap-y-4">
+		<label for="email">Correo: </label>
+		<input type="text" id="email" bind:value={correo} />
+		<label for="password">Contraseña: </label>
+		<input id="password" type="password" bind:value={contraseña} />
+	</div>
+	<button class="bg-blue-300 p-4 hover:bg-blue-200 rounded-md mx-auto" onclick={handleCrear}
+		>Crear usuario</button>
+</div>
