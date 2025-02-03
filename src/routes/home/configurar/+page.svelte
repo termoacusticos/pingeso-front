@@ -4,8 +4,21 @@
 
 	let correo: string = $state('');
 	let contraseña: string = $state('');
+	let contraseña_r: string = $state('');
+	let mensaje: string = $state('');
 
 	async function handleCrear() {
+		if (contraseña !== contraseña_r) {
+			mensaje = 'Las contraseñas deben coincidir!';
+			return;
+		}
+		if (correo === '') {
+			mensaje = 'Debe introducir un email!';
+			return;
+		}
+
+		mensaje = '';
+
 		const usuario: Usuario = { email: correo, id_usuario: 0, is_admin: 0, password: contraseña };
 		const resp = await fetch('/api/register', {
 			method: 'POST',
@@ -13,7 +26,6 @@
 		}).then(async (resp) => {
 			return await resp.json();
 		});
-		console.log(resp);
 	}
 </script>
 
@@ -24,7 +36,14 @@
 		<input type="text" id="email" bind:value={correo} />
 		<label for="password">Contraseña: </label>
 		<input id="password" type="password" bind:value={contraseña} />
+		<label for="password">Repetir contraseña: </label>
+		<input id="password" type="password" bind:value={contraseña_r} />
 	</div>
+
+	{#if mensaje !== ''}
+		<span class="font-bold text-red-500 text-xl">{mensaje}</span>
+	{/if}
+
 	<button class="bg-blue-300 p-4 hover:bg-blue-200 rounded-md mx-auto" onclick={handleCrear}
 		>Crear usuario</button>
 </div>
