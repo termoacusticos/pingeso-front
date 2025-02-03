@@ -18,6 +18,7 @@
 	let currentPage = $state(1); // Página actual (comienza en 1)
 
 	let searchQuery = $state(''); // Estado para almacenar el término de búsqueda
+	let estadoNuevo = $state('');
 
 	let fechaSortDirection = $state('desc');
 	let rutSortDirection = $state('desc');
@@ -135,6 +136,49 @@
 			currentPage -= 1;
 		}
 	}
+
+	function searchPresupuestoByID(idPresupuesto: number) {
+		const cotizacion = cotizaciones.find((c: any) => c.id_presupuesto === idPresupuesto);
+		console.log(cotizacion)
+		return cotizacion;
+	}
+
+	async function actualizarCotizacion(idPresupuesto: number, estadoNuevo: string) {
+		try {
+			let presupuesto = searchPresupuestoByID(idPresupuesto);
+			if (presupuesto) {
+				presupuesto.estado = estadoNuevo;
+				console.log(presupuesto.estado)
+			}
+			
+			await fetch('/api/presupuesto', {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(presupuesto)
+			})
+				.then((response) => {
+					if (!response.ok) {
+						throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
+					}
+					return response.json();
+				})
+				.then(async (data) => {
+					//presupuesto.set(cotizacion);
+					//successModal = true;
+					// Prespuesto actualizado
+					console.log('Respuesta del servidor:', data);
+				})
+				.catch((error) => {
+					//errorModal = true;
+					console.error('Error durante la solicitud:', error);
+				});
+		} catch (error) {
+			//errorModal = true;
+			console.error('Error al crear la cotización:', error);
+		}
+	}
 </script>
 
 <div
@@ -175,6 +219,7 @@
 				<th class="py-3 px-4 text-left">Valor presupuesto</th>
 				<!--<th>Despacho</th>
 				<th>Instalación</th>-->
+				<th class="py-3 px-4 min-w-28 w-32 text-center">Estado</th>
 				<th class="py-3 px-6 text-right min-w-28 w-32">Acciones</th>
 			</tr>
 		</thead>
@@ -185,8 +230,8 @@
 					<td class="py-3 px-4">
 						<div class="w-80 truncate overflow-hidden whitespace-nowrap space-x-3">
 							{#each cotizacion.Opciones as opcion, index}
-								{getNombreMaterial(opcion.Ventanas[0].id_material)}
-								{index < cotizacion.Opciones.length - 1 ? ',' : ''}
+							{getNombreMaterial(opcion.Ventanas[0].id_material)}
+							{index < cotizacion.Opciones.length - 1 ? ',' : ''}
 							{/each}
 						</div>
 					</td>
@@ -198,16 +243,24 @@
 					<td class="py-3 px-4 text-left">
 						<div class=" space-x-3">
 							{#each cotizacion.Opciones as opcion, index}
-								<b>{index + 1}:</b>
-								{formatoChileno(
-									calcularTotalOpcion(opcion)
-								)}{#if index < cotizacion.Opciones.length - 1},
+							<b>{index + 1}:</b>
+							{formatoChileno(
+								calcularTotalOpcion(opcion)
+							)}{#if index < cotizacion.Opciones.length - 1},
 								{/if}
-							{/each}
-						</div>
-					</td>
-					<td class="py-3 px-4">
-						<div class="flex gap-2 justify-end">
+								{/each}
+							</div>
+						</td>
+						<td class="py-3 px-4">
+							<select class="px-2 py-1 rounded" name="" id="" bind:value={estadoNuevo}
+							onchange={() => actualizarCotizacion(cotizacion.id_presupuesto??-1, estadoNuevo)}>
+								<option selected value="">{cotizacion.estado}</option>
+								<option value="Pendiente">Pendiente</option>
+								<option value="Finalizado">Finalizado</option>
+							</select>
+						</td>
+						<td class="py-3 px-4">
+							<div class="flex gap-2 justify-end">
 							<button
 								class="flex flex-col overflow-hidden text-left"
 								aria-label="Editar"
