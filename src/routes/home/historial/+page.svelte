@@ -229,8 +229,8 @@
 					<td class="py-3 px-4">
 						<div class="w-80 truncate overflow-hidden whitespace-nowrap space-x-3">
 							{#each cotizacion.Opciones as opcion, index}
-							{getNombreMaterial(opcion.Ventanas[0].id_material)}
-							{index < cotizacion.Opciones.length - 1 ? ',' : ''}
+								{getNombreMaterial(opcion.Ventanas[0].id_material)}
+								{index < cotizacion.Opciones.length - 1 ? ',' : ''}
 							{/each}
 						</div>
 					</td>
@@ -242,24 +242,29 @@
 					<td class="py-3 px-4 text-left">
 						<div class=" space-x-3">
 							{#each cotizacion.Opciones as opcion, index}
-							<b>{index + 1}:</b>
-							{formatoChileno(
-								calcularTotalOpcion(opcion)
-							)}{#if index < cotizacion.Opciones.length - 1},
+								<b>{index + 1}:</b>
+								{formatoChileno(
+									calcularTotalOpcion(opcion)
+								)}{#if index < cotizacion.Opciones.length - 1},
 								{/if}
-								{/each}
-							</div>
-						</td>
-						<td class="py-3 px-4">
-							<select class="px-2 py-1 rounded" name="" id="" bind:value={cotizacion.estado}
-							onchange={() => actualizarCotizacion(cotizacion.id_presupuesto??-1, cotizacion.estado)}>
-								<option selected value="">{cotizacion.estado}</option>
-								<option value="Pendiente">Pendiente</option>
-								<option value="Finalizado">Finalizado</option>
-							</select>
-						</td>
-						<td class="py-3 px-4">
-							<div class="flex gap-2 justify-end">
+							{/each}
+						</div>
+					</td>
+					<td class="py-3 px-4">
+						<select
+							class="px-2 py-1 rounded"
+							name=""
+							id=""
+							bind:value={cotizacion.estado}
+							onchange={() =>
+								actualizarCotizacion(cotizacion.id_presupuesto ?? -1, cotizacion.estado)}>
+							<option selected>Creado</option>
+							<option value="Pendiente">Pendiente</option>
+							<option value="Finalizado">Finalizado</option>
+						</select>
+					</td>
+					<td class="py-3 px-4">
+						<div class="flex gap-2 justify-end">
 							<button
 								class="flex flex-col overflow-hidden text-left"
 								aria-label="Editar"
