@@ -1,7 +1,7 @@
 import type { RequestHandler } from './$types';
 import { getDB, validateJWT } from '$lib';
 import { json } from '@sveltejs/kit';
-import { deletePresupuesto, savePresupuesto, updatePresupuesto } from '$lib/repositories/presupuesto';
+import { deletePresupuesto, editarEstado, savePresupuesto, updatePresupuesto } from '$lib/repositories/presupuesto';
 import { getAllPresupuestos } from '$lib/repositories/presupuesto';
 import type { Presupuesto } from '@prisma/client';
 import type { PresupuestoModel } from '$lib/types';
@@ -81,7 +81,26 @@ export const PUT: RequestHandler = async ({ request, platform, cookies }) => {
 };
 
 
-export const DELETE: RequestHandler = async ({ platform, cookies }) => {
+export const DELETE: RequestHandler = async ({ platform, cookies, request }) => {
+	const connResult = getDB(platform);
+	if (connResult.isErr()) {
+		return json({ error: connResult.error }, { status: 400 });
+	}
+
+	const token = cookies.get('authToken');
+	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });
+
+	const validationResult = await validateJWT(token);
+	if (validationResult.isErr()) return json({ error: 'Token inválido.' }, { status: 401 });
+
+	const { id } = await request.json<{ id: number }>();
+
+	const resp = await deletePresupuesto(id);
+
+	return json({ resp });
+};
+
+export const PUT: RequestHandler = async ({ platform, cookies, request }) => {
 	const connResult = getDB(platform);
 	if (connResult.isErr()) {
 		return json({ error: connResult.error }, { status: 400 });
