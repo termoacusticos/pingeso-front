@@ -48,6 +48,7 @@
 		"wrangler": "^3.95.0"
 	},
 	"dependencies": {
+		"@pdf-lib/fontkit": "^1.1.1",
 		"@prisma/adapter-d1": "^6.0.1",
 		"@prisma/client": "^6.1.0",
 		"mathjs": "^14.0.1",

@@ -3,11 +3,13 @@ import type { Color, Cristal, Material, Tipo } from '@prisma/client';
 import {
 	PDFDocument,
 	PageSizes,
-	StandardFonts,
 	rgb,
 	layoutMultilineText,
-	TextAlignment
+	TextAlignment,
+	PDFPage,
+	PDFFont
 } from 'pdf-lib';
+import fontkit from '@pdf-lib/fontkit';
 
 //#region constantes
 let materiales: Material[];
@@ -15,32 +17,27 @@ let colores: Color[];
 let cristales: Cristal[];
 let tipos: Tipo[];
 
-const checkbox_0 =
-	'M19 3H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m0 2v14H5V5z';
-const checkbox_1 =
-	'M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m0 2v14H5V5zm-9 12l-4-4l1.41-1.42L10 14.17l6.59-6.59L18 9';
-
 let pdfDoc: PDFDocument;
 let page: PDFPage;
 
-let fontSize = 9;
+const fontSize = 9;
 let font: PDFFont;
 let boldFont: PDFFont;
 
 let height: number;
 let width: number;
 
-let marginTop: number = 40;
-let marginLeft: number = 20;
+const marginTop: number = 40;
+const marginLeft: number = 20;
 
 let currentX: number;
 let currentY: number;
 
-let verticalGap: number = 11;
+const verticalGap: number = 11;
 
 // Dimensiones de las columnas
 const headersTabla = ['TIPO', 'COLOR', 'CRISTAL', 'ANCHO', 'ALTO', 'CANT', 'PRECIO U', 'TOTAL'];
-let columnWidths = [115, 10, 0, -35, -35, -40, -25, -10].map((element, _, arr) => {
+const columnWidths = [115, 10, 0, -25, -35, -40, -25, -10].map((element, _, arr) => {
 	return element + 550 / arr.length;
 });
 const rowHeight = 13; // Altura de cada fila
@@ -51,9 +48,9 @@ const footerText = ['TRANSPORTE', 'INSTALACIÓN', 'TOTAL IVA INCLUIDO'];
 async function drawImageRow(group: ImageGroup | undefined) {
 	if (group == undefined) return;
 
-	let images = group.imagenes;
+	const images = group.imagenes;
 	if (images.length == 0) return;
-	let imgHeight = images[0].height;
+	const imgHeight = images[0].height;
 
 	if (currentY - -verticalGap < 0) {
 		page = pdfDoc.addPage(PageSizes.A4);
@@ -139,7 +136,7 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 		y: currentY - rowHeight,
 		width: width - marginLeft * 2,
 		height: rowHeight,
-		color: rgb(0.75, 0.75, 0.75), // Color de fondo gris claro
+		color: rgb(0.5, 0.5, 0.5), // Color de fondo gris claro
 		borderColor: rgb(0, 0, 0),
 		borderWidth: 0.5
 	});
@@ -154,8 +151,8 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 				x: currentX + columnWidth - textWidth + 10, // Ajuste para alinearlo al borde derecho
 				y: currentY - rowGap,
 				size: tableFontSize,
-				font: font,
-				color: rgb(0, 0, 0)
+				font: boldFont,
+				color: rgb(1, 1, 1)
 			});
 		} else {
 			// Texto alineado a la izquierda
@@ -163,8 +160,8 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 				x: cellX,
 				y: currentY - rowGap,
 				size: tableFontSize,
-				font: font,
-				color: rgb(0, 0, 0)
+				font: boldFont,
+				color: rgb(1, 1, 1)
 			});
 		}
 		currentX += columnWidths[index];
@@ -172,8 +169,16 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 	currentY -= rowHeight; // Espacio para las filas
 
 	//#region ventanas
+	page.drawRectangle({
+		x: marginLeft,
+		y: currentY - rowHeight * opcion.Ventanas.length,
+		width: width - marginLeft * 2,
+		height: rowHeight * opcion.Ventanas.length,
+		borderWidth: 0.5,
+		borderColor: rgb(0, 0, 0)
+	});
 	// Dibujar filas de datos desde las opciones
-	opcion.Ventanas.forEach((ventana) => {
+	opcion.Ventanas.forEach((ventana, ventana_idx) => {
 		currentX = marginLeft;
 
 		// Dibujar bordes de las filas
@@ -182,24 +187,24 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 			y: currentY - rowHeight,
 			width: width - marginLeft * 2,
 			height: rowHeight,
-			borderWidth: 0.5,
-			borderColor: rgb(0, 0, 0)
+			borderWidth: 0,
+			borderColor: rgb(0, 0, 0),
+			color: rgb(0, 0, 0),
+			opacity: ventana_idx % 2 == 0 ? 0 : 0.2
 		});
 
 		// Material
-		let material: string;
-		let tipo: string;
-		let cristal: string;
-		let color: string;
-
-		const materialEncontrado = materiales.find((mat) => mat.id_material === ventana.id_material);
-		material = materialEncontrado ? materialEncontrado.nombre_material : 'Material no encontrado';
+		// const materialEncontrado = materiales.find((mat) => mat.id_material === ventana.id_material);
+		// const material = materialEncontrado
+		// 	? materialEncontrado.nombre_material
+		// 	: 'Material no encontrado';
 		const tipoEncontrado = tipos.find((t) => t.id_tipo === ventana.id_tipo);
-		tipo = tipoEncontrado ? tipoEncontrado.descripcion_tipo : 'Tipo no encontrado';
+		const tipo = tipoEncontrado ? tipoEncontrado.descripcion_tipo : 'Tipo no encontrado';
 		const cristalEncontrado = cristales.find((c) => c.id_cristal === ventana.id_cristal);
-		cristal = cristalEncontrado ? cristalEncontrado.desc_cristal : 'Cristal no encontrado';
+		const cristal = cristalEncontrado ? cristalEncontrado.desc_cristal : 'Cristal no encontrado';
 		const colorEncontrado = colores.find((c) => c.id_color === ventana.id_color);
-		color = colorEncontrado ? colorEncontrado.nombre_color : 'Color no encontrado';
+		const color = colorEncontrado ? colorEncontrado.nombre_color : 'Color no encontrado';
+
 		const row = [
 			tipo,
 			color,
@@ -305,9 +310,13 @@ export const generatePDF = async (
 	materiales = constantes.materiales;
 	tipos = constantes.tipos;
 	pdfDoc = await PDFDocument.create();
-	console.log(imagenes);
-	font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-	boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+	pdfDoc.registerFontkit(fontkit);
+	const fontBytes = await fetch('/Archivo-Regular.ttf').then((res) => res.arrayBuffer());
+	font = await pdfDoc.embedFont(fontBytes, { subset: true });
+
+	const boldFontBytes = await fetch('/Archivo-Bold.ttf').then((res) => res.arrayBuffer());
+	boldFont = await pdfDoc.embedFont(boldFontBytes, { subset: true });
 
 	page = pdfDoc.addPage(PageSizes.A4);
 	width = page.getWidth();
@@ -317,7 +326,7 @@ export const generatePDF = async (
 	currentX = marginLeft;
 
 	//#region header
-	let imagenesHeader = imagenes.find((value) => value.img_group == 1);
+	const imagenesHeader = imagenes.find((value) => value.img_group == 1);
 	await drawImageRow(imagenesHeader);
 	//#region textos
 	// Izquierda
@@ -355,7 +364,7 @@ export const generatePDF = async (
 	drawLeftText(leftTexts, { linkOn3rd: true });
 
 	//#region imagenes1
-	let imagenesGroup2 = imagenes.find((value) => value.img_group == 2);
+	const imagenesGroup2 = imagenes.find((value) => value.img_group == 2);
 	await drawImageRow(imagenesGroup2);
 
 	const clienteTexts = [
@@ -369,8 +378,8 @@ export const generatePDF = async (
 	for (let opcionIndex = 0; opcionIndex < presupuesto.Opciones.length; opcionIndex++) {
 		const opcion = presupuesto.Opciones[opcionIndex];
 
-		let optRowSize = boldFont.widthOfTextAtSize('AAAAAAAAAA', fontSize + 2);
-		let optColSize = boldFont.heightAtSize(fontSize);
+		const optRowSize = boldFont.widthOfTextAtSize('AAAAAAAAAA', fontSize + 2);
+		const optColSize = boldFont.heightAtSize(fontSize);
 
 		let opcionHeight = opcion.Ventanas.length * rowHeight;
 		opcionHeight += (footerText.length + 1) * rowHeight;
@@ -398,7 +407,7 @@ export const generatePDF = async (
 		currentX += optionMargin;
 
 		const materialText = currentMat?.nombre_material ?? 'Material no encontrado';
-		const materialSize = boldFont.widthOfTextAtSize(materialText + 'AA', fontSize);
+		// const materialSize = boldFont.widthOfTextAtSize(materialText + 'AA', fontSize);
 
 		page.drawText(materialText, { x: currentX, y: currentY, size: fontSize, font: boldFont });
 
@@ -419,7 +428,7 @@ export const generatePDF = async (
 		currentY -= verticalGap;
 	}
 
-	let imagenesGroup3 = imagenes.find((value) => value.img_group == 3);
+	const imagenesGroup3 = imagenes.find((value) => value.img_group == 3);
 	await drawImageRow(imagenesGroup3);
 
 	const multiText = layoutMultilineText(presupuesto.texto_libre, {

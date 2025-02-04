@@ -1,6 +1,6 @@
 import type { PageServerLoad } from './$types';
 import type { Usuario } from '@prisma/client';
-import type { ConstantData, JWTBody, PresupuestoModel } from '$lib/types';
+import type { ConstantData } from '$lib/types';
 
 export const load: PageServerLoad = async ({ fetch }) => {
 	const constantes: ConstantData = await fetch('api/constantes', {
