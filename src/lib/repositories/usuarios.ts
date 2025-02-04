@@ -1,4 +1,4 @@
-import { getDB, prisma } from '$lib';
+import { prisma } from '$lib';
 import type { Usuario } from '@prisma/client';
 import { err, ok } from 'neverthrow';
 // acá se revisa si falló o no adentro, porque es un select y si no encuentra nada, el result es un null

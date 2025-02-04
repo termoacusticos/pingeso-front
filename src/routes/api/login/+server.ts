@@ -6,7 +6,6 @@ import { SignJWT } from 'jose';
 import { JWT_SECRET } from '$env/static/private';
 import { getUsuario } from '$lib/repositories/usuarios';
 import { getDB } from '$lib';
-import { validateJWT } from '$lib';
 
 const TOKEN_SECRET = new TextEncoder().encode(JWT_SECRET);
 
@@ -16,11 +15,14 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 
 	const { email, password } = await request.json<{ email: string; password: string }>();
 
+	console.log(email, password);
+
 	const getResult = await getUsuario(email);
 
 	if (getResult.isErr()) return json({ error: getResult.error }, { status: 404 });
 
 	const user = getResult.value;
+	console.log(user);
 
 	const isPasswordValid = await bcrypt.compare(password, user.password);
 	if (!isPasswordValid) {
