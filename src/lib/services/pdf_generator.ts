@@ -187,10 +187,8 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 			y: currentY - rowHeight,
 			width: width - marginLeft * 2,
 			height: rowHeight,
-			borderWidth: 0,
-			borderColor: rgb(0, 0, 0),
 			color: rgb(0, 0, 0),
-			opacity: ventana_idx % 2 == 0 ? 0 : 0.2
+			opacity: ventana_idx % 2 == 0 ? 0 : 0.07
 		});
 
 		// Material
