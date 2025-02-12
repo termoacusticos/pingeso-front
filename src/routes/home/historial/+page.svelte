@@ -138,7 +138,7 @@
 
 	function searchPresupuestoByID(idPresupuesto: number) {
 		const cotizacion = cotizaciones.find((c: any) => c.id_presupuesto === idPresupuesto);
-		console.log(cotizacion)
+		console.log(cotizacion);
 		return cotizacion;
 	}
 
@@ -147,9 +147,9 @@
 			let presupuesto = searchPresupuestoByID(idPresupuesto);
 			if (presupuesto) {
 				presupuesto.estado = estadoNuevo;
-				console.log(presupuesto.estado)
+				console.log(presupuesto.estado);
 			}
-			
+
 			await fetch('/api/presupuesto', {
 				method: 'PUT',
 				headers: {

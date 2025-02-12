@@ -21,7 +21,6 @@ export const precioTotalOptions = writable<number[]>([]);
 export const cliente = writable<Cliente | undefined>();
 export const datosAdicionales = writable<DatosAdicionales>();
 
-
 // Store datos despacho e instalación
 
 export const ganancia_global = writable<number>(undefined);
