@@ -26,6 +26,7 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 		cristales: constantes.cristales,
 		tipos: constantes.tipos,
 		perfiles: constantes.perfiles,
-		quincallerias: constantes.quincallerias
+		quincallerias: constantes.quincallerias,
+		constantes_pdf: constantes.constantes_pdf
 	};
 };

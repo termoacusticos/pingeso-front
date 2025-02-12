@@ -16,11 +16,7 @@
 		resetStores,
 		editFromHistory,
 		materialOptions,
-
 		colorOptions
-
-
-
 	} from '$lib/store';
 	import type {
 		ClienteUI,
@@ -117,38 +113,38 @@
 		const primeraOpcion = presupuestoCargado.Opciones[0];
 
 		// Extraer las características de la cotización para editarlas
-		const listaMateriales = primeraOpcion.Ventanas.map(ventana => {
-			const material = materiales.find(m => m.id_material === ventana.id_material);
-			return material ? material.nombre_material : "Desconocido"; // Manejar el caso en que no se encuentre el material
+		const listaMateriales = primeraOpcion.Ventanas.map((ventana) => {
+			const material = materiales.find((m) => m.id_material === ventana.id_material);
+			return material ? material.nombre_material : 'Desconocido'; // Manejar el caso en que no se encuentre el material
 		});
-		const listaTipos = primeraOpcion.Ventanas.map(ventana => {
-			const tipo = tipos.find(t => t.id_tipo === ventana.id_tipo);
-			return tipo ? tipo.descripcion_tipo : "Desconocido"; // Manejar el caso en que no se encuentre el material
+		const listaTipos = primeraOpcion.Ventanas.map((ventana) => {
+			const tipo = tipos.find((t) => t.id_tipo === ventana.id_tipo);
+			return tipo ? tipo.descripcion_tipo : 'Desconocido'; // Manejar el caso en que no se encuentre el material
 		});
-		const listaColores = primeraOpcion.Ventanas.map(ventana => {
-			const color = colores.find(c => c.id_color === ventana.id_color);
-			return color ? color.nombre_color : "Desconocido"; // Manejar el caso en que no se encuentre el material
+		const listaColores = primeraOpcion.Ventanas.map((ventana) => {
+			const color = colores.find((c) => c.id_color === ventana.id_color);
+			return color ? color.nombre_color : 'Desconocido'; // Manejar el caso en que no se encuentre el material
 		});
-		const listaCristal = primeraOpcion.Ventanas.map(ventana => {
-			const cristal = cristales.find(c => c.id_cristal === ventana.id_cristal);
-			return cristal ? cristal.desc_cristal : "Desconocido"; // Manejar el caso en que no se encuentre el material
+		const listaCristal = primeraOpcion.Ventanas.map((ventana) => {
+			const cristal = cristales.find((c) => c.id_cristal === ventana.id_cristal);
+			return cristal ? cristal.desc_cristal : 'Desconocido'; // Manejar el caso en que no se encuentre el material
 		});
-		const listaCantidad = primeraOpcion.Ventanas.map(ventana => {
+		const listaCantidad = primeraOpcion.Ventanas.map((ventana) => {
 			return ventana.cantidad; // Manejar el caso en que no se encuentre el material
 		});
-		const listaAlto = primeraOpcion.Ventanas.map(ventana => {
+		const listaAlto = primeraOpcion.Ventanas.map((ventana) => {
 			return ventana.alto; // Manejar el caso en que no se encuentre el material
 		});
-		const listaAncho = primeraOpcion.Ventanas.map(ventana => {
+		const listaAncho = primeraOpcion.Ventanas.map((ventana) => {
 			return ventana.ancho; // Manejar el caso en que no se encuentre el material
 		});
-		const listaGanancia = primeraOpcion.Ventanas.map(ventana => {
+		const listaGanancia = primeraOpcion.Ventanas.map((ventana) => {
 			return ventana.ganancia; // Manejar el caso en que no se encuentre el material
 		});
-		const listaPrecioUnitario = primeraOpcion.Ventanas.map(ventana => {
+		const listaPrecioUnitario = primeraOpcion.Ventanas.map((ventana) => {
 			return ventana.precio_unitario; // Manejar el caso en que no se encuentre el material
 		});
-		const listaPrecioTotal = primeraOpcion.Ventanas.map(ventana => {
+		const listaPrecioTotal = primeraOpcion.Ventanas.map((ventana) => {
 			return ventana.precio_total; // Manejar el caso en que no se encuentre el material
 		});
 
@@ -186,7 +182,6 @@
 		gananciaOptions.set(listaGanancia);
 		precioUnitarioOptions.set(listaPrecioUnitario);
 		precioTotalOptions.set(listaPrecioTotal);
-
 	}
 
 	function resetFormValues() {

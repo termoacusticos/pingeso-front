@@ -144,8 +144,13 @@ CREATE TABLE "Imagen" (
 );
 
 -- CreateTable
-CREATE TABLE "constantes" (
-    "id_constantes" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
+CREATE TABLE "Constantes" (
+    "id_constantes" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "texto_izquierda" TEXT NOT NULL,
+    "texto_derecha" TEXT NOT NULL,
+    "margen_texto_izquierda" INTEGER NOT NULL,
+    "margen_texto_derecha" INTEGER NOT NULL,
+    "texto_cliente" TEXT NOT NULL
 );
 
 -- CreateIndex

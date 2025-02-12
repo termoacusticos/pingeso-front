@@ -1,13 +1,12 @@
 import type {
 	Material,
-	Prisma,
 	Tipo,
-	Ventana,
 	Color,
 	Cristal,
 	Cliente,
 	Imagen,
-	Perfil
+	Perfil,
+	Constantes
 } from '@prisma/client';
 
 type ConstantData = {
@@ -18,6 +17,7 @@ type ConstantData = {
 	tipos: Tipo[];
 	perfiles: Perfil[];
 	quincallerias: Quincalleria[];
+	constantes_pdf: Constantes;
 };
 
 type ClienteUI = {
@@ -35,10 +35,10 @@ type OpcionUI = {
 };
 
 type CotizacionUI = {
-	id: Number;
+	id: number;
 	nombreCliente: string;
 	rut: string;
-	valor_total: Number;
+	valor_total: number;
 	fechaCreacion: string;
 };
 

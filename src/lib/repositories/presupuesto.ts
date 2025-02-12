@@ -60,53 +60,52 @@ export const savePresupuesto = async (presupuesto: PresupuestoModel, id_usuario:
 };
 
 export const updatePresupuesto = async (id_presupuesto: number, presupuesto: PresupuestoModel) => {
-    try {
-        // Verificar si el presupuesto existe
-        const existingPresupuesto = await prisma.presupuesto.findUnique({
-            where: { id_presupuesto },
-            include: { Cliente: true, Opciones: { include: { Ventanas: true } } }
-        });
+	try {
+		// Verificar si el presupuesto existe
+		const existingPresupuesto = await prisma.presupuesto.findUnique({
+			where: { id_presupuesto },
+			include: { Cliente: true, Opciones: { include: { Ventanas: true } } }
+		});
 
-        if (!existingPresupuesto) {
-            return err(`No se encontró el presupuesto con ID ${id_presupuesto}`);
-        }
+		if (!existingPresupuesto) {
+			return err(`No se encontró el presupuesto con ID ${id_presupuesto}`);
+		}
 
-        // Actualizar el cliente asociado
-        await saveCliente(presupuesto.Cliente);
+		// Actualizar el cliente asociado
+		await saveCliente(presupuesto.Cliente);
 
-        // Actualizar el presupuesto
-        const updatedPresupuesto = await prisma.presupuesto.update({
-            where: { id_presupuesto },
-            data: {
-                valor_despacho: presupuesto.valor_despacho,
-                valor_instalacion: presupuesto.valor_instalacion,
-                texto_libre: presupuesto.texto_libre,
-                fecha: new Date().toISOString(),
-                id_usuario: presupuesto.id_usuario,
-                rut_cliente: presupuesto.Cliente.rut_cliente,
-                nombre_cliente: presupuesto.nombre_cliente,
-                ganancia_global: presupuesto.ganancia_global,
-                estado: presupuesto.estado,
+		// Actualizar el presupuesto
+		const updatedPresupuesto = await prisma.presupuesto.update({
+			where: { id_presupuesto },
+			data: {
+				valor_despacho: presupuesto.valor_despacho,
+				valor_instalacion: presupuesto.valor_instalacion,
+				texto_libre: presupuesto.texto_libre,
+				fecha: new Date().toISOString(),
+				id_usuario: presupuesto.id_usuario,
+				rut_cliente: presupuesto.Cliente.rut_cliente,
+				nombre_cliente: presupuesto.nombre_cliente,
+				ganancia_global: presupuesto.ganancia_global,
+				estado: presupuesto.estado,
 
-                // Actualizar Opciones y Ventanas
-                Opciones: {
+				// Actualizar Opciones y Ventanas
+				Opciones: {
 					deleteMany: { id_opcion: { not: undefined } }, // Elimina todas las opciones previas
 					create: presupuesto.Opciones.map((opcion) => ({
 						Ventanas: {
 							create: opcion.Ventanas.map((ventana) => ({ ...ventana }))
 						}
 					}))
-				}				
-            },
-            include: { Cliente: true, Opciones: { include: { Ventanas: true } } }
-        });
+				}
+			},
+			include: { Cliente: true, Opciones: { include: { Ventanas: true } } }
+		});
 
-        return ok(updatedPresupuesto);
-    } catch (error) {
-        return err(error);
-    }
+		return ok(updatedPresupuesto);
+	} catch (error) {
+		return err(error);
+	}
 };
-
 
 export const deletePresupuesto = async (id: number) => {
 	return prisma.presupuesto

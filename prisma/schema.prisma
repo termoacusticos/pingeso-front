@@ -175,6 +175,11 @@ model Imagen {
   img_group Int
 }
 
-model constantes {
-  id_constantes    Int @id @default(autoincrement())
+model Constantes {
+  id_constantes          Int @id @default(autoincrement())
+  texto_izquierda        String
+  texto_derecha          String
+  margen_texto_izquierda Int
+  margen_texto_derecha   Int
+  texto_cliente          String
 }

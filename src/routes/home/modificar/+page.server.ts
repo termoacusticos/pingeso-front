@@ -26,6 +26,7 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 		tipos: constantes.tipos,
 		perfiles: constantes.perfiles,
 		quincallerias: constantes.quincallerias,
+		constantes_pdf: constantes.constantes_pdf,
 		imagenes
 	};
 };
