@@ -424,7 +424,6 @@ export const generatePDF = async (
 	for (let opcionIndex = 0; opcionIndex < presupuesto.Opciones.length; opcionIndex++) {
 		const opcion = presupuesto.Opciones[opcionIndex];
 
-		const optRowSize = boldFont.widthOfTextAtSize('AAAAAAAAAA', fontSize + 2);
 		const optColSize = boldFont.heightAtSize(fontSize);
 
 		let opcionHeight = opcion.Ventanas.length * rowHeight;
@@ -458,11 +457,10 @@ export const generatePDF = async (
 		// page.drawText(materialText, { x: currentX, y: currentY, size: fontSize, font: boldFont });
 		// currentX += boldFont.widthOfTextAtSize(materialText, fontSize) + marginLeft;
 
-		const upperRow = [
-			'OPCIÓN ' + (opcionIndex + 1) + '    ' + materialText,
-			currentMat?.texto_calidad ?? '',
-			currentMat?.texto_termopanel ?? ''
-		];
+		const upperRow = ['OPCIÓN ' + (opcionIndex + 1) + '    ' + materialText];
+		// agregar a escribir solo si hay texto
+		if (currentMat && currentMat.texto_calidad) upperRow.push(currentMat.texto_calidad);
+		if (currentMat && currentMat.texto_termopanel) upperRow.push(currentMat.texto_termopanel);
 
 		drawOptionHeaderRow(upperRow, width - currentX - marginLeft * 2, fontSize);
 		currentY -= optColSize;

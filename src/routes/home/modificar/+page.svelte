@@ -204,13 +204,13 @@
 		editQuincalleriaModal = false;
 	}
 
-	function editMaterial() {
+	async function editMaterial() {
 		let bodyReq = {
 			id: materialSelected.id_material,
 			materialData: materialSelected
 		};
 
-		fetch('/api/material', {
+		await fetch('/api/material', {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json'
@@ -685,14 +685,14 @@
 									<input
 										type="text"
 										bind:value={materialSelected.texto_calidad}
-										placeholder="Calidad"
+										placeholder="Texto 1"
 										class="w-full" />
 								</td>
 								<td class="border">
 									<input
 										type="text"
 										bind:value={materialSelected.texto_termopanel}
-										placeholder="Termopanel"
+										placeholder="Texto 2"
 										class="w-full" />
 								</td>
 							</tr>
