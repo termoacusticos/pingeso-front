@@ -449,6 +449,57 @@
 
 	const handleImageUpload = async (event: Event) => {
 		const files = (event.target as HTMLInputElement)?.files;
+		if (!files) return;
+
+		for (const file of Array.from(files)) {
+			if (!file.type.startsWith('image/')) continue; // Filtra solo imágenes
+
+			const reader = new FileReader();
+
+			reader.onload = async (e) => {
+				if (!e.target?.result) return;
+
+				const img = new Image();
+				img.src = e.target.result.toString();
+				img.onload = () => {
+					const canvas = document.createElement('canvas');
+					const ctx = canvas.getContext('2d');
+
+					if (!ctx) return;
+
+					// Define el tamaño del canvas según la imagen
+					canvas.width = img.width;
+					canvas.height = img.height;
+
+					// Dibuja la imagen en el canvas
+					ctx.drawImage(img, 0, 0);
+
+					// Si es JPG, conviértelo a PNG y guarda los bytes
+					if (file.type === 'image/jpeg') {
+						canvas.toBlob((blob) => {
+							if (blob) {
+								const readerBlob = new FileReader();
+								readerBlob.onloadend = () => {
+									if (readerBlob.result) {
+										imagenNueva.bytes = readerBlob.result.toString(); // Guarda los bytes convertidos
+									}
+								};
+								readerBlob.readAsDataURL(blob); // Lee los bytes del PNG
+							}
+						}, 'image/png');
+					} else {
+						// Si ya es PNG o cualquier otro formato, guarda los bytes originales
+						imagenNueva.bytes = e.target?.result?.toString() ?? '';
+					}
+				};
+			};
+
+			reader.readAsDataURL(file);
+		}
+	};
+
+	/* const handleImageUpload = async (event: Event) => {
+		const files = (event.target as HTMLInputElement)?.files;
 		if (files) {
 			for (const file of Array.from(files)) {
 				const reader = new FileReader();
@@ -460,9 +511,14 @@
 				reader.readAsDataURL(file);
 			}
 		}
-	};
+	}; */
 
 	async function handleImagePost(img_group: number, height: number) {
+		if (imagenNueva.bytes === '') {
+			alert('Error al subir la imagen');
+			return;
+		}
+
 		imagenNueva.img_group = img_group;
 		// CAMBIAR POR INPUT
 		imagenNueva.height = height;
