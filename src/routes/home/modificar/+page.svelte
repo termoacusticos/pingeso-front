@@ -625,8 +625,8 @@
 				<tr>
 					<th class="py-2 px-2 text-left">ID</th>
 					<th class="py-2 px-2 text-left">Nombre Material</th>
-					<th class="py-2 px-2 text-left">Calidad</th>
-					<th class="py-2 px-2 text-left">Termopanel</th>
+					<th class="py-2 px-2 text-left">Texto 1</th>
+					<th class="py-2 px-2 text-left">Texto 2</th>
 				</tr>
 			</thead>
 			<tbody class="w-full">
@@ -667,8 +667,8 @@
 							<tr>
 								<th class="px-1 py-2 border w-16">ID</th>
 								<th class="border w-48">Nombre Material</th>
-								<th class="border w-32">Calidad</th>
-								<th class="border w-32">Termopanel</th>
+								<th class="border w-32">Texto 1</th>
+								<th class="border w-32">Texto 2</th>
 							</tr>
 						</thead>
 						<tbody class="w-full">

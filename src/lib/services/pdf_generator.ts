@@ -460,8 +460,8 @@ export const generatePDF = async (
 
 		const upperRow = [
 			'OPCIÓN ' + (opcionIndex + 1) + '    ' + materialText,
-			'CALIDAD: ' + (currentMat?.texto_calidad ?? ''),
-			'TERMOPANEL: ' + (currentMat?.texto_termopanel ?? '')
+			currentMat?.texto_calidad ?? '',
+			currentMat?.texto_termopanel ?? ''
 		];
 
 		drawOptionHeaderRow(upperRow, width - currentX - marginLeft * 2, fontSize);
