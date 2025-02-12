@@ -89,17 +89,29 @@ function formatoChileno(valor: number) {
 	}).format(truncado);
 }
 
-function drawOptionHeaderRow(row: string[], rowSize: number, fontSize: number) {
-	// currentX = +optionMargin;
+function drawOptionHeaderRow(row: string[], avialable_width: number, fontSize: number) {
+	if (row.length === 0) return;
+
+	const totalTextWidth = row.reduce(
+		(acc, text) => acc + boldFont.widthOfTextAtSize(text, fontSize),
+		0
+	);
+
+	const totalSpacing = avialable_width - totalTextWidth;
+	const extraSpacing = totalSpacing / (row.length - 1);
+
 	for (let index = 0; index < row.length; index++) {
 		const text = row[index];
+
 		page.drawText(text, {
 			x: currentX,
 			y: currentY,
 			size: fontSize,
 			font: boldFont
 		});
-		currentX += boldFont.widthOfTextAtSize(text, fontSize) + marginLeft;
+
+		// Avanzar X considerando el tamaño del texto más el espacio extra calculado
+		currentX += boldFont.widthOfTextAtSize(text, fontSize) + extraSpacing;
 	}
 }
 
@@ -430,28 +442,29 @@ export const generatePDF = async (
 
 		currentX = marginLeft;
 
-		const optionMargin = boldFont.widthOfTextAtSize('OPCIÓN X  ', fontSize);
-		page.drawText('OPCIÓN ' + (opcionIndex + 1), {
-			x: marginLeft,
-			y: currentY,
-			size: fontSize,
-			font: boldFont
-		});
+		// const optionMargin = boldFont.widthOfTextAtSize('OPCIÓN X  ', fontSize);
+		// page.drawText('OPCIÓN ', {
+		// 	x: marginLeft,
+		// 	y: currentY,
+		// 	size: fontSize,
+		// 	font: boldFont
+		// });
 
-		currentX += optionMargin;
+		// currentX += optionMargin;
 
 		const materialText = currentMat?.nombre_material ?? 'Material no encontrado';
 		// const materialSize = boldFont.widthOfTextAtSize(materialText + 'AA', fontSize);
 
-		page.drawText(materialText, { x: currentX, y: currentY, size: fontSize, font: boldFont });
-		currentX += boldFont.widthOfTextAtSize(materialText, fontSize) + marginLeft;
+		// page.drawText(materialText, { x: currentX, y: currentY, size: fontSize, font: boldFont });
+		// currentX += boldFont.widthOfTextAtSize(materialText, fontSize) + marginLeft;
 
 		const upperRow = [
+			'OPCIÓN ' + (opcionIndex + 1) + '    ' + materialText,
 			'CALIDAD: ' + (currentMat?.texto_calidad ?? ''),
 			'TERMOPANEL: ' + (currentMat?.texto_termopanel ?? '')
 		];
 
-		drawOptionHeaderRow(upperRow, optRowSize * 4, fontSize);
+		drawOptionHeaderRow(upperRow, width - currentX - marginLeft * 2, fontSize);
 		currentY -= optColSize;
 
 		currentY += verticalGap / 2;
