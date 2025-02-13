@@ -1,4 +1,5 @@
 import { prisma } from '$lib';
+import type { Material } from '@prisma/client';
 import { err, ok } from 'neverthrow';
 
 export const getMaterialById = async (id_material: number) => {
@@ -14,7 +15,7 @@ export const deleteMaterial = async (id: number) => {
 		.catch((error) => err(error));
 };
 
-export const updateMaterial = async (id: number, data: any) => {
+export const updateMaterial = async (id: number, data: Material) => {
 	return prisma.material
 		.update({
 			where: { id_material: id },

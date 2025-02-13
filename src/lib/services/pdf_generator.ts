@@ -38,7 +38,7 @@ const verticalGap: number = 11;
 
 // Dimensiones de las columnas
 const headersTabla = ['TIPO', 'COLOR', 'CRISTAL', 'ANCHO', 'ALTO', 'CANT', 'PRECIO U', 'TOTAL'];
-const columnWidths = [115, 10, 0, -25, -35, -40, -25, -10].map((element, _, arr) => {
+const columnWidths = [115, -25, 35, -35, -40, -33, -15, -15].map((element, _, arr) => {
 	return element + 550 / arr.length;
 });
 const rowHeight = 13; // Altura de cada fila
@@ -89,25 +89,30 @@ function formatoChileno(valor: number) {
 	}).format(truncado);
 }
 
-function drawOptionHeaderRow(
-	row: string[],
-	rowSize: number,
-	colSize: number,
-	_optionMargin: number,
-	fontSize: number
-) {
-	// currentX = +optionMargin;
+function drawOptionHeaderRow(row: string[], avialable_width: number, fontSize: number) {
+	if (row.length === 0) return;
+
+	const totalTextWidth = row.reduce(
+		(acc, text) => acc + boldFont.widthOfTextAtSize(text, fontSize),
+		0
+	);
+
+	const totalSpacing = avialable_width - totalTextWidth;
+	const extraSpacing = totalSpacing / (row.length - 1);
+
 	for (let index = 0; index < row.length; index++) {
 		const text = row[index];
+
 		page.drawText(text, {
 			x: currentX,
 			y: currentY,
 			size: fontSize,
 			font: boldFont
 		});
-		currentX += rowSize;
+
+		// Avanzar X considerando el tamaño del texto más el espacio extra calculado
+		currentX += boldFont.widthOfTextAtSize(text, fontSize) + extraSpacing;
 	}
-	currentY -= colSize;
 }
 
 function isValidURL(str: string) {
@@ -171,7 +176,7 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 		const cellX = currentX + 5;
 		const columnWidth = columnWidths[index];
 
-		if (index > headersTabla.length - 3) {
+		if (index > headersTabla.length - 6) {
 			const textWidth = font.widthOfTextAtSize(header, tableFontSize);
 			page.drawText(header, {
 				x: currentX + columnWidth - textWidth + 10, // Ajuste para alinearlo al borde derecho
@@ -196,7 +201,7 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 
 	//#region ventanas
 	// Dibujar filas de datos desde las opciones
-	opcion.Ventanas.forEach((ventana, ventana_idx) => {
+	opcion.Ventanas.forEach((ventana) => {
 		currentX = marginLeft;
 
 		// Dibujar bordes de las filas
@@ -237,7 +242,7 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 			const columnWidth = columnWidths[index];
 
 			// Alinear texto a la derecha para "PRECIO U" y "TOTAL"
-			if (index > headersTabla.length - 3) {
+			if (index > headersTabla.length - 6) {
 				const textWidth = font.widthOfTextAtSize(cell, tableFontSize);
 				page.drawText(cell, {
 					x: currentX + columnWidth - textWidth + 10, // Ajuste para alinearlo al borde derecho
@@ -301,18 +306,8 @@ function drawTable(opcion: OpcionModel, valor_despacho: number, valor_instalacio
 	});
 
 	footerText.forEach((text, index) => {
-		const textWidth = font.widthOfTextAtSize(text, tableFontSize);
-
-		// page.drawRectangle({
-		// 	x: footerCellWidth,
-		// 	y: currentY - rowHeight,
-		// 	width: extraWidth * 2.5,
-		// 	height: rowHeight,
-		// 	color: rgb(1, 1, 1)
-		// });
-
 		page.drawText(text, {
-			x: width - marginLeft - textWidth - extraWidth,
+			x: width - marginLeft - footerCellWidth + 5,
 			y: currentY - rowGap,
 			size: tableFontSize,
 			font: font,
@@ -429,7 +424,6 @@ export const generatePDF = async (
 	for (let opcionIndex = 0; opcionIndex < presupuesto.Opciones.length; opcionIndex++) {
 		const opcion = presupuesto.Opciones[opcionIndex];
 
-		const optRowSize = boldFont.widthOfTextAtSize('AAAAAAAAAA', fontSize + 2);
 		const optColSize = boldFont.heightAtSize(fontSize);
 
 		let opcionHeight = opcion.Ventanas.length * rowHeight;
@@ -447,31 +441,29 @@ export const generatePDF = async (
 
 		currentX = marginLeft;
 
-		const optionMargin = boldFont.widthOfTextAtSize('OPCIÓN X  ', fontSize);
-		page.drawText('OPCIÓN ' + (opcionIndex + 1), {
-			x: marginLeft,
-			y: currentY,
-			size: fontSize,
-			font: boldFont
-		});
+		// const optionMargin = boldFont.widthOfTextAtSize('OPCIÓN X  ', fontSize);
+		// page.drawText('OPCIÓN ', {
+		// 	x: marginLeft,
+		// 	y: currentY,
+		// 	size: fontSize,
+		// 	font: boldFont
+		// });
 
-		currentX += optionMargin;
+		// currentX += optionMargin;
 
 		const materialText = currentMat?.nombre_material ?? 'Material no encontrado';
 		// const materialSize = boldFont.widthOfTextAtSize(materialText + 'AA', fontSize);
 
-		page.drawText(materialText, { x: currentX, y: currentY, size: fontSize, font: boldFont });
+		// page.drawText(materialText, { x: currentX, y: currentY, size: fontSize, font: boldFont });
+		// currentX += boldFont.widthOfTextAtSize(materialText, fontSize) + marginLeft;
 
-		const upperRow = [
-			'CALIDAD:',
-			currentMat?.texto_calidad ?? '',
-			'TERMOPANEL:',
-			currentMat?.texto_termopanel ?? ''
-		];
+		const upperRow = ['OPCIÓN ' + (opcionIndex + 1) + '    ' + materialText];
+		// agregar a escribir solo si hay texto
+		if (currentMat && currentMat.texto_calidad) upperRow.push(currentMat.texto_calidad);
+		if (currentMat && currentMat.texto_termopanel) upperRow.push(currentMat.texto_termopanel);
 
-		currentX = width - marginLeft - optRowSize * 4;
-
-		drawOptionHeaderRow(upperRow, optRowSize, optColSize, optionMargin, fontSize);
+		drawOptionHeaderRow(upperRow, width - currentX - marginLeft * 2, fontSize);
+		currentY -= optColSize;
 
 		currentY += verticalGap / 2;
 
