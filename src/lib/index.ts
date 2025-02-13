@@ -8,7 +8,7 @@ const TOKEN_SECRET = new TextEncoder().encode(JWT_SECRET);
 
 export let prisma: PrismaClient;
 
-var __prisma: PrismaClient | undefined;
+let __prisma: PrismaClient | undefined;
 
 export const getDB = (platform: Readonly<App.Platform> | undefined) => {
 	if (!platform) return err('falló la conexión con la db');

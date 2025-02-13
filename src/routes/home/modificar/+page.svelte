@@ -1192,6 +1192,7 @@
 						class="w-full resize-none"
 						bind:value={textoIzq}
 						oninput={() => adjustHeight(textareaIzq)}
+						onfocus={() => adjustHeight(textareaIzq)}
 						bind:this={textareaIzq}></textarea>
 				</label>
 				<label>
@@ -1204,6 +1205,7 @@
 						class="w-full resize-none"
 						bind:value={textoDer}
 						oninput={() => adjustHeight(textareaDer)}
+						onfocus={() => adjustHeight(textareaDer)}
 						bind:this={textareaDer}></textarea>
 				</label>
 				<label
@@ -1215,6 +1217,7 @@
 					<textarea
 						class="w-full resize-none"
 						oninput={() => adjustHeight(textareaCliente)}
+						onfocus={() => adjustHeight(textareaCliente)}
 						bind:this={textareaCliente}
 						bind:value={textoCliente}></textarea>
 				</label>

@@ -25,7 +25,7 @@ export const GET: RequestHandler = async ({ platform, cookies }) => {
 		return json({ error: 'Error al buscar imagenes.' }, { status: 500 });
 	}
 
-	let imagenes = imagenesResult.value.reduce(
+	const imagenes = imagenesResult.value.reduce(
 		(acc, image) => {
 			// Busca si ya existe un grupo con el img_group actual
 			let group = acc.find((g) => g.img_group === image.img_group);
