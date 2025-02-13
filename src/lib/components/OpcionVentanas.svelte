@@ -1,15 +1,8 @@
 <script lang="ts">
 	import Ventana2 from './Ventana2.svelte';
 	import DropdownColumn from './DropdownColumn.svelte';
-	import {
-		tipoOptions,
-		anchoOptions,
-		altoOptions,
-		cantidadOptions,
-		gananciaOptions
-	} from '$lib/store';
 	import type { ConstantData, OpcionUI, VentanaModel, VentanaUI } from '$lib/types';
-	import type { Color, Cristal, Material, Tipo } from '@prisma/client';
+	import type { Color, Material } from '@prisma/client';
 
 	interface Props {
 		convertirVentana: (ventana: VentanaUI) => VentanaModel;

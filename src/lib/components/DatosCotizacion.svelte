@@ -1,8 +1,5 @@
 <script lang="ts">
 	import type { ClienteUI, DatosAdicionales } from '$lib/types';
-	import { createEventDispatcher } from 'svelte';
-
-	const dispatch = createEventDispatcher();
 
 	interface Props {
 		cliente: ClienteUI;
@@ -10,10 +7,6 @@
 	}
 
 	let { cliente = $bindable(), datos_adicionales = $bindable() }: Props = $props();
-
-	function aplicarGananciaGlobal() {
-		dispatch('aplicarGananciaGlobal', datos_adicionales.ganancia_global);
-	}
 </script>
 
 <div class="flex flex-row w-full space-x-5 justify-between">

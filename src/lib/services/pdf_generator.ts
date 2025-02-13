@@ -361,41 +361,33 @@ export const generatePDF = async (
 	const imagenesHeader = imagenes.find((value) => value.img_group == 1);
 	await drawImageRow(imagenesHeader);
 	//#region textos
-	// Izquierda
-	const leftTexts = [
-		'TERMOPANEL SYSTEM LTDA',
-		'77.323.478-7',
-		'SANTA INES 01583, QUINTA NORMAL',
-		'WWW.TERMOACUSTICOS.CL'
-	];
+	let textoIzq = constantes.constantes_pdf.texto_izquierda;
+	textoIzq = textoIzq.replace('{nombre}', presupuesto.nombre_cliente);
+	textoIzq = textoIzq.replace('{numero}', (presupuesto.id_presupuesto ?? 0).toString());
 
-	// Derecha
-	const rightTexts = [
-		'ASESOR: ALEJANDRO GONZALEZ',
-		'JEFE COMERCIAL',
-		'+56 9 4963 7515',
-		'CONTACTO@TERMOACUSTICOS.CL'
-	];
+	let textoDer = constantes.constantes_pdf.texto_derecha;
+	textoDer = textoDer.replace('{nombre}', presupuesto.nombre_cliente);
+	textoDer = textoDer.replace('{numero}', (presupuesto.id_presupuesto ?? 0).toString());
 
 	// // Dibujar textos
-	drawMultiLineText(rightTexts.join('\n'), {
+	drawMultiLineText(textoDer, {
 		alignment: TextAlignment.Right,
 		bounds: {
 			height,
 			width: width / 2,
-			x: width / 2 - marginLeft,
+			x: width / 2 - marginLeft - constantes.constantes_pdf.margen_texto_derecha,
 			y: currentY
 		},
 		font: boldFont,
 		fontSize: fontSize
 	});
 
-	currentY = drawMultiLineText(leftTexts.join('\n'), {
+	currentY = drawMultiLineText(textoIzq, {
 		alignment: TextAlignment.Left,
 		bounds: {
 			height,
 			width: width / 2,
-			x: marginLeft,
+			x: marginLeft + constantes.constantes_pdf.margen_texto_izquierda,
 			y: currentY
 		},
 		font: boldFont,
@@ -406,13 +398,11 @@ export const generatePDF = async (
 	const imagenesGroup2 = imagenes.find((value) => value.img_group == 2);
 	await drawImageRow(imagenesGroup2);
 
-	const clienteTexts =
-		'SEÑOR(A): {nombre} \nA CONTINUACIÓN ENTREGAMOS PROPUESTA PARA SU PROYECTO:'.replace(
-			'{nombre}',
-			presupuesto.nombre_cliente
-		);
+	let textoCliente = constantes.constantes_pdf.texto_cliente;
+	textoCliente = textoCliente.replace('{nombre}', presupuesto.nombre_cliente);
+	textoCliente = textoCliente.replace('{numero}', (presupuesto.id_presupuesto ?? 0).toString());
 
-	currentY = drawMultiLineText(clienteTexts, {
+	currentY = drawMultiLineText(textoCliente, {
 		alignment: TextAlignment.Left,
 		bounds: { width, height, x: currentX, y: currentY },
 		font: boldFont,

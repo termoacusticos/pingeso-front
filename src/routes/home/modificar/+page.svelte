@@ -3,6 +3,7 @@
 	import type { ImageGroup, PresupuestoModel } from '$lib/types';
 	import type {
 		Color,
+		Constantes,
 		Cristal,
 		Imagen,
 		Material,
@@ -10,9 +11,10 @@
 		Quincalleria,
 		Tipo
 	} from '@prisma/client';
+	import type { PageData } from './$types';
 
 	interface Props {
-		data: any;
+		data: PageData;
 	}
 
 	let { data }: Props = $props();
@@ -106,6 +108,21 @@
 	let imagenNueva: Imagen = $state({ bytes: '', id_imagen: 0, img_group: 1, height: 0 });
 	let perfiles: Perfil[] = $state(data.perfiles);
 	let quincallerias: Quincalleria[] = $state(data.quincallerias);
+	let constantes_pdf: Constantes = $state(data.constantes_pdf);
+
+	let textoIzq = $state(constantes_pdf.texto_izquierda);
+	let margenIzq = $state(constantes_pdf.margen_texto_izquierda ?? 0);
+	// svelte-ignore non_reactive_update
+	let textareaIzq: HTMLTextAreaElement;
+
+	let textoDer = $state(constantes_pdf.texto_derecha ?? '');
+	// svelte-ignore non_reactive_update
+	let textareaDer: HTMLTextAreaElement;
+	let margenDer = $state(constantes_pdf.margen_texto_derecha ?? 0);
+
+	let textoCliente = $state(constantes_pdf.texto_cliente ?? '');
+	// svelte-ignore non_reactive_update
+	let textareaCliente: HTMLTextAreaElement;
 
 	function formatoChileno(valor: number) {
 		return new Intl.NumberFormat('es-CL', {
@@ -498,21 +515,6 @@
 		}
 	};
 
-	/* const handleImageUpload = async (event: Event) => {
-		const files = (event.target as HTMLInputElement)?.files;
-		if (files) {
-			for (const file of Array.from(files)) {
-				const reader = new FileReader();
-				reader.onload = (e) => {
-					if (e.target?.result) {
-						imagenNueva.bytes = e.target.result.toString();
-					}
-				};
-				reader.readAsDataURL(file);
-			}
-		}
-	}; */
-
 	async function handleImagePost(img_group: number, height: number) {
 		if (imagenNueva.bytes === '') {
 			alert('Error al subir la imagen');
@@ -595,6 +597,31 @@
 		};
 		const url = await generatePDF(previewPresupuesto, imagenes, data);
 		window.open(url);
+	}
+
+	async function handleTextoPDFSubmit() {
+		const newConstantes: Constantes = {
+			id_constantes: 0,
+			margen_texto_derecha: margenDer,
+			margen_texto_izquierda: margenIzq,
+			texto_cliente: textoCliente,
+			texto_derecha: textoDer,
+			texto_izquierda: textoIzq
+		};
+
+		const response = await fetch('/api/constantes', {
+			method: 'PUT',
+			body: JSON.stringify(newConstantes)
+		}).then((response) => {
+			return response.json();
+		});
+		location.reload();
+		console.log(response);
+	}
+
+	function adjustHeight(textarea: HTMLTextAreaElement) {
+		textarea.style.height = 'auto'; // Reiniciar altura para recalcular
+		textarea.style.height = textarea.scrollHeight + 'px'; // Ajustar a contenido
 	}
 </script>
 
@@ -1155,6 +1182,46 @@
 	{#if constantSelected == 'Imágenes'}
 		<div class="space-y-8">
 			<button class="bg-white p-4 shadow-md" onclick={previewPDF}>Previsualizar PDF</button>
+			<div class="w-full flex flex-col">
+				<h2>
+					{'Palabras especiales: {nombre} - Nombre del cliente {numero} - Número de presupuesto'}
+				</h2>
+				<label>
+					Texto Izquierdo
+					<textarea
+						class="w-full resize-none"
+						bind:value={textoIzq}
+						oninput={() => adjustHeight(textareaIzq)}
+						bind:this={textareaIzq}></textarea>
+				</label>
+				<label>
+					Margen Texto Izquierdo
+					<input type="number" bind:value={margenIzq} />
+				</label>
+				<label
+					>Texto Derecha
+					<textarea
+						class="w-full resize-none"
+						bind:value={textoDer}
+						oninput={() => adjustHeight(textareaDer)}
+						bind:this={textareaDer}></textarea>
+				</label>
+				<label
+					>Margen Texto Derecha
+					<input type="number" bind:value={margenDer} />
+				</label>
+				<label
+					>Texto Cliente
+					<textarea
+						class="w-full resize-none"
+						oninput={() => adjustHeight(textareaCliente)}
+						bind:this={textareaCliente}
+						bind:value={textoCliente}></textarea>
+				</label>
+
+				<button onclick={handleTextoPDFSubmit}>Guardar cambios</button>
+			</div>
+
 			{#each imagenes as grupo, idx}
 				<div class="bg-white rounded-lg shadow-md p-6">
 					<div class="flex items-center justify-between mb-4">

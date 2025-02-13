@@ -4,9 +4,10 @@
 	import { goto } from '$app/navigation';
 	import { generatePDF } from '$lib/services/pdf_generator';
 	import { get } from 'svelte/store';
+	import type { PageData } from './$types';
 
 	interface Props {
-		data: any;
+		data: PageData;
 	}
 
 	let { data }: Props = $props();

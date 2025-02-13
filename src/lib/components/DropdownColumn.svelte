@@ -6,16 +6,10 @@
 		columna: string;
 		items: string[];
 		showDropdown: boolean;
-		onSelectItem: any;
+		onSelectItem: () => void;
 	}
 
-	let {
-		itemSelected = $bindable(''),
-		columna,
-		items,
-		showDropdown = $bindable(),
-		onSelectItem
-	}: Props = $props();
+	let { columna, items, showDropdown = $bindable(), onSelectItem }: Props = $props();
 
 	let dropdownElement: HTMLElement | null = null;
 
@@ -23,8 +17,7 @@
 		showDropdown = !showDropdown;
 	}
 
-	function selectItem(item: string) {
-		itemSelected = item;
+	function selectItem() {
 		showDropdown = !showDropdown;
 	}
 

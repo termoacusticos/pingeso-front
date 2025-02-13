@@ -1,3 +1,20 @@
+INSERT INTO Constantes (
+    id_constantes,
+    texto_izquierda,
+    texto_derecha,
+    margen_texto_izquierda,
+    margen_texto_derecha,
+    texto_cliente
+) VALUES
+(
+    1,
+    "TERMOPANEL SYSTEM LTDA\n77.323.478-7\nSANTA INES 01583, QUINTA NORMAL\nWWW.TERMOACUSTICOS.CL",
+    "ASESOR: ALEJANDRO GONZALEZ\nJEFE COMERCIAL\n+56 9 4963 7515\nCONTACTO@TERMOACUSTICOS.CL",
+    0,
+    0,
+    "SEÑOR(A): {nombre} \nA CONTINUACIÓN ENTREGAMOS PROPUESTA PARA SU PROYECTO:"    
+);
+
 INSERT INTO Perfil (codigo_per, formula_dim, formula_cant, kg_ml_per, valor) VALUES 
 (6901, "X-12", "1", 0.692, 5275),
 (6902, "X-12", "1", 0.677, 5275),
