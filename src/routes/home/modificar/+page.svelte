@@ -44,6 +44,7 @@
 	let materialSelected: Material = $state({
 		id_material: 0,
 		nombre_material: '',
+		texto_libre: '',
 		texto_calidad: '',
 		texto_termopanel: ''
 	});
@@ -652,6 +653,7 @@
 				<tr>
 					<th class="py-2 px-2 text-left">ID</th>
 					<th class="py-2 px-2 text-left">Nombre Material</th>
+					<th class="py-2 px-2 text-left">Texto libre PDF</th>
 					<th class="py-2 px-2 text-left">Texto 1</th>
 					<th class="py-2 px-2 text-left">Texto 2</th>
 				</tr>
@@ -665,6 +667,7 @@
 						class=" hover:bg-gray-100">
 						<td class="py-1 px-2 text-left">{material.id_material}</td>
 						<td class="py-1 px-2 text-left">{material.nombre_material}</td>
+						<td class="py-1 px-2 text-left">{material.texto_libre}</td>
 						<td class="py-1 px-2 text-left">{material.texto_calidad}</td>
 						<td class="py-1 px-2 text-left">{material.texto_termopanel}</td>
 					</tr>
@@ -694,6 +697,7 @@
 							<tr>
 								<th class="px-1 py-2 border w-16">ID</th>
 								<th class="border w-48">Nombre Material</th>
+								<th class="border w-32">Texto libre PDF</th>
 								<th class="border w-32">Texto 1</th>
 								<th class="border w-32">Texto 2</th>
 							</tr>
@@ -706,6 +710,13 @@
 										type="text"
 										bind:value={materialSelected.nombre_material}
 										placeholder="Nombre del material"
+										class="w-full" />
+								</td>
+								<td class="border">
+									<input
+										type="text"
+										bind:value={materialSelected.texto_libre}
+										placeholder="Texto libre PDF"
 										class="w-full" />
 								</td>
 								<td class="border">

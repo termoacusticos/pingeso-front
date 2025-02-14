@@ -441,7 +441,7 @@ export const generatePDF = async (
 
 		// currentX += optionMargin;
 
-		const materialText = currentMat?.nombre_material ?? 'Material no encontrado';
+		const materialText = currentMat?.texto_libre ?? 'Material no encontrado';
 		// const materialSize = boldFont.widthOfTextAtSize(materialText + 'AA', fontSize);
 
 		// page.drawText(materialText, { x: currentX, y: currentY, size: fontSize, font: boldFont });

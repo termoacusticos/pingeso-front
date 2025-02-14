@@ -134,6 +134,7 @@ model Tipo {
 model Material {
   id_material      Int    @id @default(autoincrement())
   nombre_material  String
+  texto_libre      String
   texto_calidad    String
   texto_termopanel String
 
