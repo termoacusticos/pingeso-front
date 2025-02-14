@@ -374,7 +374,7 @@ export const generatePDF = async (
 		alignment: TextAlignment.Right,
 		bounds: {
 			height,
-			width: width / 2,
+			width: (width - marginLeft) / 2,
 			x: width / 2 - marginLeft - constantes.constantes_pdf.margen_texto_derecha,
 			y: currentY
 		},
@@ -386,7 +386,7 @@ export const generatePDF = async (
 		alignment: TextAlignment.Left,
 		bounds: {
 			height,
-			width: width / 2,
+			width: (width - marginLeft) / 2,
 			x: marginLeft + constantes.constantes_pdf.margen_texto_izquierda,
 			y: currentY
 		},
@@ -404,7 +404,7 @@ export const generatePDF = async (
 
 	currentY = drawMultiLineText(textoCliente, {
 		alignment: TextAlignment.Left,
-		bounds: { width, height, x: currentX, y: currentY },
+		bounds: { width: width - marginLeft * 2, height, x: currentX, y: currentY },
 		font: boldFont,
 		fontSize: fontSize
 	});
