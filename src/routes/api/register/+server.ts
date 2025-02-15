@@ -1,7 +1,7 @@
 import { json } from '@sveltejs/kit';
 import bcrypt from 'bcryptjs';
 import { getDB, validateJWT } from '$lib';
-import { getUsuario, saveUsuario } from '$lib/repositories/usuarios';
+import { saveUsuario } from '$lib/repositories/usuarios';
 
 import type { RequestHandler } from './$types';
 import type { Usuario } from '@prisma/client';
@@ -10,10 +10,10 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	const connection = getDB(platform);
 	if (connection.isErr()) return json({ error: connection.error }, { status: 400 });
 
-	/* const token = cookies.get('authToken');
+	const token = cookies.get('authToken');
 	if (!token) return json({ error: 'Token no proporcionado.' }, { status: 401 });
 	const validationResult = await validateJWT(token);
-	if (validationResult.isErr()) return json({ error: 'Token inválido.' }, { status: 401 }); */
+	if (validationResult.isErr()) return json({ error: 'Token inválido.' }, { status: 401 });
 
 	const userToRegister = await request.json<Usuario>();
 
