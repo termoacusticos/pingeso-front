@@ -31,7 +31,7 @@
 		"eslint-plugin-svelte": "^2.36.0",
 		"globals": "^15.0.0",
 		"jose": "^5.9.6",
-		"jspdf": "^2.5.2",
+		"jspdf": "^3.0.0",
 		"neverthrow": "^8.1.1",
 		"prettier": "^3.3.2",
 		"prettier-plugin-svelte": "^3.2.6",
@@ -51,6 +51,8 @@
 		"@pdf-lib/fontkit": "^1.1.1",
 		"@prisma/adapter-d1": "^6.0.1",
 		"@prisma/client": "^6.1.0",
+		"@rollup/plugin-inject": "^5.0.5",
+		"cookie": "^1.0.2",
 		"mathjs": "^14.0.1",
 		"pdf-lib": "^1.17.1"
 	}

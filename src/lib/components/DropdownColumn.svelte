@@ -2,11 +2,10 @@
 	import { onMount, onDestroy } from 'svelte';
 
 	interface Props {
-		itemSelected: string;
 		columna: string;
 		items: string[];
 		showDropdown: boolean;
-		onSelectItem: () => void;
+		onSelectItem: (item: string) => void;
 	}
 
 	let { columna, items, showDropdown = $bindable(), onSelectItem }: Props = $props();
@@ -62,8 +61,8 @@
 			<button
 				class=" hover:bg-slate-200 p-2"
 				onclick={() => {
-					selectItem(item);
-					onSelectItem();
+					selectItem();
+					onSelectItem(item);
 				}}
 				aria-label={item}>{item}</button>
 		{/each}

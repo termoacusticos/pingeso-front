@@ -99,28 +99,29 @@
 					<th class="px-1 pl-2 py-2">N°</th>
 					<th class="px-1 py-2 justify-center">
 						<DropdownColumn
-							onSelectItem={() => {
+							onSelectItem={(item) => {
+								console.log(item);
+								opcion.material = item;
 								opcion.ventanas.forEach((ventana) => {
 									ventana.material = opcion.material;
 								});
 							}}
 							columna={'Material'}
 							items={materialesNombre}
-							bind:itemSelected={opcion.material}
 							bind:showDropdown={showMaterialDropdown} />
 					</th>
 					<th class="px-1 py-2"> Tipo </th>
 					<th class="px-1 py-2"> Cristal </th>
 					<th class="px-1 py-2">
 						<DropdownColumn
-							onSelectItem={() => {
+							onSelectItem={(item) => {
+								opcion.color = item;
 								opcion.ventanas.forEach((ventana) => {
 									ventana.color = opcion.color;
 								});
 							}}
 							columna={'Color'}
 							items={coloresNombre}
-							bind:itemSelected={opcion.color}
 							bind:showDropdown={showColorDropdown} />
 					</th>
 					<th class="px-1 py-2 min-w-20">Cantidad</th>
